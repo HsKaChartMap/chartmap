@@ -2,15 +2,34 @@
 header('Content-type: application/json');
 
 $key = $_GET['key']; 
-// Set your CSV feed
+// Set your CSV feed to access gapminder data on GoogleDocs
 $feed = 'https://docs.google.com/spreadsheet/pub?key='.$key.'&single=true&gid=0&output=csv';
  
 // Arrays we'll use later
 $keys = array();
 $countries = array();
-$newArray = array();
- 
-// Function to convert CSV into associative array
+$gapminderArray = array();
+$geom_json_array = array();
+
+/* Function: objectToArray
+ * converts object into array
+ */
+function objectToArray($d) {
+	if (is_object($d)) {
+		$d = get_object_vars($d);
+	}
+	if (is_array($d)) {
+		return array_map(__FUNCTION__, $d);
+	}
+	else {
+		// return array
+		return $d;
+	}
+}
+
+/* Function: csvToArray
+ * converts CSV into associative array
+ */ 
 function csvToArray($file, $delimiter) { 
   if (($handle = fopen($file, 'r')) !== FALSE) { 
     $i = 0; 
@@ -48,10 +67,35 @@ for ($i = 0; $i < $count; $i++) {
 // bring it all together
 for ($j = 0; $j < $count; $j++) {
   $d = array_combine($keys, $data[$j]);
-  $newArray[] = array('country' => $countries[$j], $indicator => $d, 'id' => $j);
+  $gapminderArray[] = array('country' => $countries[$j], $indicator => $d, 'id' => $j);
 }
- 
-// Print it out as JSON
-echo json_encode($newArray);
+// gapminderArray is now ready to join with country geometries
+
+// Load country geometries from staaten.json
+// path to country geometries
+$path = "../data/staaten.json";
+// get file contents
+$geom_json_string = file_get_contents($path);
+// decode the JSON string
+$geom_json_object = json_decode($geom_json_string);
+// create an array out of the JSON object
+$geom_json_array = objectToArray($geom_json_object);
+
+// Inject gapminder data
+for($i=0;$i < count($geom_json_array['features']); $i++) {
+	// join gapminder properties 
+	for ($j=0;$j < count($gapminderArray); $j++) {
+		// compare SOVEREIGNT and country
+		// todo: improve performance of the following code
+		if ($geom_json_array['features'][$i]['properties']['SOVEREIGNT'] == $gapminderArray[$j]['country']) {
+			foreach($gapminderArray[$j] as $key => $value) {
+				$geom_json_array['features'][$i]['properties'][$key] = $value;
+			}
+		}
+	}
+}
+
+// encode into JSON
+echo json_encode($geom_json_array);
 
 ?>
