@@ -7,6 +7,7 @@ $feed = 'https://docs.google.com/spreadsheet/pub?key='.$key.'&single=true&gid=0&
  
 // Arrays we'll use later
 $keys = array();
+$countries = array();
 $newArray = array();
  
 // Function to convert CSV into associative array
@@ -26,31 +27,31 @@ function csvToArray($file, $delimiter) {
  
 // Do it
 $data = csvToArray($feed, ',');
- 
+
 // Set number of elements (minus 1 because we shift off the first row)
 $count = count($data) - 1;
  
-//Use first row for names  
-$labels = array_shift($data);  
- 
+// use first row for names  
+$labels = array_shift($data); 
+// extract the indicator
+$indicator = array_shift($labels);
+
 foreach ($labels as $label) {
   $keys[] = $label;
 }
- 
-// Add Ids, just in case we want them later
-$keys[] = 'id';
- 
+
+// shift country names
 for ($i = 0; $i < $count; $i++) {
-  $data[$i][] = $i;
+  $countries[] = array_shift($data[$i]);
 }
- 
-// Bring it all together
+
+// bring it all together
 for ($j = 0; $j < $count; $j++) {
   $d = array_combine($keys, $data[$j]);
-  $newArray[$j] = $d;
+  $newArray[] = array('country' => $countries[$j], $indicator => $d, 'id' => $j);
 }
  
 // Print it out as JSON
 echo json_encode($newArray);
- 
+
 ?>
