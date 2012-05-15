@@ -8,9 +8,24 @@ $json_object = json_decode($json_string);
 // create an array out of the JSON object
 $json_array = objectToArray($json_object);
 
-// Inject id property
+$sampleData = array(	array(	'countryname' => 'Germany',
+								'inhabitants' => 80000000),
+						array(	'countryname' => 'France',
+								'inhabitants' => 40000000)
+					);				
+					
+// Inject properties
 for($i=0;$i < count($json_array['features']); $i++) {
+	// id
 	$json_array['features'][$i]['properties']['id'] = $i;
+	// join properties of gapminder data
+	for ($j=0;$j < count($sampleData); $j++) {
+		if ($json_array['features'][$i]['properties']['SOVEREIGNT'] == $sampleData[$j]['countryname']) {
+			foreach($sampleData[$j] as $key => $value) {
+				$json_array['features'][$i]['properties'][$key] = $value;
+			}
+		}
+	}
 }
 
 // encode into JSON
@@ -36,4 +51,5 @@ function objectToArray($d) {
 			return $d;
 		}
 	}
+	
 ?>
