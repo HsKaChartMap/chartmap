@@ -1,15 +1,20 @@
 <?php
-
+// toggle debug mode
 $debug = false;
 
 header('Content-type: application/json');
 
-$key = $_GET['key']; 
-// Set your CSV feed to access gapminder data on GoogleDocs
-$feed = 'https://docs.google.com/spreadsheet/pub?key='.$key.'&single=true&gid=0&output=csv';
- 
+$keystring = $_GET['keys'];
+$keys = explode(",", $keystring);
+
+// Set your CSV feeds to access gapminder data on GoogleDocs
+$feeds = array();
+for ($i=0;$i<=count($keys)-1;$i++) {
+    $feeds[] = 'https://docs.google.com/spreadsheet/pub?key='.$keys[$i].'&single=true&gid=0&output=csv';
+}
+
 // Arrays we'll use later
-$keys = array();
+$timeKeys = array();
 $countries = array();
 $gapminderArray = array();
 $geom_json_array = array();
@@ -18,16 +23,16 @@ $geom_json_array = array();
  * converts object into array
  */
 function objectToArray($d) {
-	if (is_object($d)) {
-		$d = get_object_vars($d);
-	}
-	if (is_array($d)) {
-		return array_map(__FUNCTION__, $d);
-	}
-	else {
-		// return array
-		return $d;
-	}
+    if (is_object($d)) {
+        $d = get_object_vars($d);
+    }
+    if (is_array($d)) {
+        return array_map(__FUNCTION__, $d);
+    }
+    else {
+        // return array
+        return $d;
+    }
 }
 
 /* Function: csvToArray
@@ -46,33 +51,35 @@ function csvToArray($file, $delimiter) {
   } 
   return $arr; 
 } 
- 
-// Do it
-$data = csvToArray($feed, ',');
+// loop the feeds
+for($f=0;$f<=count($feeds)-1;$f++) {
+	// Do it
+	$data = csvToArray($feeds[$f], ',');
 
-// Set number of elements (minus 1 because we shift off the first row)
-$count = count($data) - 1;
- 
-// use first row for names  
-$labels = array_shift($data); 
-// extract the indicator
-$indicator = array_shift($labels);
+	// Set number of elements (minus 1 because we shift off the first row)
+	$count = count($data) - 1;
+	 
+	// use first row for names  
+	$labels = array_shift($data); 
+	// extract the indicator
+	$indicator = array_shift($labels);
+	
+	unset($timeKeys);
+	foreach ($labels as $label) {
+	  $timeKeys[] = $label;
+	}
+	// shift country names
+	for ($i = 0; $i < $count; $i++) {
+	  $countries[] = array_shift($data[$i]);
+	}
 
-foreach ($labels as $label) {
-  $keys[] = $label;
+	// bring it all together
+	for ($j = 0; $j < $count; $j++) {
+	  $d = array_combine($timeKeys, $data[$j]);
+	  $gapminderArray[$f][] = array('country' => $countries[$j], $indicator => $d, 'id' => $j);
+	}
+	// gapminderArray is now ready to join with country geometries
 }
-
-// shift country names
-for ($i = 0; $i < $count; $i++) {
-  $countries[] = array_shift($data[$i]);
-}
-
-// bring it all together
-for ($j = 0; $j < $count; $j++) {
-  $d = array_combine($keys, $data[$j]);
-  $gapminderArray[] = array('country' => $countries[$j], $indicator => $d, 'id' => $j);
-}
-// gapminderArray is now ready to join with country geometries
 
 // Load country geometries from staaten.json
 // path to country geometries
@@ -85,13 +92,18 @@ $geom_json_object = json_decode($geom_json_string);
 $geom_json_array = objectToArray($geom_json_object);
 
 // nested loop join with unset of values in the gapminder array
+// loop over the country geometries in the $geom_json_array
 foreach($geom_json_array['features'] as $cKey => $cVal) {
-	foreach($gapminderArray as $dKey => $dVal) {
-		if ($cVal['properties']['SOVEREIGNT'] == $dVal['country']) {
-			foreach($dVal as $key => $value) {
-				$geom_json_array['features'][$cKey]['properties'][$key] = $value;
+    // loop over the indicators contained in the $gapminderArray
+	for($i=0;$i<=count($gapminderArray)-1;$i++) {
+		// loop over the elements in a specific indicator array
+		foreach($gapminderArray[$i] as $dKey => $dVal) {
+			if ($cVal['properties']['SOVEREIGNT'] == $dVal['country']) {
+				foreach($dVal as $key => $value) {
+					$geom_json_array['features'][$cKey]['properties'][$key] = $value;
+				}
+				unset($gapminderArray[$i][$dKey]);
 			}
-			unset($gapminderArray[$dKey]);
 		}
 	}
 }
