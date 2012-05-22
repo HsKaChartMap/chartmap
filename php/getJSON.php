@@ -1,4 +1,7 @@
 <?php
+
+$debug = false;
+
 header('Content-type: application/json');
 
 $key = $_GET['key']; 
@@ -81,21 +84,23 @@ $geom_json_object = json_decode($geom_json_string);
 // create an array out of the JSON object
 $geom_json_array = objectToArray($geom_json_object);
 
-// Inject gapminder data
-for($i=0;$i < count($geom_json_array['features']); $i++) {
-	// join gapminder properties 
-	for ($j=0;$j < count($gapminderArray); $j++) {
-		// compare SOVEREIGNT and country
-		// todo: improve performance of the following code
-		if ($geom_json_array['features'][$i]['properties']['SOVEREIGNT'] == $gapminderArray[$j]['country']) {
-			foreach($gapminderArray[$j] as $key => $value) {
-				$geom_json_array['features'][$i]['properties'][$key] = $value;
+// nested loop join with unset of values in the gapminder array
+foreach($geom_json_array['features'] as $cKey => $cVal) {
+	foreach($gapminderArray as $dKey => $dVal) {
+		if ($cVal['properties']['SOVEREIGNT'] == $dVal['country']) {
+			foreach($dVal as $key => $value) {
+				$geom_json_array['features'][$cKey]['properties'][$key] = $value;
 			}
+			unset($gapminderArray[$dKey]);
 		}
 	}
 }
 
-// encode into JSON
-echo json_encode($geom_json_array);
-
+if ($debug == true) {
+    print_r($geom_json_array);
+}
+else {
+    // encode into JSON
+    echo json_encode($geom_json_array);
+}
 ?>
