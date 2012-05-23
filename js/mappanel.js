@@ -68,7 +68,7 @@ Ext.application({
 			projection: new OpenLayers.Projection("EPSG:4326"),
         		protocol: new OpenLayers.Protocol.HTTP({				
 						//url: "data/staaten.json",
-						url: "php/getJSON.php?key=tyadrylIpQ1K_iHP407374Q",
+						url: "php/getJSON.php?keys=tyadrylIpQ1K_iHP407374Q",
 						format: new OpenLayers.Format.GeoJSON()
 	    		})
 		});
