@@ -15,7 +15,7 @@ Ext.application({
             expires: new Date(new Date().getTime()+(1000*60*60*24*7)) //7 days from now
         }));
 
-        var map = new OpenLayers.Map({});
+        map = new OpenLayers.Map({});
         
         var wms = new OpenLayers.Layer.WMS(
             "OpenLayers WMS",
@@ -27,57 +27,68 @@ Ext.application({
             "Topographie", "http://gis.lmz-bw.de/tilecache/tilecache.py?", 
             {layers: 'bmng'}, {transitionEffect: 'null'}
         );
+
+        // backgroundLayer
+        var staatenAll = new OpenLayers.Layer.Vector("Staaten alle", {
+            strategies: [new OpenLayers.Strategy.BBOX()],    
+            projection: new OpenLayers.Projection("EPSG:4326"),
+            protocol: new OpenLayers.Protocol.HTTP({                
+                url: "data/staaten.json",
+                format: new OpenLayers.Format.GeoJSON()
+            })
+        });
+		
+        // thematic Layer
+        var staaten = new OpenLayers.Layer.Vector("Staaten thematisch", {
+            strategies: [new OpenLayers.Strategy.BBOX()],    
+            projection: new OpenLayers.Projection("EPSG:4326"),
+            protocol: new OpenLayers.Protocol.HTTP({                
+                //url: "data/staaten.json",
+                url: "php/getJSON.php?keys=tyadrylIpQ1K_iHP407374Q",
+                format: new OpenLayers.Format.GeoJSON()
+            }),
+			eventListeners: {
+			    'loadend': applyThematicStyle
+			}
+        });
+        map.addLayers([topo,staatenAll,staaten]);
         
+        
+        // Styling
+        // create Style Object for the background layer
         var backgroundStyle= new OpenLayers.Style({
             strokeColor:'#ffffff',
             strokeOpacity:0.5,
             fillColor: '#999999',
             fillOpacity: 0.5
-            });
+        });
         
-        
-        //creating StyleMap Objects with Styles for background and thematic layer
-        var backmapObj = new OpenLayers.StyleMap(
+        // create StyleMap-Object for the background layer
+        var backgroundStyleMap = new OpenLayers.StyleMap(
             {
             'default': backgroundStyle
             }
         );
-        
-        var stylemapObj = new OpenLayers.StyleMap(
-            {
-            'default': getThematicStyle(new Array(), 6) // getThematicStyle(data, anzKlassen)
-            }
-        );
-        
-        //backgroundLayer
-        var staatenAll = new OpenLayers.Layer.Vector("StaatenAll", {
-                styleMap: backmapObj,
-                   strategies: [new OpenLayers.Strategy.BBOX()],    
-            projection: new OpenLayers.Projection("EPSG:4326"),
-                protocol: new OpenLayers.Protocol.HTTP({                
-                        url: "data/staaten.json",
-                        format: new OpenLayers.Format.GeoJSON()
-                })
+        staatenAll.addOptions({
+            styleMap: backgroundStyleMap
         });
-        
-        //thematic Layer
-        var staaten = new OpenLayers.Layer.Vector("Staaten", {
-                //adding Stylemap to our VectorLayer "Staaten"
-                styleMap:stylemapObj,
-                   strategies: [new OpenLayers.Strategy.BBOX()],    
-            projection: new OpenLayers.Projection("EPSG:4326"),
-                protocol: new OpenLayers.Protocol.HTTP({                
-                        //url: "data/staaten.json",
-                        url: "php/getJSON.php?keys=tyadrylIpQ1K_iHP407374Q",
-                        format: new OpenLayers.Format.GeoJSON()
-                })
-        });
-        
-
-
-        map.addLayers([topo,staatenAll,staaten]);
- 
-        
+		
+		//var thematicColors = new Array('#e2dee6', '#c2abdd', '#9d87b6', '#735a8f', '#3d2e4e', '#3d2e4e');
+		var thematicColors = new Array('#FFC6A5', '#FF9473', '#FF6342', '#FF3118', '#FF0000', '#AD0000')
+		// function as eventhandler of loadend-event
+		function applyThematicStyle() {
+			// create StyleMap-Object for the thematic layer
+			thematicStyleMap = new OpenLayers.StyleMap(
+				{
+				'default': getThematicStyle("Staaten thematisch", 'HDI', 2010, 'quantiles', 6, thematicColors)
+				}
+			);
+			staaten.addOptions({
+				styleMap: thematicStyleMap
+			});
+			// redraw
+			staaten.redraw();
+        }
         
         // toolbar items
         var alertButton = new Ext.Button({

@@ -1,19 +1,21 @@
 <html>
 <head>
-    <title>GeoExt2 First Steps</title>
+    <title>ChartMap</title>
 
-    <link rel="stylesheet" type="text/css" href="http://cdn.sencha.io/ext-4.1.0-gpl/resources/css/ext-all-gray.css">
-
+    
+    <!-- external libraries -->
     <script type="text/javascript" charset="utf-8" src="http://cdn.sencha.io/ext-4.1.0-gpl/ext-dev.js"></script>
+    <script type="text/javascript" src="externals/OpenLayers/lib/OpenLayers.js"></script>
+    <script type="text/javascript" src="externals/geostats/lib/geostats.js"></script>
 
-    <!-- You should definitely consider using a custom single-file version of OpenLayers -->
-    <script src="externals/OpenLayers/lib/OpenLayers.js"></script>
-
+    <!-- chartmap scripts -->
     <script type="text/javascript" src="js/loader.js"></script>
-	<script type="text/javascript" src="js/indicatorsArray.js"></script>
+	<script type="text/javascript" src="js/globals.js"></script>
+    <script type="text/javascript" src="js/indicatorsArray.js"></script>
     <script type="text/javascript" src="js/getThematicStyle.js"></script>
     <script type="text/javascript" src="js/mappanel.js"></script>
-
+    
+    <link rel="stylesheet" type="text/css" href="http://cdn.sencha.io/ext-4.1.0-gpl/resources/css/ext-all-gray.css">
     <style type="text/css">
    .olControlAttribution a,
     .olControlAttribution a:link,
