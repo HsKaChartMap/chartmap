@@ -42,16 +42,21 @@ function getThematicStyle(layername, indicator, year, classificationType, numCla
     
     // create geostats serie
     serie = new geostats(items);
-    ranges = serie.getQuantile(numClasses);
-
+    // get ranges according to the given classification type
+    switch (classificationType) {
+        case "eqinterval": ranges = serie.getEqInterval(numClasses); break;
+        case "quantiles": ranges = serie.getQuantile(numClasses); break;
+        case "jenks": ranges = serie.getJenks(numClasses); break;
+    }
+    
     // loop through numClasses and create filter & rule for each thematic class
     for (var i = 0; i < numClasses; i++) (function (i) {
         // for debugging
-        //console.log("Klasse" + (i+1) + ": " + parseFloat(ranges[i]) + "-" + ranges[i+1] + ", Farbe: " + colors[i]);
+        console.log("Klasse" + (i+1) + ": " + parseFloat(ranges[i]) + "-" + ranges[i+1] + ", Farbe: " + colors[i]);
         filter_x = new OpenLayers.Filter.Function({
                 evaluate: function(attributes) {
                         if (attributes[indicator]) {
-                            if (attributes[indicator][year] >= parseFloat(ranges[i]) && attributes[indicator][year] < parseFloat(ranges[i+1])) {
+                            if ((attributes[indicator][year] >= parseFloat(ranges[i]) && attributes[indicator][year] < parseFloat(ranges[i+1]) || attributes[indicator][year] == parseFloat(ranges[numClasses]))) {
                                 return true;
                             }
                             else {
