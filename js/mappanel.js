@@ -37,7 +37,7 @@ Ext.application({
                 format: new OpenLayers.Format.GeoJSON()
             })
         });
-		
+        
         // thematic Layer
         var staaten = new OpenLayers.Layer.Vector("Staaten thematisch", {
             strategies: [new OpenLayers.Strategy.BBOX()],    
@@ -47,14 +47,14 @@ Ext.application({
                 url: "php/getJSON.php?keys=tyadrylIpQ1K_iHP407374Q",
                 format: new OpenLayers.Format.GeoJSON()
             }),
-			eventListeners: {
-			    'loadend': applyThematicStyle
-			}
+            eventListeners: {
+                'loadend': applyThematicStyle
+            }
         });
         map.addLayers([topo,staatenAll,staaten]);
         
         
-        // Styling
+        // START styling
         // create Style Object for the background layer
         var backgroundStyle= new OpenLayers.Style({
             strokeColor:'#ffffff',
@@ -72,24 +72,28 @@ Ext.application({
         staatenAll.addOptions({
             styleMap: backgroundStyleMap
         });
-		
-		//var thematicColors = new Array('#e2dee6', '#c2abdd', '#9d87b6', '#735a8f', '#3d2e4e', '#3d2e4e');
-		var thematicColors = new Array('#FFC6A5', '#FF9473', '#FF6342', '#FF3118', '#FF0000', '#AD0000')
-		// function as eventhandler of loadend-event
-		function applyThematicStyle() {
-			// create StyleMap-Object for the thematic layer
-			thematicStyleMap = new OpenLayers.StyleMap(
-				{
-				'default': getThematicStyle("Staaten thematisch", 'HDI', 2010, 'quantiles', 6, thematicColors)
-				}
-			);
-			staaten.addOptions({
-				styleMap: thematicStyleMap
-			});
-			// redraw
-			staaten.redraw();
-        }
         
+        // function as eventhandler of loadend-event
+        function applyThematicStyle() {
+            
+            // todo: hard coded colors
+            var thematicColors = new Array('#FFC6A5', '#FF9473', '#FF6342', '#FF3118', '#FF0000', '#AD0000')
+            
+            // create StyleMap-Object for the thematic layer
+            thematicStyleMap = new OpenLayers.StyleMap(
+                {
+                'default': getThematicStyle("Staaten thematisch", 'HDI', 2010, 'quantiles', 6, thematicColors)
+                }
+            );
+            staaten.addOptions({
+                styleMap: thematicStyleMap
+            });
+            // redraw
+            staaten.redraw();
+        }
+        // END styling
+        
+        // START GUI
         // toolbar items
         var alertButton = new Ext.Button({
             text: 'Alert Button',
@@ -114,7 +118,6 @@ Ext.application({
                 tooltip: "Show Radar-Chart",
         });
         
-        
         var indmenu = new Ext.Button({
         xtype: 'menu',
         text: 'Indicators',
@@ -124,7 +127,6 @@ Ext.application({
         text: 'Nr.11'},{text: 'Nr.12'},{text: 'Nr.13'},{text: 'Nr.14'},{text: 'Nr.15'},{text: 'Nr.16'},{text: 'Nr.17'},{text: 'Nr.18'},{
         }]
         });
-        
         
         // End toolbar items
         
@@ -154,6 +156,7 @@ Ext.application({
                 mappanel
             ]
         });
+        // END GUI
     }
 });
 
