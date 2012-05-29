@@ -130,32 +130,49 @@ Ext.application({
         
         // End toolbar items
         
-        mappanel = Ext.create('GeoExt.panel.Map', {
-            title: 'MapPanel',
-            map: map,
-            center: '12.3046875,51.48193359375',
-            zoom: 6,
-            stateful: true,
-            stateId: 'mappanel',
-
-            dockedItems: [{
-                dock: 'top',
-                items: [{
-                    bbar: new Ext.Toolbar({
-                        items: [alertButton, toggleButton, picButton, indmenu]
-                })
-            }]
-            }]
+        var mappanel = Ext.create('GeoExt.panel.Map', {
+            
+        region: 'center',
+		id: "mappanel",
+        xtype: "gx_mappanel", // TabPanel itself has no title
+		layers: [topo,staatenAll,staaten],
+		map: map,
+		center: '12.3046875,51.48193359375',
+        zoom: 3,
+        activeTab: 0,      // First tab active by default
+        items: {
+            title: 'Thematische Karte',
+            tbar: [alertButton, toggleButton, picButton, indmenu]
+			}
+        });
+		
+		var legendPanel = Ext.create('GeoExt.panel.Legend', {
+			//title: "Legend",
+            defaults: {
+                labelCls: 'mylabel',
+                style: 'padding:5px'
+            },
+            bodyStyle: 'padding:5px',
+            width: 350,
+            autoScroll: true,
         });
         
         
 
-        Ext.create('Ext.container.Viewport', {
-            layout: 'fit',
-            items: [
-                mappanel
-            ]
-        });
+       Ext.create('Ext.container.Viewport', {
+		layout: 'border',
+		renderTo: Ext.getBody(),
+		items: [{
+			region: 'east',
+			title: 'Legende',
+			items: [legendPanel],
+			collapsible: true,
+			collapsed:true,
+			split: true,
+			width: 150
+			}, mappanel
+			]
+		});
         // END GUI
     }
 });
