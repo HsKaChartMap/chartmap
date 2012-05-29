@@ -1,0 +1,20 @@
+/*CSS Stylesheet */
+
+.olControlAttribution a,
+.olControlAttribution a:link,
+.olControlAttribution a:visited,
+.olControlAttribution a:hover,
+.olControlAttribution a:active {
+    color: #fff;
+}
+.olControlAttribution {
+    font-size: 13px !important;
+    color: #ffffff;
+    text-shadow: 0 0 0.3em #8877FF, 0 0 0.3em #8877FF, 0 0 0.3em #8877FF;
+    bottom: 2px !important;
+    right: 2px !important;
+}
+    
+.spider{
+    background: url(img/spider.png) no-repeat top left; 
+}
