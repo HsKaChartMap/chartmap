@@ -52,7 +52,7 @@ function getThematicStyle(layername, indicator, year, classificationType, numCla
     // loop through numClasses and create filter & rule for each thematic class
     for (var i = 0; i < numClasses; i++) (function (i) {
         // for debugging
-        console.log("Klasse" + (i+1) + ": " + parseFloat(ranges[i]) + "-" + ranges[i+1] + ", Farbe: " + colors[i]);
+        //console.log("Klasse" + (i+1) + ": " + parseFloat(ranges[i]) + "-" + ranges[i+1] + ", Farbe: " + colors[i]);
         filter_x = new OpenLayers.Filter.Function({
                 evaluate: function(attributes) {
                         if (attributes[indicator]) {

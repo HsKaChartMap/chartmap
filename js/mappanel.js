@@ -3,6 +3,7 @@ Ext.require([
     'Ext.container.Viewport',
     'Ext.state.Manager',
     'Ext.state.CookieProvider',
+    'Ext.data.ResultSet',
     'GeoExt.panel.Map'
 ]);
        
@@ -95,20 +96,6 @@ Ext.application({
         
         // START GUI
         // toolbar items
-        var alertButton = new Ext.Button({
-            text: 'Alert Button',
-            enableToggle: false,
-            handler: function(){
-            alert("Alert");
-            }    
-        });
-        
-        var toggleButton = new Ext.Button({
-            text: 'Toggle Button',
-            enableToggle: true,
-            visible: false,
-        
-        });
         
         var picButton = new Ext.Button({
                 xtype: 'button',
@@ -118,36 +105,72 @@ Ext.application({
                 tooltip: "Show Radar-Chart",
         });
         
-        var indmenu = new Ext.Button({
-        xtype: 'menu',
-        text: 'Indicators',
-        tooltip: "Select Indicator",
-        menu: [{
-        text: 'HDI'},{text: 'BNE'},{text: 'GDP'},{text: 'Nr.4'},{text: 'Nr.5'},{text: 'Nr.6'},{text: 'Nr.7'},{text: 'Nr.8'},{text: 'Nr.9'},{text: 'Nr.10'},{
-        text: 'Nr.11'},{text: 'Nr.12'},{text: 'Nr.13'},{text: 'Nr.14'},{text: 'Nr.15'},{text: 'Nr.16'},{text: 'Nr.17'},{text: 'Nr.18'},{
-        }]
+        // Indicator ComboBox
+        Ext.define('indicatorModel', {
+            extend: 'Ext.data.Model',
+            fields: ['key', 'indicatorName', 'category', 'subcategory', 'dataprovider', 'dataprovider_link']
         });
+
+        var indicatorStore = Ext.create('Ext.data.Store', {
+            model: 'indicatorModel',
+            proxy: {
+                type: 'ajax',
+                url : 'data/indicators.json',
+                reader: {
+                    type: 'json'
+                }
+            },
+            autoLoad: true,
+            sorters: [{
+                 property: 'indicatorName',
+                 direction: 'ASC'
+             }]
+        });
+
+        var multiCombo = Ext.create('Ext.form.ComboBox', {
+             width: 400,
+             fieldLabel: 'Indikatoren',
+             store: indicatorStore,
+             queryMode: 'local',
+             displayField: 'indicatorName',
+             triggerAction: 'all',
+             multiSelect: true,
+             listeners: {
+                select: function(combobox, records, options) {
+                    var keystring = ""
+                    for (i = 0; i < records.length; i++) {
+                        
+                        keystring = keystring + records[i].data.key;
+                        if (i != records.length-1) {
+                            keystring += ',';
+                        }
+                    }
+                    reloadGapminderLayer("Staaten thematisch", keystring);
+                }
+             }
+        });
+
         
         // End toolbar items
         
         var mappanel = Ext.create('GeoExt.panel.Map', {
             
         region: 'center',
-		id: "mappanel",
+        id: "mappanel",
         xtype: "gx_mappanel", // TabPanel itself has no title
-		layers: [topo,staatenAll,staaten],
-		map: map,
-		center: '12.3046875,51.48193359375',
+        layers: [topo,staatenAll,staaten],
+        map: map,
+        center: '12.3046875,51.48193359375',
         zoom: 3,
         activeTab: 0,      // First tab active by default
         items: {
             title: 'Thematische Karte',
-            tbar: [alertButton, toggleButton, picButton, indmenu]
-			}
+            tbar: [picButton, multiCombo]
+            }
         });
-		
-		var legendPanel = Ext.create('GeoExt.panel.Legend', {
-			//title: "Legend",
+        
+        var legendPanel = Ext.create('GeoExt.panel.Legend', {
+            //title: "Legend",
             defaults: {
                 labelCls: 'mylabel',
                 style: 'padding:5px'
@@ -160,19 +183,19 @@ Ext.application({
         
 
        Ext.create('Ext.container.Viewport', {
-		layout: 'border',
-		renderTo: Ext.getBody(),
-		items: [{
-			region: 'east',
-			title: 'Legende',
-			items: [legendPanel],
-			collapsible: true,
-			collapsed:true,
-			split: true,
-			width: 150
-			}, mappanel
-			]
-		});
+        layout: 'border',
+        renderTo: Ext.getBody(),
+        items: [{
+            region: 'east',
+            title: 'Legende',
+            items: [legendPanel],
+            collapsible: true,
+            collapsed:true,
+            split: true,
+            width: 150
+            }, mappanel
+            ]
+        });
         // END GUI
     }
 });

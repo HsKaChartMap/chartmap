@@ -1,0 +1,42 @@
+[
+    {
+        "key" : "tyadrylIpQ1K_iHP407374Q",
+        "indicatorName" : "Human development Index",
+        "category" : "",
+        "subcategory" : "",
+        "dataprovider" : "Various sources",
+        "dataprovider_link" : "http://spreadsheets.google.com/pub?key=tyadrylIpQ1K_iHP407374Q=1"
+    },
+    {
+        "key" : "pyj6tScZqmEe1GaiYJX2qGA",
+        "indicatorName" : "People living with HIV (number, all ages)",
+        "category" : "Health",
+        "subcategory" : "HIV",
+        "dataprovider" : "Based on UNAIDS",
+        "dataprovider_link" : "http://spreadsheets.google.com/pub?key=pyj6tScZqmEe1GaiYJX2qGA&gid=1"
+    },
+    {
+        "key" : "phAwcNAVuyj2tPLxKvvnNPA",
+        "indicatorName" : "Life expectancy (years)",
+        "category" : "",
+        "subcategory" : "",
+        "dataprovider" : "Various sources",
+        "dataprovider_link" : "http://spreadsheets.google.com/pub?key=phAwcNAVuyj2tPLxKvvnNPA&gid=1"
+    },
+    {
+        "key" : "pyj6tScZqmEcKuNdFCUo6TQ",
+        "indicatorName" : "Cell phones (total)",
+        "category" : "Infrastructure",
+        "subcategory" : "Communication",
+        "dataprovider" : "World Bank",
+        "dataprovider_link" : "http://data.worldbank.org/indicator/IT.CEL.SETS"
+    },
+    {
+        "key" : "0ArfEDsV3bBwCdHF3eXhHdmQ2cGZRRnJfUGdtdTJnWFE",
+        "indicatorName" : "Internet users (total)",
+        "category" : "Infrastructure",
+        "subcategory" : "Communication",
+        "dataprovider" : "World Bank",
+        "dataprovider_link" : "http://data.worldbank.org/indicator/IT.NET.USER"
+    }
+]
