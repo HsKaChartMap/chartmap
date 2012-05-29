@@ -49,52 +49,13 @@ Ext.onReady(function () {
             }]
         });
 
-    var win = Ext.create('Ext.panel.Panel', {
-        width: 600,
-        height: 450,
-        minHeight: 400,
-        minWidth: 550,
-        // hidden: false,
-        // shadow: false,
-        // maximizable: true,
-        style: 'overflow: hidden;',
-        title: 'Spider Test Chart Panel',
-        renderTo: Ext.getBody(),
-        layout: 'fit',
-        tbar: [/*{
-            text: 'Save Chart',
-            handler: function() {
-                Ext.MessageBox.confirm('Confirm Download', 'Would you like to download the chart as an image?', function(choice){
-                    if(choice == 'yes'){
-                        chart.save({
-                            type: 'image/png'
-                        });
-                    }
-                });
-            }
-        }, */{
-            text: 'Reload Data',
-            handler: function() {
-                store1.loadData(generateData());
-            }
-        }, {
-            enableToggle: true,
-            pressed: true,
-            text: 'Animate',
-            toggleHandler: function(btn, pressed) {
-                var chart = Ext.getCmp('chartCmp');
-                chart.animate = pressed ? { easing: 'ease', duration: 500 } : false;
-            }
-        }],
-        items: chart
-    }); 
     var win = Ext.create('Ext.window.Window', {
         width: 600,
         height: 450,
         minHeight: 400,
         minWidth: 550,
         hidden: false,
-        shadow: false,
+        shadow: true,
         maximizable: true,
         style: 'overflow: hidden;',
         title: 'Spider Test Chart Window',
