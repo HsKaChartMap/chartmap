@@ -30,5 +30,7 @@ function reloadGapminderLayer(layername, keys) {
     vectorLayer.setVisibility(true);
     //the refresh will force it to get the new KML data//
     vectorLayer.refresh({ force: true, params: { 'keys': keys} });
+    vectorLayer.protocol.url = newURL;
+    vectorLayer.protocol.options.url = newURL;
 
 }
