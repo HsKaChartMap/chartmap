@@ -69,7 +69,7 @@ function getThematicStyle(layername, indicator, year, classificationType, numCla
                 }
             })
         var rule_x = new OpenLayers.Rule({
-            name: round(ranges[i],2) + " - " + round(ranges[i+1],2),
+            name: Math.round(ranges[i],2) + " - " + Math.round(ranges[i+1],2),
             filter: filter_x,
             symbolizer: { fillColor: colors[i],
                         fillOpacity: 0.5, strokeColor: "white"}
