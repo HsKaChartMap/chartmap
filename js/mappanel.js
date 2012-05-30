@@ -95,8 +95,7 @@ Ext.application({
         // END styling
         
         // START GUI
-        // toolbar items
-        
+        // START toolbar items
         var picButton = new Ext.Button({
                 xtype: 'button',
                    text: '',
@@ -127,9 +126,11 @@ Ext.application({
              }]
         });
 
-        var multiCombo = Ext.create('Ext.form.ComboBox', {
+        // ComboBox to choose the indicator for the classification
+        var indComboBox = Ext.create('Ext.form.ComboBox', {
              width: 400,
-             fieldLabel: 'Indikatoren',
+             fieldLabel: 'Indikator',
+             labelWidth: 65,
              store: indicatorStore,
              queryMode: 'local',
              displayField: 'indicatorName',
@@ -149,26 +150,56 @@ Ext.application({
                 }
              }
         });
-
         
-        // End toolbar items
+        // ComboBox to choose the year for the classification
+        var yearComboBox = Ext.create('Ext.form.ComboBox', {
+             width: 120,
+             fieldLabel: 'Jahr',
+             labelWidth: 35,
+             //store: indicatorStore,
+             queryMode: 'local',
+             //displayField: 'indicatorName',
+             triggerAction: 'all'
+        });
         
+        // ComboBox to choose the number of classes for the classification
+        var clComboBox = Ext.create('Ext.form.ComboBox', {
+             width: 100,
+             fieldLabel: 'Klassen',
+             labelWidth: 45,
+             //store: indicatorStore,
+             queryMode: 'local',
+             //displayField: 'indicatorName',
+             triggerAction: 'all'
+        });
+        // END toolbar items
+        
+        // START panels
+        // MapPanel
         var mappanel = Ext.create('GeoExt.panel.Map', {
-            
         region: 'center',
         id: "mappanel",
         xtype: "gx_mappanel", // TabPanel itself has no title
         layers: [topo,staatenAll,staaten],
         map: map,
-        center: '12.3046875,51.48193359375',
+        center: '0,0',
         zoom: 3,
         activeTab: 0,      // First tab active by default
         items: {
             title: 'Thematische Karte',
-            tbar: [picButton, multiCombo]
+            tbar: [
+                picButton,
+                { xtype: 'tbspacer', width: 20 },
+                indComboBox,
+                { xtype: 'tbspacer', width: 20 },
+                yearComboBox,
+                { xtype: 'tbspacer', width: 20 },
+                clComboBox
+            ]
             }
         });
         
+        // LegendPanel
         var legendPanel = Ext.create('GeoExt.panel.Legend', {
             //title: "Legend",
             defaults: {
@@ -180,22 +211,24 @@ Ext.application({
             autoScroll: true,
         });
         
-        
-
-       Ext.create('Ext.container.Viewport', {
-        layout: 'border',
-        renderTo: Ext.getBody(),
-        items: [{
-            region: 'east',
-            title: 'Legende',
-            items: [legendPanel],
-            collapsible: true,
-            collapsed:true,
-            split: true,
-            width: 150
-            }, mappanel
+        // Viewport
+        Ext.create('Ext.container.Viewport', {
+            layout: 'border',
+            renderTo: Ext.getBody(),
+            items: [
+                {
+                    region: 'east',
+                    title: 'Legende',
+                    items: [legendPanel],
+                    collapsible: true,
+                    collapsed:true,
+                    split: true,
+                    width: 150
+                },
+                mappanel
             ]
         });
+        //END panels
         // END GUI
     }
 });
