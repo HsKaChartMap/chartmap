@@ -1,4 +1,4 @@
-function getThematicStyle(layername, indicator, year, classificationType, numClasses, colors) {
+function getThematicStyle(layername) {
     
     var matchingLayers;
     var vectorLayer;
@@ -8,6 +8,18 @@ function getThematicStyle(layername, indicator, year, classificationType, numCla
     var filter_x;
     var styleMapObject;
     var thematicStyle;
+    
+    /* under development
+    */
+    
+    var colors = new Array('#FFC6A5', '#FF9473', '#FF6342', '#FF3118', '#FF0000', '#AD0000');
+    /* under development
+    */
+    var indicator = indComboBox.getValue();
+    
+    var year = 2010 // yearComboBox.getValue();
+    var classificationType = 'quantiles';
+    var numClasses = parseFloat(clComboBox.getValue());
     
     //check whether numClasses and colors fit together
     if (numClasses != colors.length) {

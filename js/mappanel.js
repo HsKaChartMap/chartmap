@@ -77,13 +77,10 @@ Ext.application({
         // function as eventhandler of loadend-event
         function applyThematicStyle() {
             
-            // todo: hard coded colors
-            var thematicColors = new Array('#FFC6A5', '#FF9473', '#FF6342', '#FF3118', '#FF0000', '#AD0000')
-            
             // create StyleMap-Object for the thematic layer
             thematicStyleMap = new OpenLayers.StyleMap(
                 {
-                'default': getThematicStyle("Staaten thematisch", 'HDI', 2010, 'jenks', 6, thematicColors)
+                'default': getThematicStyle("Staaten thematisch")
                 }
             );
             staaten.addOptions({
@@ -127,7 +124,7 @@ Ext.application({
         });
 
         // ComboBox to choose the indicator for the classification
-        var indComboBox = Ext.create('Ext.form.ComboBox', {
+        indComboBox = Ext.create('Ext.form.ComboBox', {
              width: 400,
              fieldLabel: 'Indikator',
              labelWidth: 65,
@@ -135,7 +132,7 @@ Ext.application({
              queryMode: 'local',
              displayField: 'indicatorName',
              triggerAction: 'all',
-             multiSelect: true,
+             multiSelect: false, // future: true
              listeners: {
                 select: function(combobox, records, options) {
                     var keystring = ""
@@ -152,7 +149,7 @@ Ext.application({
         });
         
         // ComboBox to choose the year for the classification
-        var yearComboBox = Ext.create('Ext.form.ComboBox', {
+        yearComboBox = Ext.create('Ext.form.ComboBox', {
              width: 120,
              fieldLabel: 'Jahr',
              labelWidth: 35,
@@ -163,7 +160,7 @@ Ext.application({
         });
         
         // ComboBox to choose the type of classification
-        var clTypeComboBox = Ext.create('Ext.form.ComboBox', {
+        clTypeComboBox = Ext.create('Ext.form.ComboBox', {
              width: 260,
              fieldLabel: 'Klassifizierung',
              labelWidth: 75,
@@ -174,7 +171,7 @@ Ext.application({
         clTypeComboBox.setValue("Quantile");
         
         // ComboBox to choose the number of classes for the classification
-        var clComboBox = Ext.create('Ext.form.ComboBox', {
+        clComboBox = Ext.create('Ext.form.ComboBox', {
              width: 100,
              fieldLabel: 'Klassen',
              labelWidth: 45,
@@ -182,7 +179,7 @@ Ext.application({
              queryMode: 'local',
              triggerAction: 'all'
         });
-        clComboBox.setValue(5);
+        clComboBox.setValue(6);
         // END toolbar items
         
         // START panels
@@ -197,7 +194,6 @@ Ext.application({
         zoom: 3,
         activeTab: 0,      // First tab active by default
         items: {
-            title: 'Thematische Karte',
             tbar: [
                 picButton,
                 { xtype: 'tbspacer', width: 20 },
