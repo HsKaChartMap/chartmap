@@ -36,7 +36,7 @@ function getThematicStyle(layername, indicator, year, classificationType, numCla
     // extract necessary data items
     for (var i=0;i < vectorLayer.features.length;i++) {
         if (vectorLayer.features[i]['data'][indicator]) {
-            items.push(vectorLayer.features[i]['data'][indicator][year]);
+            items.push(parseFloat(vectorLayer.features[i]['data'][indicator][year]));
         }
     }
     
