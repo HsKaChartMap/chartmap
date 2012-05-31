@@ -83,7 +83,7 @@ Ext.application({
             // create StyleMap-Object for the thematic layer
             thematicStyleMap = new OpenLayers.StyleMap(
                 {
-                'default': getThematicStyle("Staaten thematisch", 'HDI', 2010, 'quantiles', 6, thematicColors)
+                'default': getThematicStyle("Staaten thematisch", 'HDI', 2010, 'jenks', 6, thematicColors)
                 }
             );
             staaten.addOptions({
@@ -162,16 +162,27 @@ Ext.application({
              triggerAction: 'all'
         });
         
+        // ComboBox to choose the type of classification
+        var clTypeComboBox = Ext.create('Ext.form.ComboBox', {
+             width: 260,
+             fieldLabel: 'Klassifizierung',
+             labelWidth: 75,
+             store: ['Quantile', 'Gleiche Intervalle', 'Natürliche Unterbrechungen'],
+             queryMode: 'local',
+             triggerAction: 'all'
+        });
+        clTypeComboBox.setValue("Quantile");
+        
         // ComboBox to choose the number of classes for the classification
         var clComboBox = Ext.create('Ext.form.ComboBox', {
              width: 100,
              fieldLabel: 'Klassen',
              labelWidth: 45,
-             //store: indicatorStore,
+             store: [2, 3, 4, 5, 6],
              queryMode: 'local',
-             //displayField: 'indicatorName',
              triggerAction: 'all'
         });
+        clComboBox.setValue(5);
         // END toolbar items
         
         // START panels
@@ -193,6 +204,8 @@ Ext.application({
                 indComboBox,
                 { xtype: 'tbspacer', width: 20 },
                 yearComboBox,
+                { xtype: 'tbspacer', width: 20 },
+                clTypeComboBox,
                 { xtype: 'tbspacer', width: 20 },
                 clComboBox
             ]
