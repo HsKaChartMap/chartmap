@@ -1,6 +1,7 @@
 [
     {
         "key" : "tyadrylIpQ1K_iHP407374Q",
+        "displayName": "Human Development Index",
         "indicatorName" : "HDI",
         "category" : "",
         "subcategory" : "",
@@ -9,7 +10,8 @@
     },
     {
         "key" : "pyj6tScZqmEe1GaiYJX2qGA",
-        "indicatorName" : "People living with HIV (number, all ages)",
+        "displayName": "HIV infizierte total",
+        "indicatorName" : "People living with HIV",
         "category" : "Health",
         "subcategory" : "HIV",
         "dataprovider" : "Based on UNAIDS",
@@ -17,7 +19,8 @@
     },
     {
         "key" : "phAwcNAVuyj2tPLxKvvnNPA",
-        "indicatorName" : "Life expectancy (years)",
+        "displayName": "Lebenserwartung",
+        "indicatorName" : "Life expectancy at birth",
         "category" : "",
         "subcategory" : "",
         "dataprovider" : "Various sources",
@@ -25,7 +28,8 @@
     },
     {
         "key" : "pyj6tScZqmEcKuNdFCUo6TQ",
-        "indicatorName" : "Cell phones (total)",
+        "displayName": "Mobiltelefone gesamt",
+        "indicatorName" : "Mobile cellular subscriptions, total number",
         "category" : "Infrastructure",
         "subcategory" : "Communication",
         "dataprovider" : "World Bank",
@@ -33,7 +37,8 @@
     },
     {
         "key" : "0ArfEDsV3bBwCdHF3eXhHdmQ2cGZRRnJfUGdtdTJnWFE",
-        "indicatorName" : "Internet users (total)",
+        "displayName": "Internetnutzer gesamt",
+        "indicatorName" : "Internet users, total number",
         "category" : "Infrastructure",
         "subcategory" : "Communication",
         "dataprovider" : "World Bank",
