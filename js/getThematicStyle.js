@@ -9,17 +9,29 @@ function getThematicStyle(layername) {
     var styleMapObject;
     var thematicStyle;
     
+    // defines default values of the thematic style
+    thematicStyle = new OpenLayers.Style({
+        strokeColor:'#ffffff',
+        strokeOpacity:0.5,
+        fillColor: 'white',
+        fillOpacity: 0.5
+    });
+    
     /* under development
     */
-    
     var colors = new Array('#FFC6A5', '#FF9473', '#FF6342', '#FF3118', '#FF0000', '#AD0000');
-    /* under development
-    */
-    var indicator = indComboBox.getValue();
+    //
     
-    var year = 2010 // yearComboBox.getValue();
-    var classificationType = 'quantiles';
-    var numClasses = parseFloat(clComboBox.getValue());
+    if (typeof indComboBox == 'undefined' || typeof yearComboBox == 'undefined' || typeof clTypeComboBox == 'undefined' || typeof clComboBox == 'undefined') 
+    {
+        return thematicStyle;
+    }
+    else {
+        var indicator = indComboBox.getValue();
+        var year = yearComboBox.getValue();
+        var classificationType = clTypeComboBox.getValue();
+        var numClasses = parseFloat(clComboBox.getValue());
+    }
     
     //check whether numClasses and colors fit together
     if (numClasses != colors.length) {
@@ -37,13 +49,7 @@ function getThematicStyle(layername) {
         return;
     }
     
-    // defines default values of the thematic style
-    thematicStyle = new OpenLayers.Style({
-        strokeColor:'#ffffff',
-        strokeOpacity:0.5,
-        fillColor: 'white',
-        fillOpacity: 0.5
-    });
+
     
     // extract necessary data items
     for (var i=0;i < vectorLayer.features.length;i++) {

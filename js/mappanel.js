@@ -104,7 +104,7 @@ Ext.application({
         // Indicator ComboBox
         Ext.define('indicatorModel', {
             extend: 'Ext.data.Model',
-            fields: ['key', 'indicatorName', 'category', 'subcategory', 'dataprovider', 'dataprovider_link']
+            fields: ['key', 'displayName', 'indicatorName', 'category', 'subcategory', 'dataprovider', 'dataprovider_link']
         });
 
         var indicatorStore = Ext.create('Ext.data.Store', {
@@ -130,7 +130,8 @@ Ext.application({
              labelWidth: 65,
              store: indicatorStore,
              queryMode: 'local',
-             displayField: 'indicatorName',
+             displayField: 'displayName',
+             valueField: 'indicatorName',
              triggerAction: 'all',
              multiSelect: false, // future: true
              listeners: {
@@ -153,33 +154,52 @@ Ext.application({
              width: 120,
              fieldLabel: 'Jahr',
              labelWidth: 35,
-             //store: indicatorStore,
+             store: ['2005', '2006', '2007', '2008', '2009', '2010'],
              queryMode: 'local',
-             //displayField: 'indicatorName',
-             triggerAction: 'all'
+             value: '2010',
+             triggerAction: 'all',
+             listeners: {
+                select: function() {
+                    applyThematicStyle()
+                }
+             }
         });
         
         // ComboBox to choose the type of classification
+        var clTypeStore = new Ext.data.SimpleStore({
+        	fields:['name', 'value'],
+        	data: [ ['Quantile', 'quantiles'],
+        			['Gleiche Intervalle', 'eqinterval'],
+                    ['Natürliche Unterbrechungen','jenks']
+                  ]
+        });
         clTypeComboBox = Ext.create('Ext.form.ComboBox', {
              width: 260,
              fieldLabel: 'Klassifizierung',
              labelWidth: 75,
-             store: ['Quantile', 'Gleiche Intervalle', 'Natürliche Unterbrechungen'],
+             store: clTypeStore,
+             displayField: 'name',
+             valueField: 'value',
+             value: 'quantiles',
              queryMode: 'local',
-             triggerAction: 'all'
+             triggerAction: 'all',
+             listeners: {
+                select: function() {
+                    applyThematicStyle()
+                }
+             }
         });
-        clTypeComboBox.setValue("Quantile");
         
         // ComboBox to choose the number of classes for the classification
         clComboBox = Ext.create('Ext.form.ComboBox', {
              width: 100,
              fieldLabel: 'Klassen',
              labelWidth: 45,
-             store: [2, 3, 4, 5, 6],
+             store: [6],
              queryMode: 'local',
+             value: '6',
              triggerAction: 'all'
         });
-        clComboBox.setValue(6);
         // END toolbar items
         
         // START panels
