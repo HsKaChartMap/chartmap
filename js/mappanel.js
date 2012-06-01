@@ -93,14 +93,23 @@ Ext.application({
         
         // START GUI
         // START toolbar items
-        var picButton = new Ext.Button({
+        var chartButton = new Ext.Button({
                 xtype: 'button',
                    text: '',
                 iconCls: 'spider',
                 scale: 'large',
-                tooltip: "Show Radar-Chart",
+                tooltip: "Zeige Radar-Diagramm",
         });
         
+		var mapButton = new Ext.Button({
+                xtype: 'button',
+                   text: '',
+                iconCls: 'mapbutton',
+                scale: 'large',
+                tooltip: "Zeige thematische Karte",
+        });
+		
+		
         // Indicator ComboBox
         Ext.define('indicatorModel', {
             extend: 'Ext.data.Model',
@@ -215,15 +224,17 @@ Ext.application({
         activeTab: 0,      // First tab active by default
         items: {
             tbar: [
-                picButton,
-                { xtype: 'tbspacer', width: 20 },
+                chartButton,
+                { xtype: 'tbspacer', width: 10 },
                 indComboBox,
                 { xtype: 'tbspacer', width: 20 },
                 yearComboBox,
                 { xtype: 'tbspacer', width: 20 },
                 clTypeComboBox,
                 { xtype: 'tbspacer', width: 20 },
-                clComboBox
+                clComboBox,
+				{ xtype: 'tbspacer', width: 20 },
+				mapButton
             ]
             }
         });
