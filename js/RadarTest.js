@@ -2,7 +2,7 @@ Ext.require('Ext.chart.*');
 Ext.require(['Ext.Window', 'Ext.fx.target.Sprite', 'Ext.layout.container.Fit', 'Ext.window.MessageBox']);
 
 Ext.onReady(function () {
-    store1.loadData(generateData());
+    storedata.loadData(generateData());
 
     var chart = Ext.create('Ext.chart.Chart', {
             id: 'chartCmp',
@@ -11,7 +11,7 @@ Ext.onReady(function () {
             theme: 'Category2',
             insetPadding: 20,
             animate: true,
-            store: store1,
+            store: storedata,
             legend: {
                 position: 'right'
             },
@@ -25,7 +25,7 @@ Ext.onReady(function () {
             series: [{
                 showInLegend: true,
                 type: 'radar',
-                xField: 'name',
+                xField: 'land',
                 yField: 'data1',
                 style: {
                     opacity: 0.4
@@ -33,7 +33,7 @@ Ext.onReady(function () {
             },{
                 showInLegend: true,
                 type: 'radar',
-                xField: 'name',
+                xField: 'land',
                 yField: 'data2',
                 style: {
                     opacity: 0.4
@@ -41,7 +41,7 @@ Ext.onReady(function () {
             },{
                 showInLegend: true,
                 type: 'radar',
-                xField: 'name',
+                xField: 'land',
                 yField: 'data3',
                 style: {
                     opacity: 0.4
@@ -75,7 +75,7 @@ Ext.onReady(function () {
         }, */{
             text: 'Reload Data',
             handler: function() {
-                store1.loadData(generateData());
+                storedata.loadData(generateData());
             }
         }, {
             enableToggle: true,
