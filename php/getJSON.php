@@ -4,13 +4,15 @@ $debug = false;
 
 header('Content-type: application/json');
 
-$keystring = $_GET['keys'];
-$keys = explode(",", $keystring);
+if (isset($_GET['keys'])) {
+    $keystring = $_GET['keys'];
 
-// Set your CSV feeds to access gapminder data on GoogleDocs
-$feeds = array();
-for ($i=0;$i<=count($keys)-1;$i++) {
-    $feeds[] = 'https://docs.google.com/spreadsheet/pub?key='.$keys[$i].'&single=true&gid=0&output=csv';
+    $keys = explode(",", $keystring);
+    // Set your CSV feeds to access gapminder data on GoogleDocs
+    $feeds = array();
+    for ($i=0;$i<=count($keys)-1;$i++) {
+        $feeds[] = 'https://docs.google.com/spreadsheet/pub?key='.$keys[$i].'&single=true&gid=0&output=csv';
+    }
 }
 
 // Arrays we'll use later
@@ -51,36 +53,38 @@ function csvToArray($file, $delimiter) {
   } 
   return $arr; 
 } 
-// loop the feeds
-for($f=0;$f<=count($feeds)-1;$f++) {
-    // Do it
-    $data = csvToArray($feeds[$f], ',');
 
-    // Set number of elements (minus 1 because we shift off the first row)
-    $count = count($data) - 1;
-     
-    // use first row for names  
-    $labels = array_shift($data); 
-    // extract the indicator
-    $indicator = array_shift($labels);
-    
-    unset($timeKeys);
-    foreach ($labels as $label) {
-      $timeKeys[] = $label;
-    }
-    // shift country names
-    for ($i = 0; $i < $count; $i++) {
-      $countries[] = array_shift($data[$i]);
-    }
+if (isset($_GET['keys'])) {
+    // loop the feeds
+    for($f=0;$f<=count($feeds)-1;$f++) {
+        // Do it
+        $data = csvToArray($feeds[$f], ',');
 
-    // bring it all together
-    for ($j = 0; $j < $count; $j++) {
-      $d = array_combine($timeKeys, $data[$j]);
-      $gapminderArray[$f][] = array('country' => $countries[$j], $indicator => $d, 'id' => $j);
+        // Set number of elements (minus 1 because we shift off the first row)
+        $count = count($data) - 1;
+         
+        // use first row for names  
+        $labels = array_shift($data); 
+        // extract the indicator
+        $indicator = array_shift($labels);
+        
+        unset($timeKeys);
+        foreach ($labels as $label) {
+          $timeKeys[] = $label;
+        }
+        // shift country names
+        for ($i = 0; $i < $count; $i++) {
+          $countries[] = array_shift($data[$i]);
+        }
+
+        // bring it all together
+        for ($j = 0; $j < $count; $j++) {
+          $d = array_combine($timeKeys, $data[$j]);
+          $gapminderArray[$f][] = array('country' => $countries[$j], $indicator => $d, 'id' => $j);
+        }
+        // gapminderArray is now ready to join with country geometries
     }
-    // gapminderArray is now ready to join with country geometries
 }
-
 // Load country geometries from staaten.json
 // path to country geometries
 $path = "../data/staaten.json";
@@ -91,28 +95,33 @@ $geom_json_object = json_decode($geom_json_string);
 // create an array out of the JSON object
 $geom_json_array = objectToArray($geom_json_object);
 
-// nested loop join with unset of values in the gapminder array
-// loop over the country geometries in the $geom_json_array
-foreach($geom_json_array['features'] as $cKey => $cVal) {
-    // loop over the indicators contained in the $gapminderArray
-    for($i=0;$i<=count($gapminderArray)-1;$i++) {
-        // loop over the elements in a specific indicator array
-        foreach($gapminderArray[$i] as $dKey => $dVal) {
-            if ($cVal['properties']['SOVEREIGNT'] == $dVal['country']) {
-                foreach($dVal as $key => $value) {
-                    $geom_json_array['features'][$cKey]['properties'][$key] = $value;
+if (isset($_GET['keys'])) {
+    // nested loop join with unset of values in the gapminder array
+    // loop over the country geometries in the $geom_json_array
+    foreach($geom_json_array['features'] as $cKey => $cVal) {
+        // loop over the indicators contained in the $gapminderArray
+        for($i=0;$i<=count($gapminderArray)-1;$i++) {
+            // loop over the elements in a specific indicator array
+            foreach($gapminderArray[$i] as $dKey => $dVal) {
+                if ($cVal['properties']['SOVEREIGNT'] == $dVal['country']) {
+                    foreach($dVal as $key => $value) {
+                        $geom_json_array['features'][$cKey]['properties'][$key] = $value;
+                    }
+                    unset($gapminderArray[$i][$dKey]);
                 }
-                unset($gapminderArray[$i][$dKey]);
             }
         }
     }
-}
 
-if ($debug == true) {
-    print_r($geom_json_array);
+    if ($debug == true) {
+        print_r($geom_json_array);
+    }
+    else {
+        // encode into JSON
+        echo json_encode($geom_json_array);
+    }
 }
 else {
-    // encode into JSON
-    echo json_encode($geom_json_array);
+    echo $geom_json_string;
 }
 ?>

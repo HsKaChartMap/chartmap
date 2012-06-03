@@ -1,0 +1,47 @@
+[
+    {
+        "key" : "tyadrylIpQ1K_iHP407374Q",
+        "displayName": "Human Development Index",
+        "indicatorName" : "HDI",
+        "category" : "",
+        "subcategory" : "",
+        "dataprovider" : "Various sources",
+        "dataprovider_link" : "http://spreadsheets.google.com/pub?key=tyadrylIpQ1K_iHP407374Q=1"
+    },
+    {
+        "key" : "pyj6tScZqmEe1GaiYJX2qGA",
+        "displayName": "HIV infizierte total",
+        "indicatorName" : "People living with HIV",
+        "category" : "Health",
+        "subcategory" : "HIV",
+        "dataprovider" : "Based on UNAIDS",
+        "dataprovider_link" : "http://spreadsheets.google.com/pub?key=pyj6tScZqmEe1GaiYJX2qGA&gid=1"
+    },
+    {
+        "key" : "phAwcNAVuyj2tPLxKvvnNPA",
+        "displayName": "Lebenserwartung",
+        "indicatorName" : "Life expectancy at birth",
+        "category" : "",
+        "subcategory" : "",
+        "dataprovider" : "Various sources",
+        "dataprovider_link" : "http://spreadsheets.google.com/pub?key=phAwcNAVuyj2tPLxKvvnNPA&gid=1"
+    },
+    {
+        "key" : "pyj6tScZqmEcKuNdFCUo6TQ",
+        "displayName": "Mobiltelefone gesamt",
+        "indicatorName" : "Mobile cellular subscriptions, total number",
+        "category" : "Infrastructure",
+        "subcategory" : "Communication",
+        "dataprovider" : "World Bank",
+        "dataprovider_link" : "http://data.worldbank.org/indicator/IT.CEL.SETS"
+    },
+    {
+        "key" : "0ArfEDsV3bBwCdHF3eXhHdmQ2cGZRRnJfUGdtdTJnWFE",
+        "displayName": "Internetnutzer gesamt",
+        "indicatorName" : "Internet users, total number",
+        "category" : "Infrastructure",
+        "subcategory" : "Communication",
+        "dataprovider" : "World Bank",
+        "dataprovider_link" : "http://data.worldbank.org/indicator/IT.NET.USER"
+    }
+]
