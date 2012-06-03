@@ -94,7 +94,7 @@ Ext.onReady(function () {
             text: 'Test Button',
             enableToggle: false,
             handler: function(){
-                alert(staaten);
+                alert("How to get data in here?");
             }
         }    
         ],
