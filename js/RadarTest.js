@@ -27,6 +27,11 @@ Ext.onReady(function () {
                 type: 'radar',
                 xField: 'land',
                 yField: 'data1',
+               /* showMarkers: true,
+                markerConfig: {
+                    radius: 5,
+                    size: 5
+                },*/
                 style: {
                     opacity: 0.4
                 }
@@ -85,7 +90,14 @@ Ext.onReady(function () {
                 var chart = Ext.getCmp('chartCmp');
                 chart.animate = pressed ? { easing: 'ease', duration: 500 } : false;
             }
-        }],
+        }, {
+            text: 'Test Button',
+            enableToggle: false,
+            handler: function(){
+                alert(staaten);
+            }
+        }    
+        ],
         items: chart
-    }); 
+    });
 });

@@ -8,14 +8,8 @@ Ext.onReady(function() {
             i;
             
         floor = (!floor && floor !== 0)? 20 : floor;
-        
-        var country = new Array();
-        country[0] = "Deutschland";
-        country[1] = "Testland";
-        country[2] = "Portugal";
-        country[3] = "Pornonien";
-        country[4] = "Vietnam";
 
+        var country = ["Deutschland","Testland","Portugal","Pornonien","Vietnam"];
 
         for (i = 0; i < (n || 5); i++) {
             data.push({
