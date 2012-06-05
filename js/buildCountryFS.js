@@ -3,37 +3,63 @@ function buildCountryFS(layer){
     var fields = new Array();
     var field_x;
     var model;
-    var features = layers.features;
+    var features;
     
-    // Testen ob mit length die Anzahl der Elemente ausgegeben wird 
-    // Ergebnis sollte sein: id + Anzahl Indikatoren + geometry
-    //alert (features[0]['data'].length);
-    
-    // Schleife durch die Elemente des ersten Landes
-    // Achtung: Es könnte sein, dass das erste Land nicht alle Indikatoren enthält
-    // Lösung für die Erfassung aller Elemente suchen
-    for (i = 0; i < features[0]['data'].length; i++) {
+    if (layer.features.length > 0) {
+        features = layer.features;
         
-        // Prüfen, ob Datentyp=Array --> Indikator
-        // Wenn ja: Schleife durch Jahre
-        /*
-        if (typeof features[i] != 'Array') {
-        else { // Element is kein Indikator
-        field_x = {
-            name: features[i]['data'],
-            type: typeof records[i]['data'],
-            mapping: features[
-        };
-        */
+        // Schleife durch die Elemente des ersten Landes
+        // Achtung: Es könnte sein, dass das erste Land nicht alle Indikatoren enthält
+        // Lösung für die Erfassung aller Elemente suchen
         
-        // Feld in Feld-Array pushen
-        //fields.push(field_x);
+        //for (var i = 0; i < features.length; i++) {
+            for (var property in  features[0].data) {
+                
+                if (isEmpty(features[0].data[property])) {
+                    field_x = {
+                        name: property,
+                        type: typeof features[0].data[property]
+                    };
+                    fields.push(field_x);
+                }
+                else {
+                
+                    for (var yearKey in features[0].data[property]) {                    
+                        field_x = {
+                            name: property + "_" + yearKey,
+                            type: typeof features[0].data[property][yearKey],
+                            convert: valueToField
+                        };
+                        fields.push(field_x);
+                    }
+                }
+                
+            }
+        //}
         
-    }
-    
-    var model = Ext.define('countryFSModel', fields);
+        var model = Ext.define('countryFSModel', {
+            extend: 'Ext.data.Model',
+            fields: fields
+        });
 
-    var featureStore
+    }
+    var featureStore = Ext.create('GeoExt.data.FeatureStore', {
+        model: 'countryFSModel',
+        layer: layer
+    });
     
     return featureStore;
+}
+
+function isEmpty(map) {
+    for(var key in map) {
+        if (map.hasOwnProperty(key) && key != "0") {
+            return false;
+        }
+        return true;
+    }
+}
+
+function valueToField(v, record){
+    return "val2Field return"
 }
