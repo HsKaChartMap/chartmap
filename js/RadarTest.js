@@ -8,7 +8,7 @@ Ext.onReady(function () {
             id: 'chartCmp',
             xtype: 'chart',
             style: 'background:#fff',
-            theme: 'Category2',
+            theme: 'Category3',
             insetPadding: 20,
             animate: true,
             store: storedata,
@@ -19,35 +19,23 @@ Ext.onReady(function () {
                 type: 'Radial',
                 position: 'radial',
                 label: {
-                    display: true
+                    display: false
                 }
             }],
             series: [{
                 showInLegend: true,
                 type: 'radar',
                 xField: 'land',
-                yField: 'data1',
-               /* showMarkers: true,
-                markerConfig: {
-                    radius: 5,
-                    size: 5
-                },*/
+                yField: 'data2010',
                 style: {
                     opacity: 0.4
                 }
-            },{
+            },
+            {
                 showInLegend: true,
                 type: 'radar',
                 xField: 'land',
-                yField: 'data2',
-                style: {
-                    opacity: 0.4
-                }
-            },{
-                showInLegend: true,
-                type: 'radar',
-                xField: 'land',
-                yField: 'data3',
+                yField: 'data2005',
                 style: {
                     opacity: 0.4
                 }
@@ -66,18 +54,7 @@ Ext.onReady(function () {
         title: 'Spider Test Chart Window',
         renderTo: Ext.getBody(),
         layout: 'fit',
-        tbar: [/*{
-            text: 'Save Chart',
-            handler: function() {
-                Ext.MessageBox.confirm('Confirm Download', 'Would you like to download the chart as an image?', function(choice){
-                    if(choice == 'yes'){
-                        chart.save({
-                            type: 'image/png'
-                        });
-                    }
-                });
-            }
-        }, */{
+        tbar: [{
             text: 'Reload Data',
             handler: function() {
                 storedata.loadData(generateData());
@@ -94,7 +71,7 @@ Ext.onReady(function () {
             text: 'Test Button',
             enableToggle: false,
             handler: function(){
-                alert("How to get data in here?");
+                alert("just an alert");
             }
         }    
         ],
