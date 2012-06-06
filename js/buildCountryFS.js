@@ -15,23 +15,30 @@ function buildCountryFS(layer){
         //for (var i = 0; i < features.length; i++) {
             for (var property in  features[0].data) {
                 
+                // case 1: element has no properties / is NOT a gapminder indicator which has values for several years
                 if (isEmpty(features[0].data[property])) {
                     field_x = {
                         name: property,
                         type: typeof features[0].data[property]
                     };
+                    // add field
                     fields.push(field_x);
                 }
+                // case 2: element has properties / IS a gapminder indicator which has values for severals years
                 else {
-                
-                    for (var yearKey in features[0].data[property]) {                    
+                    // loop through values for each year
+                    for (var yearKey in features[0].data[property]) (function (property, yearKey) {              
                         field_x = {
                             name: property + "_" + yearKey,
                             type: typeof features[0].data[property][yearKey],
-                            convert: valueToField
-                        };
+                            // assign convert function which returns the appropriate value
+                            convert: function(v, record) {
+                                return valueToField(v, record, features[0].data[property][yearKey])
+                            }
+                        }
+                        // add field
                         fields.push(field_x);
-                    }
+                    })(property, yearKey);
                 }
                 
             }
@@ -51,6 +58,7 @@ function buildCountryFS(layer){
     return featureStore;
 }
 
+// function which checks whether a element of an object has properties or not
 function isEmpty(map) {
     for(var key in map) {
         if (map.hasOwnProperty(key) && key != "0") {
@@ -60,6 +68,7 @@ function isEmpty(map) {
     }
 }
 
-function valueToField(v, record){
-    return "val2Field return"
+// convert function for a single gapminder value field
+function valueToField(v, record, value){
+    return value
 }
