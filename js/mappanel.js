@@ -54,6 +54,9 @@ Ext.application({
         });
         map.addLayers([topo,staatenAll,staaten]);
         
+        // FeatureStore
+        //countryFS = buildCountryFS(staaten);
+        
         
         // START styling
         // create Style Object for the background layer
@@ -88,6 +91,10 @@ Ext.application({
             });
             // redraw
             staaten.redraw();
+            
+            // Rebuild countryFeatureStore
+            countryFS = buildCountryFS(staaten);
+            console.log("Neuer FeatureStore wurde erstellt");
         }
         // END styling
         
