@@ -100,6 +100,7 @@ Ext.application({
         
         // START GUI
         // START toolbar items
+        var toolbarItems = new Array();
         var chartButton = new Ext.Button({
                 xtype: 'button',
                    text: '',
@@ -107,15 +108,8 @@ Ext.application({
                 scale: 'large',
                 tooltip: "Zeige Radar-Diagramm",
         });
-        
-		var mapButton = new Ext.Button({
-                xtype: 'button',
-                   text: '',
-                iconCls: 'mapbutton',
-                scale: 'large',
-                tooltip: "Zeige thematische Karte",
-        });
-		
+        toolbarItems.push(chartButton);
+        toolbarItems.push({ xtype: 'tbspacer', width: 10 });
 		
         // Indicator ComboBox
         Ext.define('indicatorModel', {
@@ -164,6 +158,8 @@ Ext.application({
                 }
              }
         });
+        toolbarItems.push(indComboBox);
+        toolbarItems.push({ xtype: 'tbspacer', width: 10 });
         
         // ComboBox to choose the year for the classification
         yearComboBox = Ext.create('Ext.form.ComboBox', {
@@ -180,6 +176,8 @@ Ext.application({
                 }
              }
         });
+        toolbarItems.push(yearComboBox);
+        toolbarItems.push({ xtype: 'tbspacer', width: 10 });
         
         // ComboBox to choose the type of classification
         var clTypeStore = new Ext.data.SimpleStore({
@@ -205,6 +203,8 @@ Ext.application({
                 }
              }
         });
+        toolbarItems.push(clTypeComboBox);
+        toolbarItems.push({ xtype: 'tbspacer', width: 10 });
         
         // ComboBox to choose the number of classes for the classification
         clComboBox = Ext.create('Ext.form.ComboBox', {
@@ -216,6 +216,18 @@ Ext.application({
              value: '6',
              triggerAction: 'all'
         });
+        toolbarItems.push(clComboBox);
+        toolbarItems.push({ xtype: 'tbspacer', width: 10 });
+        
+        var mapButton = new Ext.Button({
+                xtype: 'button',
+                   text: '',
+                iconCls: 'mapbutton',
+                scale: 'large',
+                tooltip: "Zeige thematische Karte",
+        });
+        toolbarItems.push(mapButton);
+        
         // END toolbar items
         
         // START panels
@@ -230,19 +242,7 @@ Ext.application({
         zoom: 3,
         activeTab: 0,      // First tab active by default
         items: {
-            tbar: [
-                chartButton,
-                { xtype: 'tbspacer', width: 10 },
-                indComboBox,
-                { xtype: 'tbspacer', width: 20 },
-                yearComboBox,
-                { xtype: 'tbspacer', width: 20 },
-                clTypeComboBox,
-                { xtype: 'tbspacer', width: 20 },
-                clComboBox,
-				{ xtype: 'tbspacer', width: 20 },
-				mapButton
-            ]
+            tbar: toolbarItems
             }
         });
         
