@@ -4,7 +4,8 @@ Ext.require([
     'Ext.state.Manager',
     'Ext.state.CookieProvider',
     'Ext.data.ResultSet',
-    'GeoExt.panel.Map'
+    'GeoExt.panel.Map',
+	'GeoExt.Action'
 ]);
        
 
@@ -100,10 +101,13 @@ Ext.application({
         
         // START GUI
         // START toolbar items
-        var toolbarItems = new Array();
+        //var toolbarItems = new Array();
+		
+		var ctrl, toolbarItems = [], action, actions = {};
+		
         var chartButton = new Ext.Button({
                 xtype: 'button',
-                   text: '',
+                text: '',
                 iconCls: 'spider',
                 scale: 'large',
                 tooltip: "Zeige Radar-Diagramm",
@@ -227,6 +231,21 @@ Ext.application({
                 tooltip: "Zeige thematische Karte",
         });
         toolbarItems.push(mapButton);
+		
+		
+		
+		 
+        
+        // ZoomToMaxExtent control, a "button" control
+        action = Ext.create('GeoExt.Action', {
+            control: new OpenLayers.Control.ZoomToMaxExtent(),
+            map: map,
+            text: "max extent",
+            tooltip: "zoom to max extent"
+        });
+        actions["max_extent"] = action;
+        toolbarItems.push(Ext.create('Ext.button.Button', action));
+        toolbarItems.push("-");
         
         // END toolbar items
         
@@ -239,12 +258,16 @@ Ext.application({
         layers: [topo,staatenAll,staaten],
         map: map,
         center: '0,0',
+		extent: '5.19,46.85,15.47,55.63',
         zoom: 3,
         activeTab: 0,      // First tab active by default
-        items: {
-            tbar: toolbarItems
-            }
+        dockedItems: [{
+                xtype: 'toolbar',
+                //dock: 'top',
+                items: toolbarItems
+            }]
         });
+		
         
         // LegendPanel
         var legendPanel = Ext.create('GeoExt.panel.Legend', {
@@ -280,3 +303,6 @@ Ext.application({
     }
 });
 
+
+        
+        
