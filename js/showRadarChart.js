@@ -4,26 +4,7 @@ Ext.require([
 
 function showRadarChart(){
 
-    filtercountry = new OpenLayers.Filter.Function({
-        evaluate: function(attributes) {
-            if (attributes['country']) {
-                alert("hallo wo bin ich?");
-                if (attributes['country']=='Germany'||attributes['country']=='France'||attributes['country']=='Portugal') {
-                    return true;
-                }
-                else{
-                    return false;
-                }
-            }
-            else {
-                return false;
-            }
-        }
-    });
-
-
-
-
+/*
     matchingLayers = map.getLayersByName("Staaten thematisch");
     if (matchingLayers.length == 1) {
         vectorLayer = matchingLayers[0];
@@ -32,7 +13,8 @@ function showRadarChart(){
         console.log("getThematicStyleMap: Warning, the layer was not found!");
         return;
     }
-
+*/
+    /*
     var featurestore = Ext.create('GeoExt.data.FeatureStore',{
         layer: vectorLayer,
         fields: [
@@ -42,6 +24,7 @@ function showRadarChart(){
         featureFilter: filtercountry,
         autoLoad:true
     });
+    */
 
     var chart = Ext.create('Ext.chart.Chart', {
         id: 'chartCmp',
@@ -50,7 +33,7 @@ function showRadarChart(){
         theme: 'Category3',
         insetPadding: 20,
         animate: true,
-        store: featurestore,
+        store: countryFS,
         legend: {
             position: 'right'
         },
@@ -64,9 +47,14 @@ function showRadarChart(){
         series: [{
             showInLegend: true,
             type: 'radar',
+            yField: 'HDI_2010',
             xField: 'country',
-            yField: 'HDI',
-            showMarkers: true,
+            //yField: featureStore[0].properties[0].items[0],
+            //xField: featureStore.data.items(1), var countryName = all_data.features[i].properties.country;
+        //var hdis = all_data.features[i].properties.HDI;
+        //var dataPoint = {land: countryName};
+
+            showMarkers: false,
             markerConfig: {
                 radius: 5,
                 size: 5
@@ -74,27 +62,29 @@ function showRadarChart(){
             style: {
                 opacity: 0.4
             }
-        },{
-            showInLegend: true,
-            type: 'radar',
-            xField: 'country',
-            yField: 'Internetnutzer',
-            showMarkers: true,
-            markerConfig: {
-                radius: 5,
-                size: 5
-            },
-            style: {
-                opacity: 0.4
-            }
-        }]
+        }
+        // ,{
+        //     showInLegend: true,
+        //     type: 'radar',
+        //     yField: 'HDI_2010',
+        //     xField: 'country',
+        //     showMarkers: true,
+        //     markerConfig: {
+        //         radius: 5,
+        //         size: 5
+        //     },
+        //     style: {
+        //         opacity: 0.4
+        //     }
+        // }
+        ]
     });
 
     var win = Ext.create('Ext.window.Window', {
         width: 200,
         height: 100,
-        minHeight: 200,
-        minWidth: 400,
+        minHeight: 400,
+        minWidth: 500,
         hidden: false,
         shadow: true,
         maximizable: true,
@@ -106,12 +96,11 @@ function showRadarChart(){
             text: 'Test Button',
             enableToggle: false,
             handler: function(){
-                alert("How to get data in here?"+ vectorLayer);
+                alert("How to get data in here?");
             }
         }    
         ],
         items: chart
     });
 
-    alert("Testland?"+ vectorLayer);
 }

@@ -107,7 +107,11 @@ Ext.application({
                 iconCls: 'spider',
                 scale: 'large',
                 tooltip: "Zeige Radar-Diagramm",
-        });
+                handler: function() {
+                    alert('You clicked the button!');
+                    showRadarChart();
+                 }
+             });
         toolbarItems.push(chartButton);
         toolbarItems.push({ xtype: 'tbspacer', width: 10 });
 		

@@ -37,7 +37,7 @@ function buildCountryFS(layer){
                                     return valueToField(v, record, features[0].data[property][yearKey])
                                 }
                                 else {
-                                    return 'FS Error'
+                                    return 'FS Error';
                                 }
                             }
                         }
@@ -57,12 +57,18 @@ function buildCountryFS(layer){
     }
     var featureStore = Ext.create('GeoExt.data.FeatureStore', {
         model: 'countryFSModel',
-        layer: layer
+        layer: layer,
+        featureFilter: new OpenLayers.Filter.Comparison({
+            type: OpenLayers.Filter.Comparison.LESS_THAN,
+            property: "country",
+            value: "Belgium",
+        }),
     });
     
     return featureStore;
 }
 
+    
 // function which checks whether a element of an object has properties or not
 function isEmpty(map) {
     for(var key in map) {
@@ -75,5 +81,5 @@ function isEmpty(map) {
 
 // convert function for a single gapminder value field
 function valueToField(v, record, value){
-    return value
+    return parseFloat(value)*100;
 }
