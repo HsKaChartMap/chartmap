@@ -12,7 +12,7 @@ function buildCountryFS(layer){
         // Achtung: Es könnte sein, dass das erste Land nicht alle Indikatoren enthält
         // Lösung für die Erfassung aller Elemente suchen
         
-        //for (var i = 0; i < features.length; i++) {
+        //for (var i = 0; i < features.length; i++) {#
             for (var property in  features[0].data) {
                 
                 // case 1: element has no properties / is NOT a gapminder indicator which has values for several years
@@ -33,7 +33,12 @@ function buildCountryFS(layer){
                             type: typeof features[0].data[property][yearKey],
                             // assign convert function which returns the appropriate value
                             convert: function(v, record) {
-                                return valueToField(v, record, features[0].data[property][yearKey])
+                                if (features[0].data != null) {
+                                    return valueToField(v, record, features[0].data[property][yearKey])
+                                }
+                                else {
+                                    return 'FS Error'
+                                }
                             }
                         }
                         // add field

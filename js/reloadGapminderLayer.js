@@ -5,6 +5,9 @@ function reloadGapminderLayer(layername, keys) {
     var newURL;
     var newOptions;
     
+    // destroy countryFeatureStore
+    countryFS = null;
+    
     matchingLayers = map.getLayersByName(layername);
     if (matchingLayers.length == 1) {
         vectorLayer = matchingLayers[0];
@@ -32,5 +35,5 @@ function reloadGapminderLayer(layername, keys) {
     vectorLayer.refresh({ force: true, params: { 'keys': keys} });
     vectorLayer.protocol.url = newURL;
     vectorLayer.protocol.options.url = newURL;
-
+    
 }
