@@ -24,6 +24,7 @@ function getThematicStyle(layername) {
     
     if (typeof indComboBox == 'undefined' || typeof yearComboBox == 'undefined' || typeof clTypeComboBox == 'undefined' || typeof clComboBox == 'undefined') 
     {
+        console.log("getThematicStyle: ComboBoxen sind noch nicht verfügbar, return default Style");
         return thematicStyle;
     }
     else {
@@ -49,8 +50,6 @@ function getThematicStyle(layername) {
         return;
     }
     
-
-    
     // extract necessary data items
     for (var i=0;i < vectorLayer.features.length;i++) {
         if (vectorLayer.features[i]['data'][indicator]) {
@@ -62,6 +61,8 @@ function getThematicStyle(layername) {
     
     // check if any data is available
     if (items.length != 0) {
+        console.log("getThematicStyle: Style für " + items.length + " Items wird berechnet");
+        console.log("getThematicStyle: Parameter: " + indicator + "; " + year + "; " + classificationType + "; " + numClasses);
         // create geostats serie
         serie = new geostats(items);
         // get ranges according to the given classification type
@@ -100,6 +101,7 @@ function getThematicStyle(layername) {
         })(i);
         thematicStyle.addRules(rules);
     }
+    console.log("getThematicStyle: Style wurde erstellt");
     return thematicStyle;
 }
 

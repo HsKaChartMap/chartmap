@@ -42,7 +42,7 @@ Ext.application({
         
         // thematic Layer
         var staaten = new OpenLayers.Layer.Vector("Staaten thematisch", {
-            strategies: [new OpenLayers.Strategy.BBOX()],    
+            strategies: [new OpenLayers.Strategy.Fixed()],    
             projection: new OpenLayers.Projection("EPSG:4326"),
             protocol: new OpenLayers.Protocol.HTTP({                
                 //url: "php/getJSON.php?keys=tyadrylIpQ1K_iHP407374Q,phAwcNAVuyj2tPLxKvvnNPA,phAwcNAVuyj0NpF2PTov2Cw,pyj6tScZqmEd1G8qI4GpZQg,rezAT4nYhKc2Loe6CxWSPWw",
@@ -80,6 +80,8 @@ Ext.application({
         
         // function as eventhandler of loadend-event
         function applyThematicStyle() {
+        
+            console.log("applyThematicStyle: loadend wurde ausgelöst");
             
             // create StyleMap-Object for the thematic layer
             thematicStyleMap = new OpenLayers.StyleMap(
@@ -92,10 +94,11 @@ Ext.application({
             });
             // redraw
             staaten.redraw();
+            console.log("applyThematicStyle: Layer wurde neu gezeichnet");
             
             // Rebuild countryFeatureStore
             countryFS = buildCountryFS(staaten);
-            console.log("Neuer FeatureStore wurde erstellt");
+            console.log("applyThematicStyle: Neuer FeatureStore wurde erstellt");
         }
         // END styling
         
