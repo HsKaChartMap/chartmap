@@ -104,20 +104,8 @@ Ext.application({
         
         // START GUI
         // START toolbar items
-        //var toolbarItems = new Array();
-		
 		var ctrl, toolbarItems = [], action, actions = {};
-		
-        var chartButton = new Ext.Button({
-                xtype: 'button',
-                text: '',
-                iconCls: 'spider',
-                scale: 'large',
-                tooltip: "Zeige Radar-Diagramm",
-        });
-        toolbarItems.push(chartButton);
-        toolbarItems.push({ xtype: 'tbspacer', width: 10 });
-		
+	
         // Indicator ComboBox
         Ext.define('indicatorModel', {
             extend: 'Ext.data.Model',
@@ -226,27 +214,86 @@ Ext.application({
         toolbarItems.push(clComboBox);
         toolbarItems.push({ xtype: 'tbspacer', width: 10 });
         
-        var mapButton = new Ext.Button({
-                xtype: 'button',
-                   text: '',
-                iconCls: 'mapbutton',
-                scale: 'large',
-                tooltip: "Zeige thematische Karte",
-        });
-        toolbarItems.push(mapButton);
+        //Actions for toolbar
 		
 		
 		
 		 
         
         // ZoomToMaxExtent control, a "button" control
-        action = Ext.create('GeoExt.Action', {
+         extentaction = Ext.create('GeoExt.Action', {
             control: new OpenLayers.Control.ZoomToMaxExtent(),
             map: map,
-            text: "max extent",
-            tooltip: "zoom to max extent"
+            text: "",
+			iconCls: 'mapbutton',
+			scale: 'large',
+            tooltip: "Zeige Karte in maximaler Ausdehnung"
         });
-        actions["max_extent"] = action;
+        actions["max_extent"] = extentaction;
+        toolbarItems.push(Ext.create('Ext.button.Button', extentaction));
+        toolbarItems.push("-");
+		
+		// SelectFeature control, a "button" control
+		action = Ext.create('GeoExt.Action', {
+            text: "",
+			iconCls: 'select',
+			scale: 'large',
+            control: new OpenLayers.Control.SelectFeature(staaten, {
+                type: OpenLayers.Control.TYPE_TOGGLE,
+				multiple: false,
+			
+				onSelect: function(){ 
+					var popup = {
+					xtype: 'gx_popup',
+					title: "My Popup",
+					location: feature,
+					width: 200,
+					html: "Popup content",
+					collapsible: true,
+					map:map
+					}
+					popup.show();
+				//popupfunktion()
+				},
+				
+				clickout: true
+				
+            }),
+			
+            map: map,
+            // button options
+            enableToggle: true,
+			
+			//listeners: {"featurehighlighted": new function(){alert("test2")}},
+			
+            tooltip: "Land auswählen"
+        });
+
+		function popupfunktion(){
+		var popup = new OpenLayers.Popup("chicken",
+                       new OpenLayers.LonLat(5,40),
+                       new OpenLayers.Size(100,30),
+                       "Äthiopien",
+                       true);
+		
+		map.addPopup(popup);
+		}
+
+		var chartButton = new Ext.Button({
+                xtype: 'button',
+                text: '',
+                iconCls: 'spider',
+                scale: 'large',
+                tooltip: "Zeige Radar-Diagramm",
+        });
+        toolbarItems.push(chartButton);
+		toolbarItems.push("-");
+		
+		var report = function(e) {
+                OpenLayers.Console.log(e.type, e.feature.id);
+            };
+			
+        actions["select"] = action;
         toolbarItems.push(Ext.create('Ext.button.Button', action));
         toolbarItems.push("-");
         
