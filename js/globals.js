@@ -7,3 +7,4 @@ var indComboBox;
 var yearComboBox;
 var clTypeComboBox;
 var clComboBox;
+var vectorLegend;

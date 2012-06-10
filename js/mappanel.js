@@ -5,7 +5,9 @@ Ext.require([
     'Ext.state.CookieProvider',
     'Ext.data.ResultSet',
     'GeoExt.panel.Map',
-	'GeoExt.Action'
+    'GeoExt.panel.Legend',
+    'GeoExt.container.VectorLegend',
+    'GeoExt.Action'
 ]);
        
 
@@ -78,17 +80,13 @@ Ext.application({
         staatenAll.addOptions({
             styleMap: backgroundStyleMap
         });
-        
-		
-		
-		
-		
-        // function as eventhandler of loadend-event
+
+        // Function as eventhandler of loadend-event
         function applyThematicStyle() {
         
             console.log("applyThematicStyle: loadend wurde ausgelöst");
             
-            // create StyleMap-Object for the thematic layer
+            // Create StyleMap-Object for the thematic layer
             thematicStyleMap = new OpenLayers.StyleMap(
                 {
                 'default': getThematicStyle("Staaten thematisch")
@@ -97,9 +95,13 @@ Ext.application({
             staaten.addOptions({
                 styleMap: thematicStyleMap
             });
-            // redraw
+            // Redraw staaten layer
             staaten.redraw();
             console.log("applyThematicStyle: Layer wurde neu gezeichnet");
+            
+            // Update vectorLegend
+            vectorLegend.setRules();
+            vectorLegend.update();
             
             // Rebuild countryFeatureStore
             countryFS = buildCountryFS(staaten);
@@ -320,25 +322,27 @@ Ext.application({
             }]
         });
 		
-		//Legend
-		var legende = Ext.create('GeoExt.container.VectorLegend', {
-			layer: staaten,
-			rules:getThematicStyle.rules,
-			showTitle: false
-		});
+        vectorLegend = Ext.create('GeoExt.container.VectorLegend', {
+            legendTitle: 'Thematische Karte',
+            layer: staaten
+            //labelCls: 'vectorLegendItem' // todo: Create CSS class to show nice items
+        });
 		
-        
         // LegendPanel
-        var legendPanel = Ext.create('GeoExt.panel.Legend', {
-            //title: "Legend",
-			//layer: 'staaten',
+        var legendPanel = Ext.create('Ext.Panel', {
+            title: "Legend",
+            region: 'east',
             defaults: {
                 labelCls: 'mylabel',
                 style: 'padding:5px'
             },
             bodyStyle: 'padding:5px',
-            width: 350,
+            collapsible: true,
+            collapsed: true,
+            split: true,
+            width: 200,
             autoScroll: true,
+            items: [vectorLegend]
         });
         
         // Viewport
@@ -346,15 +350,7 @@ Ext.application({
             layout: 'border',
             renderTo: Ext.getBody(),
             items: [
-                {
-                    region: 'east',
-                    title: 'Legende',
-                    items: [legendPanel],
-                    collapsible: true,
-                    collapsed:true,
-                    split: true,
-                    width: 150
-                },
+                legendPanel,
                 mappanel
             ]
         });
