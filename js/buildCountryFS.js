@@ -35,13 +35,15 @@ function buildCountryFS(layer){
                             convert: function(v, record) {
                                 // loop through features to get the right value
                                 for (var c = 0; c < features.length; c++) {
-                                    if (features[c].data != null) {
-                                        // compare country names of current record and current feature
-                                        if (record.data.country == features[c].data.country) {
-                                            return features[c].data[property][yearKey];
+                                    try{
+                                        if (features[c].data != null && features[c].data != undefined) {
+                                            // compare country names of current record and current feature
+                                            if (record.data.country == features[c].data.country) {
+                                                return features[c].data[property][yearKey];
+                                            }
                                         }
                                     }
-                                    else {
+                                    catch(e) {
                                         return 'FS Error'
                                     }
                                 }                               
