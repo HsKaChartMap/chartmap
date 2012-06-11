@@ -106,8 +106,8 @@ Ext.application({
             vectorLegend.update();
             
             // Rebuild countryFeatureStore
-            countryFS = generateData(staaten);
-            //countryFS.unbind();
+            countryFS = buildCountryFS(staaten);
+            countryFS.unbind();
             
             //console.log("applyThematicStyle: Neuer FeatureStore wurde erstellt");
         }
@@ -260,24 +260,10 @@ Ext.application({
             scale: 'large',
             control: new OpenLayers.Control.SelectFeature(staaten, {
                 type: OpenLayers.Control.TYPE_TOGGLE,
+                clickout: true,
                 multiple: false,
-            
-                onSelect: function(){ 
-                    var popup = {
-                    xtype: 'gx_popup',
-                    title: "My Popup",
-                    location: feature,
-                    width: 200,
-                    html: "Popup content",
-                    collapsible: true,
-                    map:map
-                    }
-                    popup.show();
-                //popupfunktion()
-                },
-                
-                clickout: true
-                
+                hover: false,
+                onSelect: featureSelected
             }),
             
             map: map,
@@ -289,17 +275,11 @@ Ext.application({
             
             tooltip: "Land auswählen"
         });
-
-        function popupfunktion(){
-        var popup = new OpenLayers.Popup("chicken",
-                       new OpenLayers.LonLat(5,40),
-                       new OpenLayers.Size(100,30),
-                       "Äthiopien",
-                       true);
         
-        map.addPopup(popup);
+        function featureSelected(feature){ 
+            console.log("select", feature.data.SOVEREIGNT);
         }
-
+        
         var chartButton = new Ext.Button({
                 xtype: 'button',
                 text: '',
