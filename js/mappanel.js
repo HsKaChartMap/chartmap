@@ -4,7 +4,8 @@ Ext.require([
     'Ext.state.Manager',
     'Ext.state.CookieProvider',
     'Ext.data.ResultSet',
-    'GeoExt.panel.Map'
+    'GeoExt.panel.Map',
+	'GeoExt.Action'
 ]);
        
 
@@ -41,7 +42,7 @@ Ext.application({
         
         // thematic Layer
         var staaten = new OpenLayers.Layer.Vector("Staaten thematisch", {
-            strategies: [new OpenLayers.Strategy.BBOX()],    
+            strategies: [new OpenLayers.Strategy.Fixed()],    
             projection: new OpenLayers.Projection("EPSG:4326"),
             protocol: new OpenLayers.Protocol.HTTP({                
                 //url: "php/getJSON.php?keys=tyadrylIpQ1K_iHP407374Q,phAwcNAVuyj2tPLxKvvnNPA,phAwcNAVuyj0NpF2PTov2Cw,pyj6tScZqmEd1G8qI4GpZQg,rezAT4nYhKc2Loe6CxWSPWw",
@@ -79,6 +80,8 @@ Ext.application({
         
         // function as eventhandler of loadend-event
         function applyThematicStyle() {
+        
+            console.log("applyThematicStyle: loadend wurde ausgelöst");
             
             // create StyleMap-Object for the thematic layer
             thematicStyleMap = new OpenLayers.StyleMap(
@@ -91,10 +94,11 @@ Ext.application({
             });
             // redraw
             staaten.redraw();
+            console.log("applyThematicStyle: Layer wurde neu gezeichnet");
             
             // Rebuild countryFeatureStore
             countryFS = buildCountryFS(staaten);
-            console.log("Neuer FeatureStore wurde erstellt");
+            console.log("applyThematicStyle: Neuer FeatureStore wurde erstellt");
         }
         // END styling
         
@@ -115,6 +119,8 @@ Ext.application({
         toolbarItems.push(chartButton);
         toolbarItems.push({ xtype: 'tbspacer', width: 10 });
 		
+		var ctrl, toolbarItems = [], action, actions = {};
+	
         // Indicator ComboBox
         Ext.define('indicatorModel', {
             extend: 'Ext.data.Model',
@@ -223,14 +229,88 @@ Ext.application({
         toolbarItems.push(clComboBox);
         toolbarItems.push({ xtype: 'tbspacer', width: 10 });
         
-        var mapButton = new Ext.Button({
-                xtype: 'button',
-                   text: '',
-                iconCls: 'mapbutton',
-                scale: 'large',
-                tooltip: "Zeige thematische Karte",
+        //Actions for toolbar
+		
+		
+		
+		 
+        
+        // ZoomToMaxExtent control, a "button" control
+         extentaction = Ext.create('GeoExt.Action', {
+            control: new OpenLayers.Control.ZoomToMaxExtent(),
+            map: map,
+            text: "",
+			iconCls: 'mapbutton',
+			scale: 'large',
+            tooltip: "Zeige Karte in maximaler Ausdehnung"
         });
-        toolbarItems.push(mapButton);
+        actions["max_extent"] = extentaction;
+        toolbarItems.push(Ext.create('Ext.button.Button', extentaction));
+        toolbarItems.push("-");
+		
+		// SelectFeature control, a "button" control
+		action = Ext.create('GeoExt.Action', {
+            text: "",
+			iconCls: 'select',
+			scale: 'large',
+            control: new OpenLayers.Control.SelectFeature(staaten, {
+                type: OpenLayers.Control.TYPE_TOGGLE,
+				multiple: false,
+			
+				onSelect: function(){ 
+					var popup = {
+					xtype: 'gx_popup',
+					title: "My Popup",
+					location: feature,
+					width: 200,
+					html: "Popup content",
+					collapsible: true,
+					map:map
+					}
+					popup.show();
+				//popupfunktion()
+				},
+				
+				clickout: true
+				
+            }),
+			
+            map: map,
+            // button options
+            enableToggle: true,
+			
+			//listeners: {"featurehighlighted": new function(){alert("test2")}},
+			
+            tooltip: "Land auswählen"
+        });
+
+		function popupfunktion(){
+		var popup = new OpenLayers.Popup("chicken",
+                       new OpenLayers.LonLat(5,40),
+                       new OpenLayers.Size(100,30),
+                       "Äthiopien",
+                       true);
+		
+		map.addPopup(popup);
+		}
+
+		var chartButton = new Ext.Button({
+                xtype: 'button',
+                text: '',
+                iconCls: 'spider',
+                scale: 'large',
+                tooltip: "Zeige Radar-Diagramm",
+        });
+        toolbarItems.push(chartButton);
+		toolbarItems.push("-");
+		
+		var report = function(e) {
+                OpenLayers.Console.log(e.type, e.feature.id);
+            };
+			
+        actions["select"] = action;
+        toolbarItems.push(Ext.create('Ext.button.Button', action));
+        toolbarItems.push("-");
         
         // END toolbar items
         
@@ -243,12 +323,16 @@ Ext.application({
         layers: [topo,staatenAll,staaten],
         map: map,
         center: '0,0',
+		extent: '5.19,46.85,15.47,55.63',
         zoom: 3,
         activeTab: 0,      // First tab active by default
-        items: {
-            tbar: toolbarItems
-            }
+        dockedItems: [{
+                xtype: 'toolbar',
+                //dock: 'top',
+                items: toolbarItems
+            }]
         });
+		
         
         // LegendPanel
         var legendPanel = Ext.create('GeoExt.panel.Legend', {
@@ -284,3 +368,6 @@ Ext.application({
     }
 });
 
+
+        
+        

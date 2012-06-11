@@ -13,7 +13,7 @@ function buildCountryFS(layer){
         // Lösung für die Erfassung aller Elemente suchen
         
         //for (var i = 0; i < features.length; i++) {#
-            for (var property in  features[0].data) {
+            for (var property in  features[0].data) (function (property) {
                 
                 // case 1: element has no properties / is NOT a gapminder indicator which has values for several years
                 if (isEmpty(features[0].data[property])) {
@@ -27,26 +27,40 @@ function buildCountryFS(layer){
                 // case 2: element has properties / IS a gapminder indicator which has values for severals years
                 else {
                     // loop through values for each year
-                    for (var yearKey in features[0].data[property]) (function (property, yearKey) {              
+                    for (var yearKey in features[0].data[property]) (function (yearKey) {              
                         field_x = {
                             name: property + "_" + yearKey,
                             type: typeof features[0].data[property][yearKey],
                             // assign convert function which returns the appropriate value
                             convert: function(v, record) {
+/*
                                 if (features[0].data != null) {
                                     return valueToField(v, record, features[0].data[property][yearKey])
                                 }
                                 else {
                                     return 'FS Error';
                                 }
+*/
+                                // loop through features to get the right value
+                                for (var c = 0; c < features.length; c++) {
+                                    if (features[c].data != null) {
+                                        // compare country names of current record and current feature
+                                        if (record.data.country == features[c].data.country) {
+                                            return features[c].data[property][yearKey];
+                                        }
+                                    }
+                                    else {
+                                        return 'FS Error'
+                                    }
+                                }                               
                             }
                         }
                         // add field
                         fields.push(field_x);
-                    })(property, yearKey);
+                    })(yearKey);
                 }
                 
-            }
+            })(property);
         //}
         
         var model = Ext.define('countryFSModel', {

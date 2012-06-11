@@ -1,12 +1,15 @@
 function reloadGapminderLayer(layername, keys) {
-    
+        
     var machtingLayers = new Array();
     var vectorLayer;
     var newURL;
     var newOptions;
     
-    // destroy countryFeatureStore
-    countryFS = null;
+    console.log("reloadGapminderLayer: reload wird initiiert");
+    
+    // unbind and clear countryFeatureStore
+    countryFS.unbind();
+    countryFS.removeAll();
     
     matchingLayers = map.getLayersByName(layername);
     if (matchingLayers.length == 1) {
@@ -18,7 +21,8 @@ function reloadGapminderLayer(layername, keys) {
     }
     
     newURL = "php/getJSON.php?keys=" + keys;
-       
+    console.log("reloadGapminderLayer: " + keys);
+    
     var newOptions = {
         protocol: new OpenLayers.Protocol.HTTP({                
                 url: newURL,
@@ -35,5 +39,7 @@ function reloadGapminderLayer(layername, keys) {
     vectorLayer.refresh({ force: true, params: { 'keys': keys} });
     vectorLayer.protocol.url = newURL;
     vectorLayer.protocol.options.url = newURL;
+    
+    console.log("reloadGapminderLayer: reload wurde durchgeführt");
     
 }
