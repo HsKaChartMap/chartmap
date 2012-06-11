@@ -25,32 +25,30 @@ function showRadarChart(){
         series: [{
             showInLegend: true,
             type: 'radar',
-            yField: 'HDI_2010',
-            xField: 'country',
-
-            showMarkers: false,
-            markerConfig: {
-                radius: 5,
-                size: 5
-            },
+            xField: 'HDI_2000',
+            yField: 'country',
             style: {
                 opacity: 0.4
             }
         }
-        // ,{
-        //     showInLegend: true,
-        //     type: 'radar',
-        //     yField: 'HDI_2010',
-        //     xField: 'country',
-        //     showMarkers: true,
-        //     markerConfig: {
-        //         radius: 5,
-        //         size: 5
-        //     },
-        //     style: {
-        //         opacity: 0.4
-        //     }
-        // }
+        ,{
+            showInLegend: true,
+            type: 'radar',
+            xField: 'HDI_2005',
+            yField: 'country',
+            style: {
+                opacity: 0.4
+            }
+        }
+        ,{
+            showInLegend: true,
+            type: 'radar',
+            xField: 'HDI_2010',
+            yField: 'country',
+            style: {
+                opacity: 0.4
+            }
+        }
         ]
     });
 
