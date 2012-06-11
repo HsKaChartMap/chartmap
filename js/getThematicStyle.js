@@ -31,8 +31,9 @@ function getThematicStyle(layername) {
         var classificationType = clTypeComboBox.getValue();
         var numClasses = parseFloat(clComboBox.getValue());
         
+        // populate colors array depending on the number of classes
         for (var i = 0; i < numClasses; i++) {
-            colors.push(colors_pool.pop());
+            colors.push(colors_pool[i]);
         }
     }
     
