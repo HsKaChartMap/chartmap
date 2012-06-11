@@ -11,7 +11,7 @@ function showRadarChart(){
         theme: 'Category3',
         insetPadding: 20,
         animate: true,
-        store: store1,
+        store: generateData(),
         legend: {
             position: 'right'
         },
@@ -25,8 +25,8 @@ function showRadarChart(){
         series: [{
             showInLegend: true,
             type: 'radar',
-            xField: 'data1',
-            yField: 'country',
+            xField: 'indicator',
+            yField: 'angola',
             style: {
                 opacity: 0.4
             }
