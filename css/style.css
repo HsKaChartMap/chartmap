@@ -7,6 +7,7 @@
 .olControlAttribution a:active {
     color: #fff;
 }
+
 .olControlAttribution {
     font-size: 13px !important;
     color: #ffffff;
@@ -17,4 +18,7 @@
     
 .spider{
     background: url(img/spider.png) no-repeat top left; 
+}
+.olMap{
+    background-color: red
 }

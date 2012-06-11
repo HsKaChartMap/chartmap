@@ -26,16 +26,18 @@ Ext.application({
             "http://vmap0.tiles.osgeo.org/wms/vmap0?",
             {layers: 'basic'}
         );
-        //TopoLayer
+        /*TopoLayer
         var topo = new OpenLayers.Layer.WMS(
             "Topographie", "http://gis.lmz-bw.de/tilecache/tilecache.py?", 
             {layers: 'bmng'}, {transitionEffect: 'null'}
         );
-
+		*/
+		
         // BackgroundLayer
         var staatenAll = new OpenLayers.Layer.Vector("Staaten alle", {
             strategies: [new OpenLayers.Strategy.BBOX()],    
             projection: new OpenLayers.Projection("EPSG:4326"),
+			isBaseLayer: true,
             protocol: new OpenLayers.Protocol.HTTP({                
                 url: "data/staaten.json",
                 format: new OpenLayers.Format.GeoJSON()
@@ -56,7 +58,7 @@ Ext.application({
             }
         });
 		//Add Layers to map
-        map.addLayers([topo,staatenAll,staaten]);
+       // map.addLayers([staatenAll,staaten]);
         
         // FeatureStore
         //countryFS = buildCountryFS(staaten);
@@ -66,9 +68,10 @@ Ext.application({
         // create Style Object for the background layer
         var backgroundStyle= new OpenLayers.Style({
             strokeColor:'#ffffff',
-            strokeOpacity:0.8,
-            fillColor: '#999999',
-            fillOpacity: 0.8
+            strokeOpacity:1,
+            fillColor: '#BDBDBD',
+            fillOpacity: 1
+			
         });
         
         // create StyleMap-Object for the background layer
@@ -137,8 +140,10 @@ Ext.application({
 
         // ComboBox to choose the indicator for the classification
         indComboBox = Ext.create('Ext.form.ComboBox', {
-             width: 400,
-             fieldLabel: 'Indikator',
+             width: 200,
+             //fieldLabel: 'Indikator',
+			 editable: false,
+			 emptyText: 'Indikator wählen',
              labelWidth: 65,
              store: indicatorStore,
              queryMode: 'local',
@@ -165,8 +170,10 @@ Ext.application({
         
         // ComboBox to choose the year for the classification
         yearComboBox = Ext.create('Ext.form.ComboBox', {
-             width: 120,
-             fieldLabel: 'Jahr',
+			 emptyText: 'Jahr wählen',
+			 editable: false,
+             width: 100,
+             //fieldLabel: 'Jahr',
              labelWidth: 35,
              store: ['2005', '2006', '2007', '2008', '2009', '2010'],
              queryMode: 'local',
@@ -189,11 +196,13 @@ Ext.application({
                     ['Natürliche Unterbrechungen','jenks']
                   ]
         });
-        clTypeComboBox = Ext.create('Ext.form.ComboBox', {
-             width: 260,
-             fieldLabel: 'Klassifizierung',
+        clTypeComboBox = Ext.create('Ext.form.ComboBox', { 
+			 emptyText: 'Klassifizierung wählen',
+			 width: 200,
+             //fieldLabel: 'Klassifizierung',
              labelWidth: 75,
              store: clTypeStore,
+			 editable: false,
              displayField: 'name',
              valueField: 'value',
              value: 'quantiles',
@@ -211,6 +220,7 @@ Ext.application({
         // ComboBox to choose the number of classes for the classification
         clComboBox = Ext.create('Ext.form.ComboBox', {
              width: 100,
+			 editable: false,
              fieldLabel: 'Klassen',
              labelWidth: 45,
              store: [6],
@@ -309,7 +319,7 @@ Ext.application({
         region: 'center',
         id: "mappanel",
         xtype: "gx_mappanel", // TabPanel itself has no title
-        //layers: [topo],
+        layers: [staatenAll,staaten],
         map: map,
         center: '0,0',
 		extent: '5.19,46.85,15.47,55.63',
@@ -330,8 +340,8 @@ Ext.application({
 		
         // LegendPanel
         var legendPanel = Ext.create('Ext.Panel', {
-            title: "Legend",
-            region: 'east',
+            title: "Legende",
+            region: 'west',
             defaults: {
                 labelCls: 'mylabel',
                 style: 'padding:5px'
