@@ -5,7 +5,9 @@ Ext.require([
     'Ext.state.CookieProvider',
     'Ext.data.ResultSet',
     'GeoExt.panel.Map',
-	'GeoExt.Action'
+    'GeoExt.panel.Legend',
+    'GeoExt.container.VectorLegend',
+    'GeoExt.Action'
 ]);
        
 
@@ -24,13 +26,13 @@ Ext.application({
             "http://vmap0.tiles.osgeo.org/wms/vmap0?",
             {layers: 'basic'}
         );
-        
+        //TopoLayer
         var topo = new OpenLayers.Layer.WMS(
             "Topographie", "http://gis.lmz-bw.de/tilecache/tilecache.py?", 
             {layers: 'bmng'}, {transitionEffect: 'null'}
         );
 
-        // backgroundLayer
+        // BackgroundLayer
         var staatenAll = new OpenLayers.Layer.Vector("Staaten alle", {
             strategies: [new OpenLayers.Strategy.BBOX()],    
             projection: new OpenLayers.Projection("EPSG:4326"),
@@ -40,7 +42,7 @@ Ext.application({
             })
         });
         
-        // thematic Layer
+        // Thematic Layer
         var staaten = new OpenLayers.Layer.Vector("Staaten thematisch", {
             strategies: [new OpenLayers.Strategy.Fixed()],    
             projection: new OpenLayers.Projection("EPSG:4326"),
@@ -53,6 +55,7 @@ Ext.application({
                 'loadend': applyThematicStyle
             }
         });
+		//Add Layers to map
         map.addLayers([topo,staatenAll,staaten]);
         
         // FeatureStore
@@ -63,9 +66,9 @@ Ext.application({
         // create Style Object for the background layer
         var backgroundStyle= new OpenLayers.Style({
             strokeColor:'#ffffff',
-            strokeOpacity:0.5,
+            strokeOpacity:0.8,
             fillColor: '#999999',
-            fillOpacity: 0.5
+            fillOpacity: 0.8
         });
         
         // create StyleMap-Object for the background layer
@@ -77,13 +80,13 @@ Ext.application({
         staatenAll.addOptions({
             styleMap: backgroundStyleMap
         });
-        
-        // function as eventhandler of loadend-event
+
+        // Function as eventhandler of loadend-event
         function applyThematicStyle() {
         
             console.log("applyThematicStyle: loadend wurde ausgelöst");
             
-            // create StyleMap-Object for the thematic layer
+            // Create StyleMap-Object for the thematic layer
             thematicStyleMap = new OpenLayers.StyleMap(
                 {
                 'default': getThematicStyle("Staaten thematisch")
@@ -92,9 +95,13 @@ Ext.application({
             staaten.addOptions({
                 styleMap: thematicStyleMap
             });
-            // redraw
+            // Redraw staaten layer
             staaten.redraw();
             console.log("applyThematicStyle: Layer wurde neu gezeichnet");
+            
+            // Update vectorLegend
+            vectorLegend.setRules();
+            vectorLegend.update();
             
             // Rebuild countryFeatureStore
             countryFS = buildCountryFS(staaten);
@@ -230,10 +237,6 @@ Ext.application({
         toolbarItems.push({ xtype: 'tbspacer', width: 10 });
         
         //Actions for toolbar
-		
-		
-		
-		 
         
         // ZoomToMaxExtent control, a "button" control
          extentaction = Ext.create('GeoExt.Action', {
@@ -276,6 +279,7 @@ Ext.application({
             }),
 			
             map: map,
+			
             // button options
             enableToggle: true,
 			
@@ -320,7 +324,7 @@ Ext.application({
         region: 'center',
         id: "mappanel",
         xtype: "gx_mappanel", // TabPanel itself has no title
-        layers: [topo,staatenAll,staaten],
+        //layers: [topo],
         map: map,
         center: '0,0',
 		extent: '5.19,46.85,15.47,55.63',
@@ -333,17 +337,27 @@ Ext.application({
             }]
         });
 		
-        
+        vectorLegend = Ext.create('GeoExt.container.VectorLegend', {
+            legendTitle: 'Thematische Karte',
+            layer: staaten
+            //labelCls: 'vectorLegendItem' // todo: Create CSS class to show nice items
+        });
+		
         // LegendPanel
-        var legendPanel = Ext.create('GeoExt.panel.Legend', {
-            //title: "Legend",
+        var legendPanel = Ext.create('Ext.Panel', {
+            title: "Legend",
+            region: 'east',
             defaults: {
                 labelCls: 'mylabel',
                 style: 'padding:5px'
             },
             bodyStyle: 'padding:5px',
-            width: 350,
+            collapsible: true,
+            collapsed: true,
+            split: true,
+            width: 200,
             autoScroll: true,
+            items: [vectorLegend]
         });
         
         // Viewport
@@ -351,15 +365,7 @@ Ext.application({
             layout: 'border',
             renderTo: Ext.getBody(),
             items: [
-                {
-                    region: 'east',
-                    title: 'Legende',
-                    items: [legendPanel],
-                    collapsible: true,
-                    collapsed:true,
-                    split: true,
-                    width: 150
-                },
+                legendPanel,
                 mappanel
             ]
         });
