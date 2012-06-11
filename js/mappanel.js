@@ -109,7 +109,7 @@ Ext.application({
             countryFS = buildCountryFS(staaten);
             countryFS.unbind();
             
-            console.log("applyThematicStyle: Neuer FeatureStore wurde erstellt");
+            //console.log("applyThematicStyle: Neuer FeatureStore wurde erstellt");
         }
         // END styling
         
@@ -325,33 +325,57 @@ Ext.application({
         
         vectorLegend = Ext.create('GeoExt.container.VectorLegend', {
             legendTitle: 'Thematische Karte',
+            
             layer: staaten
             //labelCls: 'vectorLegendItem' // todo: Create CSS class to show nice items
         });
         
+        
+         var impressumPanel = Ext.create('Ext.Panel', {
+            title: 'Impressum',
+            collapsible: true,
+            collapsed: false,
+            html: '<br><h2>&nbsp;Hochschule Karlsruhe</h2> <br><b>&nbsp;GIS-Projekt</b><br> &nbsp;Alice Rühl<br> &nbsp;Amr Bakri <br> &nbsp;Michael Kuch<br> &nbsp;Roman Wössner<br><br><img src="img/lmz.gif">'
+         });
+        
         // LegendPanel
         var legendPanel = Ext.create('Ext.Panel', {
             title: "Legende",
+           // region: 'west',
+            defaults: {
+                labelCls: 'mylabel',
+                style: 'padding:5px; background-color: #EAEAEA;',   
+            },
+            collapsible: true,
+            collapsed: false,    
+            //split: true,
+            //width: 200,
+            autoScroll: true,
+            items: [vectorLegend]
+        });
+        
+        var menuPanel = Ext.create('Ext.Panel', {
+            title: "",
             region: 'west',
             defaults: {
                 labelCls: 'mylabel',
-                style: 'padding:5px'
+                style: 'padding:5px; background-color: #EAEAEA;',   
             },
-            bodyStyle: 'padding:5px',
-            collapsible: true,
-            collapsed: true,
+            
+            collapsible: false,
+            collapsed: false,    
             split: true,
             width: 200,
             autoScroll: true,
-            items: [vectorLegend]
+            items: [legendPanel,impressumPanel]
         });
         
         // Viewport
         Ext.create('Ext.container.Viewport', {
             layout: 'border',
-            renderTo: Ext.getBody(),
+            renderTo: Ext.getBody(), 
             items: [
-                legendPanel,
+                menuPanel,
                 mappanel
             ]
         });

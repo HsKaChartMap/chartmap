@@ -4,6 +4,7 @@ function buildCountryFS(layer){
     var field_x;
     var model;
     var features;
+    var values = new Array();
     
     if (layer.features.length > 0) {
         features = layer.features;
@@ -11,6 +12,14 @@ function buildCountryFS(layer){
         // Schleife durch die Elemente des ersten Landes
         // Achtung: Es könnte sein, dass das erste Land nicht alle Indikatoren enthält
         // Lösung für die Erfassung aller Elemente suchen
+        
+        for (var property in  features[0].data) {
+            if (property != 'country' && property != 'id' && property != 'SOVEREIGNT'){
+                if (features[0].data[property]['2010']) {
+                    values.push(features[0].data[property]['2010'])
+                }
+            }
+        }        
         
         //for (var i = 0; i < features.length; i++) {#
             for (var property in  features[0].data) (function (property) {
@@ -22,7 +31,7 @@ function buildCountryFS(layer){
                         type: typeof features[0].data[property]
                     };
                     // add field
-                    fields.push(field_x);
+                    //fields.push(field_x);
                 }
                 // case 2: element has properties / IS a gapminder indicator which has values for severals years
                 else {
@@ -67,7 +76,7 @@ function buildCountryFS(layer){
         
         var model = Ext.define('countryFSModel', {
             extend: 'Ext.data.Model',
-            fields: fields
+            fields: values
         });
 
     }
