@@ -15,11 +15,11 @@ function buildCountryFS(layer){
         
         for (var property in  features[0].data) {
             if (property != 'country' && property != 'id' && property != 'SOVEREIGNT'){
-                if (features[0].data[property]['2010']) {
+                //if (features[0].data[property]['2010']) {
                     values.push(features[0].data[property]['2010'])
-                }
+                // }
             }
-        }        
+        }
         
         //for (var i = 0; i < features.length; i++) {#
             for (var property in  features[0].data) (function (property) {
