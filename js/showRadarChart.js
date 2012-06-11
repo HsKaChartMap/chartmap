@@ -11,7 +11,7 @@ function showRadarChart(){
         theme: 'Category3',
         insetPadding: 20,
         animate: true,
-        store: countryFS,
+        store: store1,
         legend: {
             position: 'right'
         },
@@ -25,30 +25,30 @@ function showRadarChart(){
         series: [{
             showInLegend: true,
             type: 'radar',
-            xField: 'HDI_2000',
+            xField: 'data1',
             yField: 'country',
             style: {
                 opacity: 0.4
             }
         }
-        ,{
-            showInLegend: true,
-            type: 'radar',
-            xField: 'HDI_2005',
-            yField: 'country',
-            style: {
-                opacity: 0.4
-            }
-        }
-        ,{
-            showInLegend: true,
-            type: 'radar',
-            xField: 'HDI_2010',
-            yField: 'country',
-            style: {
-                opacity: 0.4
-            }
-        }
+        // ,{
+        //     showInLegend: true,
+        //     type: 'radar',
+        //     xField: 'HDI_2005',
+        //     yField: 'country',
+        //     style: {
+        //         opacity: 0.4
+        //     }
+        // }
+        // ,{
+        //     showInLegend: true,
+        //     type: 'radar',
+        //     xField: 'HDI_2010',
+        //     yField: 'country',
+        //     style: {
+        //         opacity: 0.4
+        //     }
+        // }
         ]
     });
 
