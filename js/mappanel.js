@@ -58,7 +58,7 @@ Ext.application({
         });
         
         //Add Layers to map
-        map.addLayers([topo,staatenAll,staaten]);
+        map.addLayers([staatenAll,staaten]);
         
         // FeatureStore
         //countryFS = buildCountryFS(staaten);
