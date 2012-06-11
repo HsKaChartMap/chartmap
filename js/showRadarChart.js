@@ -4,28 +4,6 @@ Ext.require([
 
 function showRadarChart(){
 
-/*
-    matchingLayers = map.getLayersByName("Staaten thematisch");
-    if (matchingLayers.length == 1) {
-        vectorLayer = matchingLayers[0];
-    }
-    else {
-        console.log("getThematicStyleMap: Warning, the layer was not found!");
-        return;
-    }
-*/
-    /*
-    var featurestore = Ext.create('GeoExt.data.FeatureStore',{
-        layer: vectorLayer,
-        fields: [
-            {name:'country'},
-            //{name:'val1',mapping:'HDI.2010'}
-        ],
-        featureFilter: filtercountry,
-        autoLoad:true
-    });
-    */
-
     var chart = Ext.create('Ext.chart.Chart', {
         id: 'chartCmp',
         xtype: 'chart',
@@ -49,10 +27,6 @@ function showRadarChart(){
             type: 'radar',
             yField: 'HDI_2010',
             xField: 'country',
-            //yField: featureStore[0].properties[0].items[0],
-            //xField: featureStore.data.items(1), var countryName = all_data.features[i].properties.country;
-        //var hdis = all_data.features[i].properties.HDI;
-        //var dataPoint = {land: countryName};
 
             showMarkers: false,
             markerConfig: {
