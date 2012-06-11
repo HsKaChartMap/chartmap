@@ -58,11 +58,7 @@ Ext.application({
             }
         });
 		//Add Layers to map
-       // map.addLayers([staatenAll,staaten]);
-        
-        // FeatureStore
-        //countryFS = buildCountryFS(staaten);
-        
+        // map.addLayers([staatenAll,staaten]);
         
         // START styling
         // create Style Object for the background layer
@@ -108,6 +104,8 @@ Ext.application({
             
             // Rebuild countryFeatureStore
             countryFS = buildCountryFS(staaten);
+            countryFS.unbind();
+            
             console.log("applyThematicStyle: Neuer FeatureStore wurde erstellt");
         }
         // END styling
@@ -162,6 +160,7 @@ Ext.application({
                         }
                     }
                     reloadGapminderLayer("Staaten thematisch", keystring);
+                    staaten.removeAllFeatures();
                 }
              }
         });
