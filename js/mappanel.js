@@ -260,24 +260,10 @@ Ext.application({
             scale: 'large',
             control: new OpenLayers.Control.SelectFeature(staaten, {
                 type: OpenLayers.Control.TYPE_TOGGLE,
+                clickout: true,
                 multiple: false,
-            
-                onSelect: function(){ 
-                    var popup = {
-                    xtype: 'gx_popup',
-                    title: "My Popup",
-                    location: feature,
-                    width: 200,
-                    html: "Popup content",
-                    collapsible: true,
-                    map:map
-                    }
-                    popup.show();
-                //popupfunktion()
-                },
-                
-                clickout: true
-                
+                hover: false,
+                onSelect: featureSelected
             }),
             
             map: map,
@@ -289,17 +275,11 @@ Ext.application({
             
             tooltip: "Land auswÃ¤hlen"
         });
-
-        function popupfunktion(){
-        var popup = new OpenLayers.Popup("chicken",
-                       new OpenLayers.LonLat(5,40),
-                       new OpenLayers.Size(100,30),
-                       "Ã„thiopien",
-                       true);
         
-        map.addPopup(popup);
+        function featureSelected(feature){ 
+            console.log("select", feature.data.SOVEREIGNT);
         }
-
+        
         var chartButton = new Ext.Button({
                 xtype: 'button',
                 text: '',
@@ -344,20 +324,26 @@ Ext.application({
         });
         
         vectorLegend = Ext.create('GeoExt.container.VectorLegend', {
-            legendTitle: 'Thematische Karte',
-            
+            legendTitle: 'Thematische Karte',   
             layer: staaten
             //labelCls: 'vectorLegendItem' // todo: Create CSS class to show nice items
         });
-        
-        
+
          var impressumPanel = Ext.create('Ext.Panel', {
             title: 'Impressum',
             collapsible: true,
-            collapsed: false,
-            html: '<br><h2>&nbsp;Hochschule Karlsruhe</h2> <br><b>&nbsp;GIS-Projekt</b><br> &nbsp;Alice Rühl<br> &nbsp;Amr Bakri <br> &nbsp;Michael Kuch<br> &nbsp;Roman Wössner<br><br><img src="img/lmz.gif">'
+            collapsed: true,
+            html:'<br><h2>&nbsp;Hochschule Karlsruhe</h2> <br><b>&nbsp;GIS-Projekt</b><br> &nbsp;Alice Rühl<br> &nbsp;Amr Bakri <br> &nbsp;Michael Kuch<br> &nbsp;Roman Wössner<br><br><img src="img/lmz.gif"><br><br>'
          });
         
+        var hilfePanel = Ext.create('Ext.Panel', {
+            title: 'Hilfe',
+            collapsible: true,
+            collapsed: true,
+            html:'<br>Wähle das Thema (Indikator) deiner Karte, die Jahreszahl sowie die Klassifizierungsart und Anzahl der Klassen in den obigen Auswahlmenüs aus. Sobald alles ausgefüllt wird kurz darauf die Karte angezeigt.<br><br><b>Bedeutung der Buttons</b><br><br><img src="img/mapbutton.png"> Kartenübersicht <br> <br><img src="img/select.png">&nbsp;Länderwahl<br><br><img src="img/spider.png">&nbsp;Diagramm<br><br>' 
+         });
+        
+
         // LegendPanel
         var legendPanel = Ext.create('Ext.Panel', {
             title: "Legende",
@@ -387,7 +373,7 @@ Ext.application({
             split: true,
             width: 200,
             autoScroll: true,
-            items: [legendPanel,impressumPanel]
+            items: [legendPanel,hilfePanel,impressumPanel]
         });
         
         // Viewport
