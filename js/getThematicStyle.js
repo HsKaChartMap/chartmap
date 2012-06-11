@@ -10,12 +10,12 @@ function getThematicStyle(layername) {
     var thematicStyle;
     
     // defines default values of the thematic style
-    thematicStyle = new OpenLayers.Style({
+     thematicStyle = new OpenLayers.Style({
         strokeColor:'#ffffff',
-        strokeOpacity:0.5,
-        fillColor: 'white',
-        fillOpacity: 0.5
-    });
+        strokeOpacity:1,
+        fillColor: '#BDBDBD',
+        fillOpacity: 1
+    }); 
     
     /* under development
     */
@@ -95,7 +95,7 @@ function getThematicStyle(layername) {
                 name: Math.round(ranges[i],2) + " - " + Math.round(ranges[i+1],2),
                 filter: filter_x,
                 symbolizer: { fillColor: colors[i],
-                            fillOpacity: 0.5, strokeColor: "white"}
+                            fillOpacity: 1, strokeColor: "white"}
             });
             rules.push(rule_x);    
         })(i);
