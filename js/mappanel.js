@@ -106,10 +106,10 @@ Ext.application({
             vectorLegend.update();
             
             // Rebuild countryFeatureStore
-            countryFS = buildCountryFS(staaten);
-            countryFS.unbind();
+            countryFS = generateData(staaten);
+            //countryFS.unbind();
             
-            console.log("applyThematicStyle: Neuer FeatureStore wurde erstellt");
+            //console.log("applyThematicStyle: Neuer FeatureStore wurde erstellt");
         }
         // END styling
         
