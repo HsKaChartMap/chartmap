@@ -223,10 +223,15 @@ Ext.application({
 			 editable: false,
              fieldLabel: 'Klassen',
              labelWidth: 45,
-             store: [6],
+             store: [3, 4, 5, 6],
              queryMode: 'local',
              value: '6',
-             triggerAction: 'all'
+             triggerAction: 'all',
+             listeners: {
+                select: function() {
+                    applyThematicStyle()
+                }
+             }
         });
         toolbarItems.push(clComboBox);
         toolbarItems.push({ xtype: 'tbspacer', width: 10 });

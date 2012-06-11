@@ -2,6 +2,7 @@ function getThematicStyle(layername) {
     
     var matchingLayers;
     var vectorLayer;
+    var colors = new Array();
     var items = new Array();
     var serie;
     var rules = new Array();
@@ -17,10 +18,7 @@ function getThematicStyle(layername) {
         fillOpacity: 1
     }); 
     
-    /* under development
-    */
-    var colors = new Array('#FFC6A5', '#FF9473', '#FF6342', '#FF3118', '#FF0000', '#AD0000');
-    //
+    var colors_pool = new Array('#FFC6A5', '#FF9473', '#FF6342', '#FF3118', '#FF0000', '#AD0000');
     
     if (typeof indComboBox == 'undefined' || typeof yearComboBox == 'undefined' || typeof clTypeComboBox == 'undefined' || typeof clComboBox == 'undefined') 
     {
@@ -32,6 +30,10 @@ function getThematicStyle(layername) {
         var year = yearComboBox.getValue();
         var classificationType = clTypeComboBox.getValue();
         var numClasses = parseFloat(clComboBox.getValue());
+        
+        for (var i = 0; i < numClasses; i++) {
+            colors.push(colors_pool.pop());
+        }
     }
     
     //check whether numClasses and colors fit together
