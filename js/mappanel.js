@@ -261,11 +261,12 @@ Ext.application({
             control: new OpenLayers.Control.SelectFeature(staaten, {
                 type: OpenLayers.Control.TYPE_TOGGLE,
                 clickout: true,
-                multiple: false,
-                hover: false,
-                onSelect: featureSelected
+                toggle:true,
+                multiple: true,
+                box: false,
+                onSelect: featureSelected,
+                onUnselect:onFeatureUnselect
             }),
-            
             map: map,
             
             // button options
@@ -276,9 +277,55 @@ Ext.application({
             tooltip: "Land auswählen"
         });
         
+        staaten.events.on({
+        "featureselected": function(e) {
+            onFeatureSelect(e.feature);
+            }
+        });
+//Romans Datenzugriff        
         function featureSelected(feature){ 
-            console.log("select", feature.data.SOVEREIGNT);
+           console.log("select", feature.data.SOVEREIGNT);
         }
+ //        
+        function onFeatureSelect(feature) {
+        selectedFeature = feature;
+        popup = new OpenLayers.Popup("",
+            feature.geometry.getBounds().getCenterLonLat(),
+            new OpenLayers.Size(120,20),
+            '<b>Land:</b>&nbsp;'+feature.data.SOVEREIGNT,            
+            //<div style='padding:15px 5px 5px 10px;'>"Name"+ test </div>,
+            null,
+            false,
+            onPopupClose);
+        feature.popup = popup;
+        map.addPopup(popup);
+        }
+
+        function onPopupClose(e) {
+        selectControl.unselect(selectedFeature);
+        }
+        
+        function onFeatureUnselect(feature) {
+        map.removePopup(feature.popup);
+        feature.popup.destroy();
+        feature.popup = null;
+        }
+
+        var selectControl = new OpenLayers.Control.SelectFeature(staaten,{
+        hover: true, 
+        highlightOnly: true,
+        renderIntent: "temporary",
+        // onSelect:onFeatureSelect,
+        // onUnselect:onFeatureUnselect
+        });
+
+        map.addControl(selectControl);
+        selectControl.activate();
+        
+        
+        
+        
+        
         
         var chartButton = new Ext.Button({
                 xtype: 'button',
