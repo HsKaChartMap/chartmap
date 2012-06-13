@@ -60,9 +60,6 @@ Ext.application({
         //Add Layers to map
         map.addLayers([staatenAll,staaten]);
         
-        // FeatureStore
-        //countryFS = buildCountryFS(staaten);
-        
         // START styling
         // create Style Object for the background layer
         var backgroundStyle= new OpenLayers.Style({
