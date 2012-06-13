@@ -18,6 +18,11 @@ function getThematicStyle(layername) {
         fillOpacity: 1
     }); 
     
+    
+    
+    
+     
+    
     var colors_pool = new Array('#FFC6A5', '#FF9473', '#FF6342', '#FF3118', '#FF0000', '#AD0000');
     
     if (typeof indComboBox == 'undefined' || typeof yearComboBox == 'undefined' || typeof clTypeComboBox == 'undefined' || typeof clComboBox == 'undefined') 
@@ -30,6 +35,25 @@ function getThematicStyle(layername) {
         var year = yearComboBox.getValue();
         var classificationType = clTypeComboBox.getValue();
         var numClasses = parseFloat(clComboBox.getValue());
+        var mapcolors = farbComboBox.getValue();
+        
+        switch (mapcolors ){
+        case 'rot':
+            colors_pool = new Array('#FFC6A5', '#FF9473', '#FF6342', '#FF3118', '#FF0000', '#AD0000');
+        break;
+        case 'grün':
+           colors_pool = new Array('#EDF8FB', '#CCECE6', '#99D8C9', '#66C2A4', '#2CA25F', '#006D2C');
+        break;
+        case 'blau':
+           colors_pool = new Array('#D0D1E6', '#A6BDDB', '#74A9CF', '#3690C0', '#0570B0', '#034E7B');
+        break;
+        case 'lila':
+           colors_pool = new Array('#DADAEB', '#BCBDDC', '#9E9AC8', '#807DBA', '#6A51A3', '#4A1486');
+        break;
+        case 'orange':
+           colors_pool = new Array('#FDD0A2', '#FDAE6B', '#FD8D3C', '#F16913', '#D94801', '#8C2D04'); 
+        break;
+        }
         
         // populate colors array depending on the number of classes
         for (var i = 0; i < numClasses; i++) {

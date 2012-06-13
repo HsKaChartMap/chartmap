@@ -235,6 +235,26 @@ Ext.application({
         toolbarItems.push(clComboBox);
         toolbarItems.push({ xtype: 'tbspacer', width: 10 });
         
+        
+        // ComboBox to choose the number of classes for the classification
+        farbComboBox = Ext.create('Ext.form.ComboBox', {
+             width: 100,
+			 editable: false,
+             fieldLabel: 'Farbe',
+             labelWidth: 45,
+             store: ['rot', 'grün', 'blau', 'lila','orange'],
+             queryMode: 'local',
+             value: 'rot',
+             triggerAction: 'all',
+             listeners: {
+                select: function() {
+                    applyThematicStyle()
+                }
+             }
+        });
+        toolbarItems.push(farbComboBox);
+        toolbarItems.push({ xtype: 'tbspacer', width: 10 });
+        
         //Actions for toolbar
         
         // ZoomToMaxExtent control, a "button" control
@@ -250,9 +270,7 @@ Ext.application({
         toolbarItems.push(Ext.create('Ext.button.Button', extentaction));
         toolbarItems.push("-");
         
-        
-         
-        
+
         // SelectFeature control, a "button" control
         action = Ext.create('GeoExt.Action', {
             text: "",
@@ -264,8 +282,7 @@ Ext.application({
                 toggle:true,
                 multiple: true,
                 box: false,
-                //onSelect: onFeatureSelect,
-               onSelect:featureSelected,
+                onSelect:featureSelected,
             }),
             map: map,
             // button options
@@ -275,14 +292,14 @@ Ext.application({
         });
         
        
-//Romans Datenzugriff        
+        //Romans Datenzugriff        
         function featureSelected(feature){ 
            console.log("select", feature.data.SOVEREIGNT);
         }
- //       
-
-staaten.events.on({
-        "featurehighlighted": function(e) {
+        
+        //Popup and Mouseovereffect
+        staaten.events.on({
+            "featurehighlighted": function(e) {
             onFeatureSelect(e.feature);
             }
         });
@@ -320,14 +337,15 @@ staaten.events.on({
         map.addControl(selectControl);
         selectControl.activate();
        
+       //Mouseover
         var hoverControl = new OpenLayers.Control.SelectFeature(staaten,{
         hover: true, 
         highlightOnly: true,
         renderIntent: "temporary",
         }); 
         map.addControl(hoverControl);
-        hoverControl.activate();
-       
+        hoverControl.activate();       
+        // End popup and Mouseovereffect      
        
         
         var chartButton = new Ext.Button({
