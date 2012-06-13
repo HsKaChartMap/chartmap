@@ -192,7 +192,7 @@ Ext.application({
             fields:['name', 'value'],
             data: [ ['Quantile', 'quantiles'],
                     ['Gleiche Intervalle', 'eqinterval'],
-                    ['NatÃ¼rliche Unterbrechungen','jenks']
+                    ['Natürliche Unterbrechungen','jenks']
                   ]
         });
         clTypeComboBox = Ext.create('Ext.form.ComboBox', { 
