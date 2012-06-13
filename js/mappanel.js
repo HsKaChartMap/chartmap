@@ -313,17 +313,22 @@ staaten.events.on({
 
         var selectControl = new OpenLayers.Control.SelectFeature(staaten,{
         hover: true, 
-        highlightOnly: false,
-        renderIntent: "temporary",
         overFeature:onFeatureSelect,
         outFeature:onFeatureUnselect,
         onUnselect:onFeatureUnselect
         }); 
-
         map.addControl(selectControl);
         selectControl.activate();
        
-
+        var hoverControl = new OpenLayers.Control.SelectFeature(staaten,{
+        hover: true, 
+        highlightOnly: true,
+        renderIntent: "temporary",
+        }); 
+        map.addControl(hoverControl);
+        hoverControl.activate();
+       
+       
         
         var chartButton = new Ext.Button({
                 xtype: 'button',
