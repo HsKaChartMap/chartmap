@@ -11,6 +11,9 @@ function reloadGapminderLayer(layername, keys) {
     countryFS.unbind();
     countryFS.removeAll();
     
+    // reset selectedFeatures Array
+    selectedFeatures = new Array();
+    
     matchingLayers = map.getLayersByName(layername);
     if (matchingLayers.length == 1) {
         vectorLayer = matchingLayers[0];
