@@ -282,7 +282,8 @@ Ext.application({
                 toggle:true,
                 multiple: true,
                 box: false,
-                onSelect:featureSelected,
+                onSelect: featureSelected,
+                onUnselect: featureUnselected
             }),
             map: map,
             // button options
@@ -292,9 +293,25 @@ Ext.application({
         });
         
        
-        //Romans Datenzugriff        
+        /* featureSelected        
+         * pushed a selected feature to the selectedFeatures array
+        */
         function featureSelected(feature){ 
-           console.log("select", feature.data.SOVEREIGNT);
+           selectedFeatures.push(feature);
+        }
+        
+        /* featureUnselected
+         * removed a unselected feature from the selectedFeatures array
+        */
+        function featureUnselected(feature){
+            for (var i = 0; i < selectedFeatures.length; i++) {
+                if (selectedFeatures[i].data.SOVEREIGNT == feature.data.SOVEREIGNT) {
+                    selectedFeatures.splice(i, 1);
+                }
+                else {
+                    console.log("featureUnselected: Unselected feature '" + feature.data.SOVEREIGNT + "' not found!");
+                }
+            }
         }
         
         //Popup and Mouseovereffect
