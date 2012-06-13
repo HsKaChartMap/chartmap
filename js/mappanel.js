@@ -253,6 +253,9 @@ Ext.application({
         toolbarItems.push(Ext.create('Ext.button.Button', extentaction));
         toolbarItems.push("-");
         
+        
+         
+        
         // SelectFeature control, a "button" control
         action = Ext.create('GeoExt.Action', {
             text: "",
@@ -264,29 +267,29 @@ Ext.application({
                 toggle:true,
                 multiple: true,
                 box: false,
-                onSelect: featureSelected,
-                onUnselect:onFeatureUnselect
+                //onSelect: onFeatureSelect,
+               onSelect:featureSelected,
             }),
             map: map,
-            
             // button options
-            enableToggle: true,
-            
+            enableToggle: true,          
             //listeners: {"featurehighlighted": new function(){alert("test2")}},
-            
             tooltip: "Land auswÃ¤hlen"
         });
         
-        staaten.events.on({
-        "featureselected": function(e) {
-            onFeatureSelect(e.feature);
-            }
-        });
+       
 //Romans Datenzugriff        
         function featureSelected(feature){ 
            console.log("select", feature.data.SOVEREIGNT);
         }
- //        
+ //       
+
+staaten.events.on({
+        "featurehighlighted": function(e) {
+            onFeatureSelect(e.feature);
+            }
+        });
+ 
         function onFeatureSelect(feature) {
         selectedFeature = feature;
         popup = new OpenLayers.Popup("",
@@ -313,19 +316,17 @@ Ext.application({
 
         var selectControl = new OpenLayers.Control.SelectFeature(staaten,{
         hover: true, 
-        highlightOnly: true,
+        highlightOnly: false,
         renderIntent: "temporary",
-        // onSelect:onFeatureSelect,
-        // onUnselect:onFeatureUnselect
-        });
+        overFeature:onFeatureSelect,
+        outFeature:onFeatureUnselect,
+        onUnselect:onFeatureUnselect
+        }); 
 
         map.addControl(selectControl);
         selectControl.activate();
-        
-        
-        
-        
-        
+       
+
         
         var chartButton = new Ext.Button({
                 xtype: 'button',
@@ -387,7 +388,7 @@ Ext.application({
             title: 'Hilfe',
             collapsible: true,
             collapsed: true,
-            html:'<br>Wähle das Thema (Indikator) deiner Karte, die Jahreszahl sowie die Klassifizierungsart und Anzahl der Klassen in den obigen Auswahlmenüs aus. Sobald alles ausgefüllt wird kurz darauf die Karte angezeigt.<br><br><b>Bedeutung der Buttons</b><br><br><img src="img/mapbutton.png"> Kartenübersicht <br> <br><img src="img/select.png">&nbsp;Länderwahl<br><br><img src="img/spider.png">&nbsp;Diagramm<br><br>' 
+            html:'<br>Wähle das Thema (Indikator) deiner Karte, die Jahreszahl sowie die Klassifizierungsart und Anzahl der Klassen in den obigen Auswahlmenüs aus. Sobald deine Wahl abgeschlossen is, wird automatisch die Karte angezeigt.<br><br><b>Bedeutung der Buttons</b><br><br><img src="img/mapbutton.png"> Kartenübersicht <br> <br><img src="img/select.png">&nbsp;Länderwahl<br><br><img src="img/spider.png">&nbsp;Diagramm<br><br>' 
          });
         
 
