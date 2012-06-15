@@ -372,8 +372,17 @@ Ext.application({
                 scale: 'large',
                 tooltip: "Zeige Radar-Diagramm",
                 handler: function(){
-                    alert('You clicked the button!');
-                    showRadarChart();
+                    /* configuration, the data should probably be set by some data choice wizard */
+                    const g_keys = ["tyadrylIpQ1K_iHP407374Q","phAwcNAVuyj2tPLxKvvnNPA","phAwcNAVuyj0NpF2PTov2Cw"];
+                    const g_indicators = {"HDI":SCALE_TIMES_100, "Life expectancy at birth":NO_SCALING, "Infant Mortality Rate":SCALE_TIMES_100};
+                    var g_year = yearComboBox.getValue();
+                    const g_countries = ["Afghanistan", "Armenia", "Cuba", "Burundi", "Germany", "France"];
+
+                    showRadarChartDataFromURL( g_keys
+                                             , g_indicators
+                                             , g_year
+                                             , g_countries
+                                             );
                 }
         });
         toolbarItems.push(chartButton);
