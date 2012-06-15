@@ -20,7 +20,7 @@ function showRadarChartDataFromURL(keys, indicators, year, countries) {
         if (httpRequest.readyState == 4){
             if ((httpRequest.status == 200) || (httpRequest.status == 0)){
                 console.log("got JSON data :-)");
-                var all_data = JSON.parse(httpRequest.responseText);
+                var all_data = JSON.parse(httpRequest.responseText);    // writes the content of getJSON.php in all_data
                 showRadarChart(all_data, indicators, year, countries);
             }else{
                 alert('There was a problem with the request. ' + httpRequest.status + httpRequest.responseText);
@@ -34,28 +34,28 @@ function showRadarChartDataFromURL(keys, indicators, year, countries) {
 
 function showRadarChart(all_data, indicators, year, countries){
     var storedata = Ext.create('Ext.data.JsonStore', {
-        fields: ['indicator'].concat(countries),
-        data: generateData(all_data, indicators, year, countries)
+        fields: ['indicator'].concat(countries),                    // ['indicator', 'Germany', 'France', 'Portugal']
+        data: generateData(all_data, indicators, year, countries)   // [{'indicator':'HDI','Germany':0.3,'France':7.9,'Portugal':2.9},{'indicator':'BIP', 'Germany':....}]
     });
 
-    storedata.loadData(generateData(all_data, indicators, year, countries));
-
     var chart = Ext.create('Ext.chart.Chart', {
-        width: 800,
-        height: 600,
+        id: 'ChartMap',
+        xtype: 'chart',
+        style: 'background:#fff',
+        theme: 'Category3',
+        width: 550,
+        height: 400,
+        insetPadding: 20,
         animate: true,
         store: storedata,
-        renderTo: Ext.getBody(),
-        insetPadding: 20,
-        theme: 'Category2',
         legend: {
             position: 'right'
         },
         axes: [{
             type: 'Radial',
-            position: 'radial' ,
+            position: 'radial',
             label: {
-                display: true,
+                display: true
             }
         }],
         series: generate_series(countries)
@@ -70,7 +70,7 @@ function showRadarChart(all_data, indicators, year, countries){
         shadow: true,
         maximizable: true,
         style: 'overflow: hidden;',
-        title: 'Spider Test Chart Window',
+        title: 'Radar Chart',
         renderTo: Ext.getBody(),
         layout: 'fit',
         items: chart
@@ -83,21 +83,24 @@ function showRadarChart(all_data, indicators, year, countries){
  function generateData(all_data, indicators, year, countries) {
     var data = [];
     var countryData = generate_country_data(all_data, Object.keys(indicators), year);
+    /* countryData["Germany"]["HDI"] --> 0.98
+       countryData["France"]["Infant mort rate"] --> 0.01
+     */
     for (var indicator in indicators) {
-        var scale_fun = indicators[indicator];
-        var dataPoint = { indicator:indicator };
+        var scale_fun = indicators[indicator];          // gets value for key, which is scale function
+        var dataPoint = { "indicator":indicator };      // creates map with key 'indicator' and e.g. value of 'hdi'
         for (var j=0; j<countries.length; j++) {
             var country = countries[j];
             if (!(country in countryData)) {
                 console.warn("No data for country '"+country+"'");
                 continue;
             }
-            var indicatorValue = countryData[country][indicator];
+            var indicatorValue = countryData[country][indicator];       // picks the value on this position
 
-            dataPoint[country] = indicatorValue != undefined ? scale_fun(indicatorValue) : 0;
+            dataPoint[country] = indicatorValue != undefined ? scale_fun(indicatorValue) : 0; // applies the scale function to the value
         }
         console.log("new datapoint: "+JSON.stringify(dataPoint));
-        data.push(dataPoint);
+        data.push(dataPoint);   // adds the data point to the data array
     }
 
     return data;
@@ -118,8 +121,15 @@ function showRadarChart(all_data, indicators, year, countries){
             type: 'radar',
             xField: 'indicator',
             yField: countries[i],
+            showMarkers: true,
+            markerConfig: {
+                radius: 5,
+                size: 5
+            },
             style: {
-                opacity: 0.4
+                'stroke-width': 2,
+                fill: 'none'
+                //opacity: 0.1
             }
         });
     }

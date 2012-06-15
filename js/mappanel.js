@@ -376,7 +376,7 @@ Ext.application({
                     const g_keys = ["tyadrylIpQ1K_iHP407374Q","phAwcNAVuyj2tPLxKvvnNPA","phAwcNAVuyj0NpF2PTov2Cw"];
                     const g_indicators = {"HDI":SCALE_TIMES_100, "Life expectancy at birth":NO_SCALING, "Infant Mortality Rate":SCALE_TIMES_100};
                     var g_year = yearComboBox.getValue();
-                    const g_countries = ["Afghanistan", "Armenia", "Cuba", "Burundi", "Germany", "France"];
+                    const g_countries = ["Afghanistan", "Cuba", "Burundi", "Germany", "France"];
 
                     showRadarChartDataFromURL( g_keys
                                              , g_indicators
