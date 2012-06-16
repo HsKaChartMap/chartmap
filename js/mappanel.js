@@ -373,16 +373,35 @@ Ext.application({
                 tooltip: "Zeige Radar-Diagramm",
                 handler: function(){
                     /* configuration, the data should probably be set by some data choice wizard */
-                    const g_keys = ["tyadrylIpQ1K_iHP407374Q","phAwcNAVuyj2tPLxKvvnNPA","phAwcNAVuyj0NpF2PTov2Cw"];
-                    const g_indicators = {"HDI":SCALE_TIMES_100, "Life expectancy at birth":NO_SCALING, "Infant Mortality Rate":SCALE_TIMES_100};
+                    var g_keys = ["tyadrylIpQ1K_iHP407374Q","phAwcNAVuyj2tPLxKvvnNPA","phAwcNAVuyj0NpF2PTov2Cw"];
+                    var g_indicators = {"HDI":SCALE_TIMES_100, "Life expectancy at birth":NO_SCALING, "Infant Mortality Rate":SCALE_TIMES_100};
                     var g_year = yearComboBox.getValue();
-                    const g_countries = ["Afghanistan", "Cuba", "Burundi", "Germany", "France"];
+                    var g_countries = [];
+
+                    matchingLayers = map.getLayersByName("Staaten thematisch");
+                    if (matchingLayers.length == 1) {
+                        layer = matchingLayers[0];
+                    } else {
+                        console.warn("Warning, layer not found!");
+                        return;
+                    }
+
+                    var selFeatures = layer.selectedFeatures;
+                    for (var i=0; i<selFeatures.length; i++) {
+                        var country = selFeatures[i].attributes.SOVEREIGNT
+                        if (country.indexOf(",") != -1) {
+                            alert("pending bug: ExtJS charts legends seem to have a bug when there's a comma in a legend item. Therefore we cannot use country '"+country+"'");
+                        } else {
+                            g_countries.push(country);
+                        }
+                    }
+                    console.log("selected countries: " + g_countries);
 
                     showRadarChartDataFromURL( g_keys
-                                             , g_indicators
-                                             , g_year
-                                             , g_countries
-                                             );
+                       , g_indicators
+                       , g_year
+                       , g_countries
+                       );
                 }
         });
         toolbarItems.push(chartButton);
