@@ -8,7 +8,7 @@ Ext.require([
     'GeoExt.panel.Legend',
     'GeoExt.container.VectorLegend',
     'GeoExt.Action'
-]);
+    ]);
 
 Ext.application({
     name: 'Chart Map Application',
@@ -24,13 +24,13 @@ Ext.application({
             "OpenLayers WMS",
             "http://vmap0.tiles.osgeo.org/wms/vmap0?",
             {layers: 'basic'}
-        );
+            );
 
         // BackgroundLayer
         var staatenAll = new OpenLayers.Layer.Vector("Staaten alle", {
             strategies: [new OpenLayers.Strategy.BBOX()],    
             projection: new OpenLayers.Projection("EPSG:4326"),
-			isBaseLayer: true,
+            isBaseLayer: true,
             protocol: new OpenLayers.Protocol.HTTP({                
                 url: "data/staaten.json",
                 format: new OpenLayers.Format.GeoJSON()
@@ -60,23 +60,19 @@ Ext.application({
             strokeOpacity:1,
             fillColor: '#BDBDBD',
             fillOpacity: 1
-			
         });
-        
+
         // create StyleMap-Object for the background layer
-        var backgroundStyleMap = new OpenLayers.StyleMap(
-            {
+        var backgroundStyleMap = new OpenLayers.StyleMap({
             'default': backgroundStyle
-            }
-        );
+        });
         staatenAll.addOptions({
             styleMap: backgroundStyleMap
         });
 
         // Function as eventhandler of loadend-event
         function applyThematicStyle() {
-
-            console.log("applyThematicStyle: loadend wurde ausgelÃ¶st");
+            console.log("applyThematicStyle: loadend wurde ausgelöst");
 
             // Create StyleMap-Object for the thematic layer
             thematicStyleMap = new OpenLayers.StyleMap({
@@ -92,14 +88,13 @@ Ext.application({
             // Update vectorLegend
             vectorLegend.setRules();
             vectorLegend.update();
-
         }
         /* END STYLING */
-        
+
         /* START GUI */
         // START toolbar items
         var ctrl, toolbarItems = [], action, actions = {};
-    
+
         // Set up a store for all indicator metadata
         Ext.define('indicatorModel', {
             extend: 'Ext.data.Model',
@@ -117,28 +112,27 @@ Ext.application({
             },
             autoLoad: true,
             sorters: [{
-                 property: 'indicatorName',
-                 direction: 'ASC'
-             }]
-        });
+               property: 'indicatorName',
+               direction: 'ASC'
+           }]
+       });
 
         // ComboBox to choose the indicator for the classification
         indComboBox = Ext.create('Ext.form.ComboBox', {
-             width: 200,
-			 editable: false,
-			 emptyText: 'Indikator wählen',
-             labelWidth: 65,
-             store: indicatorStore,
-             queryMode: 'local',
-             displayField: 'displayName',
-             valueField: 'indicatorName',
-             triggerAction: 'all',
-             multiSelect: false, // future: true
-             listeners: {
+            width: 200,
+            editable: false,
+            emptyText: 'Indikator wählen',
+            labelWidth: 65,
+            store: indicatorStore,
+            queryMode: 'local',
+            displayField: 'displayName',
+            valueField: 'indicatorName',
+            triggerAction: 'all',
+            multiSelect: false, // future: true
+            listeners: {
                 select: function(combobox, records, options) {
                     var keystring = ""
                     for (i = 0; i < records.length; i++) {
-                        
                         keystring = keystring + records[i].data.key;
                         if (i != records.length-1) {
                             keystring += ',';
@@ -147,103 +141,106 @@ Ext.application({
                     reloadGapminderLayer("Staaten thematisch", keystring);
                     staaten.removeAllFeatures();
                 }
-             }
+            }
         });
+
         toolbarItems.push(indComboBox);
         toolbarItems.push({ xtype: 'tbspacer', width: 10 });
-        
+
         // ComboBox to choose the year for the classification
         yearComboBox = Ext.create('Ext.form.ComboBox', {
-			 emptyText: 'Jahr wählen',
-			 editable: false,
-             width: 100,
-             //fieldLabel: 'Jahr',
-             labelWidth: 35,
-             store: ['2005', '2006', '2007', '2008', '2009', '2010'],
-             queryMode: 'local',
-             value: '2010',
-             triggerAction: 'all',
-             listeners: {
+            emptyText: 'Jahr wählen',
+            editable: false,
+            width: 75,
+            labelWidth: 35,
+            store: ['2005', '2006', '2007', '2008', '2009', '2010'],
+            queryMode: 'local',
+            value: '2010',
+            triggerAction: 'all',
+            listeners: {
                 select: function() {
                     applyThematicStyle()
                 }
-             }
+            }
         });
+
         toolbarItems.push(yearComboBox);
         toolbarItems.push({ xtype: 'tbspacer', width: 10 });
-        
+
         // ComboBox to choose the type of classification
         var clTypeStore = new Ext.data.SimpleStore({
             fields:['name', 'value'],
             data: [ ['Quantile', 'quantiles'],
-                    ['Gleiche Intervalle', 'eqinterval'],
-                    ['Natürliche Unterbrechungen','jenks']
-                  ]
+            ['Gleiche Intervalle', 'eqinterval'],
+            ['Natürliche Unterbrechungen','jenks']
+            ]
         });
+
         clTypeComboBox = Ext.create('Ext.form.ComboBox', { 
-			 emptyText: 'Klassifizierung wählen',
-			 width: 200,
-             //fieldLabel: 'Klassifizierung',
-             labelWidth: 75,
-             store: clTypeStore,
-			 editable: false,
-             displayField: 'name',
-             valueField: 'value',
-             value: 'quantiles',
-             queryMode: 'local',
-             triggerAction: 'all',
-             listeners: {
+            emptyText: 'Klassifizierung wählen',
+            width: 200,
+            labelWidth: 75,
+            store: clTypeStore,
+            editable: false,
+            displayField: 'name',
+            valueField: 'value',
+            value: 'quantiles',
+            queryMode: 'local',
+            triggerAction: 'all',
+            listeners: {
                 select: function() {
                     applyThematicStyle()
                 }
-             }
+            }
         });
+
         toolbarItems.push(clTypeComboBox);
         toolbarItems.push({ xtype: 'tbspacer', width: 10 });
         
         // ComboBox to choose the number of classes for the classification
         clComboBox = Ext.create('Ext.form.ComboBox', {
-             width: 100,
-			 editable: false,
-             fieldLabel: 'Klassen',
-             labelWidth: 45,
-             store: [3, 4, 5, 6],
-             queryMode: 'local',
-             value: '6',
-             triggerAction: 'all',
-             listeners: {
+            width: 100,
+            editable: false,
+            fieldLabel: 'Klassen',
+            labelWidth: 45,
+            store: [3, 4, 5, 6],
+            queryMode: 'local',
+            value: '6',
+            triggerAction: 'all',
+            listeners: {
                 select: function() {
                     applyThematicStyle()
                 }
-             }
+            }
         });
+
         toolbarItems.push(clComboBox);
         toolbarItems.push({ xtype: 'tbspacer', width: 10 });
-        
-        
+
         // ComboBox to choose the number of classes for the classification
         farbComboBox = Ext.create('Ext.form.ComboBox', {
-             width: 100,
-			 editable: false,
-             fieldLabel: 'Farbe',
-             labelWidth: 45,
-             store: ['rot', 'grün', 'blau', 'lila','orange'],
-             queryMode: 'local',
-             value: 'rot',
-             triggerAction: 'all',
-             listeners: {
+            width: 100,
+            editable: false,
+            fieldLabel: 'Farbe',
+            labelWidth: 45,
+            store: ['rot', 'grün', 'blau', 'lila','orange'],
+            queryMode: 'local',
+            value: 'rot',
+            triggerAction: 'all',
+            listeners: {
                 select: function() {
                     applyThematicStyle()
                 }
-             }
+            }
         });
+
         toolbarItems.push(farbComboBox);
         toolbarItems.push({ xtype: 'tbspacer', width: 10 });
-        
-        //Actions for toolbar
-        
+        toolbarItems.push("-");
+
+        /* Actions for toolbar */
         // ZoomToMaxExtent control, a "button" control
-         extentaction = Ext.create('GeoExt.Action', {
+        extentaction = Ext.create('GeoExt.Action', {
             control: new OpenLayers.Control.ZoomToMaxExtent(),
             map: map,
             text: "",
@@ -252,9 +249,9 @@ Ext.application({
             tooltip: "Zeige Karte in maximaler Ausdehnung"
         });
         actions["max_extent"] = extentaction;
+
         toolbarItems.push(Ext.create('Ext.button.Button', extentaction));
         toolbarItems.push("-");
-        
 
         // SelectFeature control, a "button" control
         action = Ext.create('GeoExt.Action', {
@@ -276,17 +273,16 @@ Ext.application({
             //listeners: {"featurehighlighted": new function(){alert("test2")}},
             tooltip: "Land auswählen"
         });
-        
-       
+
         /* featureSelected        
-         * pushed a selected feature to the selectedFeatures array
+        * pushed a selected feature to the selectedFeatures array
         */
         function featureSelected(feature){ 
-           selectedFeatures.push(feature);
+            selectedFeatures.push(feature);
         }
-        
+
         /* featureUnselected
-         * removed a unselected feature from the selectedFeatures array
+        * removed a unselected feature from the selectedFeatures array
         */
         function featureUnselected(feature){
             for (var i = 0; i < selectedFeatures.length; i++) {
@@ -355,30 +351,29 @@ Ext.application({
 
 
         var chartButton = new Ext.Button({
-                xtype: 'button',
-                text: '',
-                iconCls: 'spider',
-                scale: 'large',
-                tooltip: "Zeige Radar-Diagramm",
-                handler: function(){
-                    /* INDICATOR */
-                    var g_keys = ["tyadrylIpQ1K_iHP407374Q","phAwcNAVuyj2tPLxKvvnNPA","phAwcNAVuyj0NpF2PTov2Cw"];
+            xtype: 'button',
+            text: '',
+            iconCls: 'spider',
+            scale: 'large',
+            tooltip: "Zeige Radar-Diagramm",
+            handler: function(){
+                /* INDICATOR */
+                var g_keys = ["tyadrylIpQ1K_iHP407374Q","phAwcNAVuyj2tPLxKvvnNPA","phAwcNAVuyj0NpF2PTov2Cw"];
                     //var g_indicators = {"HDI":SCALE_TIMES_100, "Life expectancy at birth":NO_SCALING, "Infant Mortality Rate":SCALE_TIMES_100};
-                    var indicat = indComboBox.getValue();
-                    if (indicat === null) {
+                    var indicats = indComboBox.getValue();
+                    if (indicats === null) {
                         alert("Bitte zuerst Indikator wählen");
                         return;
                     }
                     var g_indicators = {};
-                    g_indicators[indicat] = SCALE_TIMES_100;  // noch nicht ganz richtig
+                    g_indicators[indicats] = SCALE_TIMES_100;  // noch nicht ganz richtig
 
-                    /* YEAR */
                     var g_year = yearComboBox.getValue();
 
-                    /* COUNTRIES */
                     var g_countries = [];
 
                     /* this should be defined somehow globally, shouldn't it? */
+                    /*
                     matchingLayers = map.getLayersByName("Staaten thematisch");
                     if (matchingLayers.length == 1) {
                         layer = matchingLayers[0];
@@ -405,20 +400,20 @@ Ext.application({
 
                     showRadarChartDataFromURL(g_keys, g_indicators, g_year, g_countries);
                 }
-        });
-        toolbarItems.push(chartButton);
-        
-        var report = function(e) {
-                OpenLayers.Console.log(e.type, e.feature.id);
-            };
+            });
+toolbarItems.push(chartButton);
+
+var report = function(e) {
+    OpenLayers.Console.log(e.type, e.feature.id);
+};
 
         // END toolbar items
         
         // START panels
         // MapPanel
         var mappanel = Ext.create('GeoExt.panel.Map', {
-        region: 'center',
-        id: "mappanel",
+            region: 'center',
+            id: "mappanel",
         xtype: "gx_mappanel", // TabPanel itself has no title
         layers: [staatenAll,staaten],
         map: map,
@@ -427,7 +422,7 @@ Ext.application({
         zoom: 3,
         activeTab: 0,      // First tab active by default
         dockedItems: [{
-                xtype: 'toolbar',
+            xtype: 'toolbar',
                 //dock: 'top',
                 items: toolbarItems
             }]
@@ -439,31 +434,31 @@ Ext.application({
             //labelCls: 'vectorLegendItem' // todo: Create CSS class to show nice items
         });
 
-         var impressumPanel = Ext.create('Ext.Panel', {
+        var impressumPanel = Ext.create('Ext.Panel', {
             title: 'Impressum',
             collapsible: true,
             collapsed: true,
             html:'<br><h2>&nbsp;Hochschule Karlsruhe</h2> <br><b>&nbsp;GIS-Projekt</b><br> &nbsp;Alice Rühl<br> &nbsp;Amr Bakri <br> &nbsp;Michael Kuch<br> &nbsp;Roman Wössner<br><br><img src="img/lmz.gif"><br><br>'
-         });
+        });
         
         var hilfePanel = Ext.create('Ext.Panel', {
             title: 'Hilfe',
             collapsible: true,
             collapsed: true,
             html:'<br>Wähle das Thema (Indikator) deiner Karte, die Jahreszahl sowie die Klassifizierungsart und Anzahl der Klassen in den obigen Auswahlmenüs aus. Sobald deine Wahl abgeschlossen is, wird automatisch die Karte angezeigt.<br><br><b>Bedeutung der Buttons</b><br><br><img src="img/mapbutton.png"> Kartenübersicht <br> <br><img src="img/select.png">&nbsp;Länderwahl<br><br><img src="img/spider.png">&nbsp;Diagramm<br><br>' 
-         });
+        });
         
 
         // LegendPanel
         var legendPanel = Ext.create('Ext.Panel', {
             title: "Legende",
            // region: 'west',
-            defaults: {
-                labelCls: 'mylabel',
-                style: 'padding:5px; background-color: #EAEAEA;',   
-            },
-            collapsible: true,
-            collapsed: false,    
+           defaults: {
+            labelCls: 'mylabel',
+            style: 'padding:5px; background-color: #EAEAEA;',   
+        },
+        collapsible: true,
+        collapsed: false,    
             //split: true,
             //width: 200,
             autoScroll: true,
@@ -491,8 +486,8 @@ Ext.application({
             layout: 'border',
             renderTo: Ext.getBody(), 
             items: [
-                menuPanel,
-                mappanel
+            menuPanel,
+            mappanel
             ]
         });
         //END panels
