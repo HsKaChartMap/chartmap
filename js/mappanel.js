@@ -372,12 +372,24 @@ Ext.application({
                 scale: 'large',
                 tooltip: "Zeige Radar-Diagramm",
                 handler: function(){
-                    /* configuration, the data should probably be set by some data choice wizard */
+                    /* INDICATOR */
                     var g_keys = ["tyadrylIpQ1K_iHP407374Q","phAwcNAVuyj2tPLxKvvnNPA","phAwcNAVuyj0NpF2PTov2Cw"];
-                    var g_indicators = {"HDI":SCALE_TIMES_100, "Life expectancy at birth":NO_SCALING, "Infant Mortality Rate":SCALE_TIMES_100};
+                    //var g_indicators = {"HDI":SCALE_TIMES_100, "Life expectancy at birth":NO_SCALING, "Infant Mortality Rate":SCALE_TIMES_100};
+                    var indicat = indComboBox.getValue();
+                    if (indicat === null) {
+                        alert("Bitte zuerst Indikator wählen");
+                        return;
+                    }
+                    var g_indicators = {};
+                    g_indicators[indicat] = SCALE_TIMES_100;  // noch nicht ganz richtig
+
+                    /* YEAR */
                     var g_year = yearComboBox.getValue();
+
+                    /* COUNTRIES */
                     var g_countries = [];
 
+                    /* this should be defined somehow globally, shouldn't it? */
                     matchingLayers = map.getLayersByName("Staaten thematisch");
                     if (matchingLayers.length == 1) {
                         layer = matchingLayers[0];
@@ -389,7 +401,7 @@ Ext.application({
                     var selFeatures = layer.selectedFeatures;
                     for (var i=0; i<selFeatures.length; i++) {
                         var country = selFeatures[i].attributes.SOVEREIGNT
-                        if (country.indexOf(",") != -1) {
+                        if (country.indexOf(".") != -1) {
                             alert("pending bug: ExtJS charts legends seem to have a bug when there's a comma in a legend item. Therefore we cannot use country '"+country+"'");
                         } else {
                             g_countries.push(country);
@@ -397,24 +409,20 @@ Ext.application({
                     }
                     console.log("selected countries: " + g_countries);
 
-                    showRadarChartDataFromURL( g_keys
-                       , g_indicators
-                       , g_year
-                       , g_countries
-                       );
+                    if (g_countries.length < 1 || g_countries.length > 5) {
+                        confirm("Bitte wählen Sie mindestens 1, aber maximal 5 Länder aus!");     
+                        return;
+                    }
+
+                    showRadarChartDataFromURL(g_keys, g_indicators, g_year, g_countries);
                 }
         });
         toolbarItems.push(chartButton);
-        toolbarItems.push("-");
         
         var report = function(e) {
                 OpenLayers.Console.log(e.type, e.feature.id);
             };
-            
-        actions["select"] = action;
-        toolbarItems.push(Ext.create('Ext.button.Button', action));
-        toolbarItems.push("-");
-        
+
         // END toolbar items
         
         // START panels
