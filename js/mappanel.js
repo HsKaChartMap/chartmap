@@ -441,29 +441,14 @@ Ext.application({
             title: 'Impressum',
             collapsible: true,
             collapsed: true,
-            html:'<br><h2>&nbsp;Hochschule Karlsruhe</h2>
-            <br><b>&nbsp;GIS-Projekt</b>
-            <br> &nbsp;Alice Rühl
-            <br> &nbsp;Amr Bakri
-            <br> &nbsp;Michael Kuch
-            <br> &nbsp;Roman Wössner
-            <br><br>
-            <img src="img/lmz.gif"><br><br>'
+            html:'<br><h2>&nbsp;Hochschule Karlsruhe</h2><br><b>&nbsp;GIS-Projekt</b><br> &nbsp;Alice Rühl<br> &nbsp;Amr Bakri<br> &nbsp;Michael Kuch<br> &nbsp;Roman Wössner<br><br><img src="img/lmz.gif"><br><br>'
         });
         
         var hilfePanel = Ext.create('Ext.Panel', {
             title: 'Hilfe',
             collapsible: true,
             collapsed: true,
-            html:'<br>Wähle das Thema (Indikator) deiner Karte, die Jahreszahl sowie die
-            Klassifizierungsart und Anzahl der Klassen in den obigen Auswahlmenüs aus.
-            Sobald deine Wahl abgeschlossen is, wird automatisch die Karte angezeigt.
-            <br><br><b>
-            Bedeutung der Buttons
-            </b><br><br>
-            <img src="img/mapbutton.png"> Kartenübersicht <br><br>
-            <img src="img/select.png">&nbsp;Länderwahl <br><br>
-            <img src="img/spider.png">&nbsp;Diagramm<br><br>'
+            html:'<br>Wähle das Thema (Indikator) deiner Karte, die Jahreszahl sowie die Klassifizierungsart und Anzahl der Klassen in den obigen Auswahlmenüs aus. Sobald deine Wahl abgeschlossen is, wird automatisch die Karte angezeigt.<br><br><b>Bedeutung der Buttons</b><br><br><img src="img/mapbutton.png"> Kartenübersicht <br><br><img src="img/select.png">&nbsp;Länderwahl <br><br><img src="img/spider.png">&nbsp;Diagramm<br><br>'
         });
 
         // LegendPanel
