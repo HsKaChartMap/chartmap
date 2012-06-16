@@ -294,52 +294,52 @@ Ext.application({
                 }
             }
         }
-        
+
         //Popup and Mouseovereffect
         staaten.events.on({
             "featurehighlighted": function(e) {
-            onFeatureSelect(e.feature);
+                onFeatureSelect(e.feature);
             }
         });
- 
+
         function onFeatureSelect(feature) {
-        selectedFeature = feature;
-        popup = new OpenLayers.Popup("",
-            feature.geometry.getBounds().getCenterLonLat(),
-            new OpenLayers.Size(120,20),
-            '<b>Land:</b>&nbsp;'+feature.data.SOVEREIGNT,            
+            selectedFeature = feature;
+            popup = new OpenLayers.Popup("",
+                feature.geometry.getBounds().getCenterLonLat(),
+                new OpenLayers.Size(120,20),
+                '<b>Land:</b>&nbsp;'+feature.data.SOVEREIGNT,
             //<div style='padding:15px 5px 5px 10px;'>"Name"+ test </div>,
             null,
             false,
             onPopupClose);
-        feature.popup = popup;
-        map.addPopup(popup);
+            feature.popup = popup;
+            map.addPopup(popup);
         }
 
         function onPopupClose(e) {
-        selectControl.unselect(selectedFeature);
+            selectControl.unselect(selectedFeature);
         }
-        
+
         function onFeatureUnselect(feature) {
-        map.removePopup(feature.popup);
-        feature.popup.destroy();
-        feature.popup = null;
+            map.removePopup(feature.popup);
+            feature.popup.destroy();
+            feature.popup = null;
         }
 
         var selectControl = new OpenLayers.Control.SelectFeature(staaten,{
-        hover: true, 
-        overFeature:onFeatureSelect,
-        outFeature:onFeatureUnselect,
-        onUnselect:onFeatureUnselect
+            hover: true,
+            overFeature:onFeatureSelect,
+            outFeature:onFeatureUnselect,
+            onUnselect:onFeatureUnselect
         }); 
         map.addControl(selectControl);
         selectControl.activate();
-       
-       //Mouseover
+
+        //Mouseover
         var hoverControl = new OpenLayers.Control.SelectFeature(staaten,{
-        hover: true, 
-        highlightOnly: true,
-        renderIntent: "temporary",
+            hover: true,
+            highlightOnly: true,
+            renderIntent: "temporary",
         }); 
         map.addControl(hoverControl);
         hoverControl.activate();       
@@ -359,70 +359,73 @@ Ext.application({
             handler: function(){
                 /* INDICATOR */
                 var g_keys = ["tyadrylIpQ1K_iHP407374Q","phAwcNAVuyj2tPLxKvvnNPA","phAwcNAVuyj0NpF2PTov2Cw"];
-                    //var g_indicators = {"HDI":SCALE_TIMES_100, "Life expectancy at birth":NO_SCALING, "Infant Mortality Rate":SCALE_TIMES_100};
-                    var indicats = indComboBox.getValue();
-                    if (indicats === null) {
-                        alert("Bitte zuerst Indikator wählen");
-                        return;
-                    }
-                    var g_indicators = {};
-                    g_indicators[indicats] = SCALE_TIMES_100;  // noch nicht ganz richtig
-
-                    var g_year = yearComboBox.getValue();
-
-                    var g_countries = [];
-
-                    /* this should be defined somehow globally, shouldn't it? */
-                    /*
-                    matchingLayers = map.getLayersByName("Staaten thematisch");
-                    if (matchingLayers.length == 1) {
-                        layer = matchingLayers[0];
-                    } else {
-                        console.warn("Warning, layer not found!");
-                        return;
-                    }
-
-                    var selFeatures = layer.selectedFeatures;
-                    for (var i=0; i<selFeatures.length; i++) {
-                        var country = selFeatures[i].attributes.SOVEREIGNT
-                        if (country.indexOf(".") != -1) {
-                            alert("pending bug: ExtJS charts legends seem to have a bug when there's a comma in a legend item. Therefore we cannot use country '"+country+"'");
-                        } else {
-                            g_countries.push(country);
-                        }
-                    }
-                    console.log("selected countries: " + g_countries);
-
-                    if (g_countries.length < 1 || g_countries.length > 5) {
-                        confirm("Bitte wählen Sie mindestens 1, aber maximal 5 Länder aus!");     
-                        return;
-                    }
-
-                    showRadarChartDataFromURL(g_keys, g_indicators, g_year, g_countries);
+                //var g_indicators = {"HDI":SCALE_TIMES_100, "Life expectancy at birth":NO_SCALING, "Infant Mortality Rate":SCALE_TIMES_100};
+                var indicats = indComboBox.getValue();
+                if (indicats === null) {
+                    alert("Bitte zuerst Indikator wählen");
+                    return;
                 }
-            });
-toolbarItems.push(chartButton);
+                var g_indicators = {};
+                g_indicators[indicats] = SCALE_TIMES_100;  // noch nicht ganz richtig
 
-var report = function(e) {
-    OpenLayers.Console.log(e.type, e.feature.id);
-};
+                var g_year = yearComboBox.getValue();
+
+                var g_countries = [];
+
+                /* this should be defined somehow globally, shouldn't it? */
+                /*
+                matchingLayers = map.getLayersByName("Staaten thematisch");
+                if (matchingLayers.length == 1) {
+                    layer = matchingLayers[0];
+                } else {
+                    console.warn("Warning, layer not found!");
+                    return;
+                }
+                */
+
+                var selFeatures = staaten.selectedFeatures;
+                for (var i=0; i<selFeatures.length; i++) {
+                    var country = selFeatures[i].attributes.SOVEREIGNT
+                    if (country.indexOf(".") != -1) {
+                        alert("pending bug: ExtJS charts legends seem to have a bug when there's a comma in a legend item. Therefore we cannot use country '"+country+"'");
+                    } else {
+                        g_countries.push(country);
+                    }
+                }
+                console.log("selected countries: " + g_countries);
+
+                if (g_countries.length < 1 || g_countries.length > 5) {
+                    confirm("Bitte wählen Sie mindestens 1, aber maximal 5 Länder aus!");
+                    return;
+                }
+
+                showRadarChartDataFromURL(g_keys, g_indicators, g_year, g_countries);
+            }
+        });
+
+        toolbarItems.push(chartButton);
+
+        // WAS TUT DAS?
+        var report = function(e) {
+            OpenLayers.Console.log(e.type, e.feature.id);
+        };
 
         // END toolbar items
         
-        // START panels
+        /* START panels */
         // MapPanel
         var mappanel = Ext.create('GeoExt.panel.Map', {
             region: 'center',
             id: "mappanel",
-        xtype: "gx_mappanel", // TabPanel itself has no title
-        layers: [staatenAll,staaten],
-        map: map,
-        center: '0,0',
-        extent: '5.19,46.85,15.47,55.63',
-        zoom: 3,
-        activeTab: 0,      // First tab active by default
-        dockedItems: [{
-            xtype: 'toolbar',
+            xtype: "gx_mappanel", // TabPanel itself has no title
+            layers: [staatenAll,staaten],
+            map: map,
+            center: '0,0',
+            extent: '5.19,46.85,15.47,55.63',
+            zoom: 3,
+            activeTab: 0,      // First tab active by default
+            dockedItems: [{
+                xtype: 'toolbar',
                 //dock: 'top',
                 items: toolbarItems
             }]
@@ -438,33 +441,47 @@ var report = function(e) {
             title: 'Impressum',
             collapsible: true,
             collapsed: true,
-            html:'<br><h2>&nbsp;Hochschule Karlsruhe</h2> <br><b>&nbsp;GIS-Projekt</b><br> &nbsp;Alice Rühl<br> &nbsp;Amr Bakri <br> &nbsp;Michael Kuch<br> &nbsp;Roman Wössner<br><br><img src="img/lmz.gif"><br><br>'
+            html:'<br><h2>&nbsp;Hochschule Karlsruhe</h2>
+            <br><b>&nbsp;GIS-Projekt</b>
+            <br> &nbsp;Alice Rühl
+            <br> &nbsp;Amr Bakri
+            <br> &nbsp;Michael Kuch
+            <br> &nbsp;Roman Wössner
+            <br><br>
+            <img src="img/lmz.gif"><br><br>'
         });
         
         var hilfePanel = Ext.create('Ext.Panel', {
             title: 'Hilfe',
             collapsible: true,
             collapsed: true,
-            html:'<br>Wähle das Thema (Indikator) deiner Karte, die Jahreszahl sowie die Klassifizierungsart und Anzahl der Klassen in den obigen Auswahlmenüs aus. Sobald deine Wahl abgeschlossen is, wird automatisch die Karte angezeigt.<br><br><b>Bedeutung der Buttons</b><br><br><img src="img/mapbutton.png"> Kartenübersicht <br> <br><img src="img/select.png">&nbsp;Länderwahl<br><br><img src="img/spider.png">&nbsp;Diagramm<br><br>' 
+            html:'<br>Wähle das Thema (Indikator) deiner Karte, die Jahreszahl sowie die
+            Klassifizierungsart und Anzahl der Klassen in den obigen Auswahlmenüs aus.
+            Sobald deine Wahl abgeschlossen is, wird automatisch die Karte angezeigt.
+            <br><br><b>
+            Bedeutung der Buttons
+            </b><br><br>
+            <img src="img/mapbutton.png"> Kartenübersicht <br><br>
+            <img src="img/select.png">&nbsp;Länderwahl <br><br>
+            <img src="img/spider.png">&nbsp;Diagramm<br><br>'
         });
-        
 
         // LegendPanel
         var legendPanel = Ext.create('Ext.Panel', {
             title: "Legende",
-           // region: 'west',
-           defaults: {
-            labelCls: 'mylabel',
-            style: 'padding:5px; background-color: #EAEAEA;',   
-        },
-        collapsible: true,
-        collapsed: false,    
+            // region: 'west',
+            defaults: {
+                labelCls: 'mylabel',
+                style: 'padding:5px; background-color: #EAEAEA;',
+            },
+            collapsible: true,
+            collapsed: false,
             //split: true,
             //width: 200,
             autoScroll: true,
             items: [vectorLegend]
         });
-        
+
         var menuPanel = Ext.create('Ext.Panel', {
             title: "",
             region: 'west',
@@ -472,25 +489,24 @@ var report = function(e) {
                 labelCls: 'mylabel',
                 style: 'padding:5px; background-color: #EAEAEA;',   
             },
-            
             collapsible: false,
-            collapsed: false,    
+            collapsed: false,
             split: true,
             width: 200,
             autoScroll: true,
             items: [legendPanel,hilfePanel,impressumPanel]
         });
-        
+
         // Viewport
         Ext.create('Ext.container.Viewport', {
             layout: 'border',
             renderTo: Ext.getBody(), 
             items: [
-            menuPanel,
-            mappanel
+                menuPanel,
+                mappanel
             ]
         });
         //END panels
-        // END GUI
+        /* END GUI */
     }
 });
