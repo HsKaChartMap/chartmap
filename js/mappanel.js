@@ -11,7 +11,7 @@ Ext.require([
 ]);
 
 Ext.application({
-    name: 'HelloGeoExt2',
+    name: 'Chart Map Application',
     launch: function() {
 
         Ext.state.Manager.setProvider(Ext.create('Ext.state.CookieProvider', {
@@ -19,19 +19,13 @@ Ext.application({
         }));
 
         map = new OpenLayers.Map({});
-        
+
         var wms = new OpenLayers.Layer.WMS(
             "OpenLayers WMS",
             "http://vmap0.tiles.osgeo.org/wms/vmap0?",
             {layers: 'basic'}
         );
-        /*TopoLayer
-        var topo = new OpenLayers.Layer.WMS(
-            "Topographie", "http://gis.lmz-bw.de/tilecache/tilecache.py?", 
-            {layers: 'bmng'}, {transitionEffect: 'null'}
-        );
-		*/
-		
+
         // BackgroundLayer
         var staatenAll = new OpenLayers.Layer.Vector("Staaten alle", {
             strategies: [new OpenLayers.Strategy.BBOX()],    
@@ -42,13 +36,12 @@ Ext.application({
                 format: new OpenLayers.Format.GeoJSON()
             })
         });
-        
+
         // Thematic Layer
         var staaten = new OpenLayers.Layer.Vector("Staaten thematisch", {
             strategies: [new OpenLayers.Strategy.Fixed()],    
             projection: new OpenLayers.Projection("EPSG:4326"),
             protocol: new OpenLayers.Protocol.HTTP({                
-                //url: "php/getJSON.php?keys=tyadrylIpQ1K_iHP407374Q,phAwcNAVuyj2tPLxKvvnNPA,phAwcNAVuyj0NpF2PTov2Cw,pyj6tScZqmEd1G8qI4GpZQg,rezAT4nYhKc2Loe6CxWSPWw",
                 url: "php/getJSON.php",
                 format: new OpenLayers.Format.GeoJSON()
             }),
@@ -56,13 +49,13 @@ Ext.application({
                 'loadend': applyThematicStyle
             }
         });
-        
+
         //Add Layers to map
         map.addLayers([staatenAll,staaten]);
         
-        // START styling
+        /* START STYLING */
         // create Style Object for the background layer
-        var backgroundStyle= new OpenLayers.Style({
+        var backgroundStyle = new OpenLayers.Style({
             strokeColor:'#ffffff',
             strokeOpacity:1,
             fillColor: '#BDBDBD',
@@ -82,39 +75,32 @@ Ext.application({
 
         // Function as eventhandler of loadend-event
         function applyThematicStyle() {
-        
+
             console.log("applyThematicStyle: loadend wurde ausgel√∂st");
-            
+
             // Create StyleMap-Object for the thematic layer
-            thematicStyleMap = new OpenLayers.StyleMap(
-                {
+            thematicStyleMap = new OpenLayers.StyleMap({
                 'default': getThematicStyle("Staaten thematisch")
-                }
-            );
+            });
             staaten.addOptions({
                 styleMap: thematicStyleMap
             });
             // Redraw staaten layer
             staaten.redraw();
             console.log("applyThematicStyle: Layer wurde neu gezeichnet");
-            
+
             // Update vectorLegend
             vectorLegend.setRules();
             vectorLegend.update();
-            
-            // Rebuild countryFeatureStore
-            countryFS = buildCountryFS(staaten);
-            countryFS.unbind();
-            
-            //console.log("applyThematicStyle: Neuer FeatureStore wurde erstellt");
+
         }
-        // END styling
+        /* END STYLING */
         
-        // START GUI
+        /* START GUI */
         // START toolbar items
         var ctrl, toolbarItems = [], action, actions = {};
     
-        // Indicator ComboBox
+        // Set up a store for all indicator metadata
         Ext.define('indicatorModel', {
             extend: 'Ext.data.Model',
             fields: ['key', 'displayName', 'indicatorName', 'category', 'subcategory', 'dataprovider', 'dataprovider_link']
@@ -139,7 +125,6 @@ Ext.application({
         // ComboBox to choose the indicator for the classification
         indComboBox = Ext.create('Ext.form.ComboBox', {
              width: 200,
-             //fieldLabel: 'Indikator',
 			 editable: false,
 			 emptyText: 'Indikator w‰hlen',
              labelWidth: 65,
@@ -363,8 +348,12 @@ Ext.application({
         map.addControl(hoverControl);
         hoverControl.activate();       
         // End popup and Mouseovereffect      
-       
-        
+
+        actions["select"] = action;
+        toolbarItems.push(Ext.create('Ext.button.Button', action));
+        toolbarItems.push("-");
+
+
         var chartButton = new Ext.Button({
                 xtype: 'button',
                 text: '',

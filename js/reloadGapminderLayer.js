@@ -8,8 +8,8 @@ function reloadGapminderLayer(layername, keys) {
     console.log("reloadGapminderLayer: reload wird initiiert");
     
     // unbind and clear countryFeatureStore
-    countryFS.unbind();
-    countryFS.removeAll();
+    //countryFS.unbind();
+    //countryFS.removeAll();
     
     // reset selectedFeatures Array
     selectedFeatures = new Array();
