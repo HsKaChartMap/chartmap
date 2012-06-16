@@ -289,7 +289,7 @@ Ext.application({
             // button options
             enableToggle: true,          
             //listeners: {"featurehighlighted": new function(){alert("test2")}},
-            tooltip: "Land ausw√§hlen"
+            tooltip: "Land ausw‰hlen"
         });
         
        
