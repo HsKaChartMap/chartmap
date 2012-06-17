@@ -9,8 +9,8 @@ function getYearsByIndicator(layername, indicator) {
     var matchingLayers;
     var vectorLayer;
     var yearStore;
-    var index = -1;
-    var dates;
+    var yearsArray = new Array();
+    var dates = new Array();
     
     // get vector layer
     matchingLayers = map.getLayersByName(layername);
@@ -25,20 +25,18 @@ function getYearsByIndicator(layername, indicator) {
 
     for (var i=0;i < vectorLayer.features.length;i++) {
         if (vectorLayer.features[i]['data'][indicator]) {
-             //if (vectorLayer.features[i]['data'][indicator].length > 1) {
-            var x = vectorLayer.features[i]['data'][indicator].length;
-            for (var j=0; j < x; j++) {
-                if (vectorLayer.features[i]['data'][indicator][j] != "") {
-                    index = index + 1;
-                    dates[index] = vectorLayer.features[i]['data'][indicator][j];
-                }// end if
+            for (var year in vectorLayer.features[i]['data'][indicator]) {
+                if (yearsArray.indexOf(year) == -1) {
+                    yearsArray.push(year);
+                    dates.push([year, parseFloat(year)]);
+                }
             }// enf for
         }// end if
     }// end for
 
     //build store containing the extracted keys
     yearStore = new Ext.data.SimpleStore({
-        fields:['year'],
+        fields:['year', 'yearVal'],
         data: dates
     });
     //return the store

@@ -85,9 +85,13 @@ Ext.application({
             staaten.redraw();
             console.log("applyThematicStyle: Layer wurde neu gezeichnet");
 
+            // Update YearComboBox
+            yearComboBox.bindStore(getYearsByIndicator("Staaten thematisch", indComboBox.getValue()));
+            
             // Update vectorLegend
             vectorLegend.setRules();
             vectorLegend.update();
+            
         }
         /* END STYLING */
 
@@ -146,16 +150,26 @@ Ext.application({
 
         toolbarItems.push(indComboBox);
         toolbarItems.push({ xtype: 'tbspacer', width: 10 });
-
+        
+        
+        var yearStore = new Ext.data.SimpleStore({
+            fields:['year', 'yearVal'],
+            data: [ ['2010', '2010'],
+            ['2011', '2011'],
+            ['2012', '2012']
+            ]
+        });
+        
         // ComboBox to choose the year for the classification
         yearComboBox = Ext.create('Ext.form.ComboBox', {
             emptyText: 'Jahr wählen',
             editable: false,
             width: 75,
             labelWidth: 35,
-            store: ['2005', '2006', '2007', '2008', '2009', '2010'],
+            store: yearStore,
             queryMode: 'local',
-            value: '2010',
+            displayField: 'year',
+            valueField: 'yearVal',
             triggerAction: 'all',
             listeners: {
                 select: function() {
