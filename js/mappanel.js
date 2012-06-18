@@ -52,6 +52,9 @@ Ext.application({
 
         //Add Layers to map
         map.addLayers([staatenAll,staaten]);
+
+        var scaleline = new OpenLayers.Control.ScaleLine();
+        map.addControl(scaleline);
         
         /* START STYLING */
         // create Style Object for the background layer
@@ -378,7 +381,7 @@ Ext.application({
                 var indicats = indComboBox.getValue();
 
                 indicatorStore.queryBy(function(record, id) {
-                    console.log(record.get("indicatorName")+"   "+indicats.indexOf(record.get("indicatorName")));
+                    //console.log(record.get("indicatorName")+"   "+indicats.indexOf(record.get("indicatorName")));
                     return indicats.indexOf(record.get("indicatorName")) != -1;
                 }).each(function(record) { 
                     g_keys.push(record.get("key")); 
