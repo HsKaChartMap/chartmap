@@ -36,6 +36,7 @@ function showRadarChart(all_data, indicators, year, countries){
     });
 
     var chart = Ext.create('Ext.chart.Chart', {
+        region: 'center',
         id: 'ChartMap',
         xtype: 'chart',
         style: 'background:#fff',
@@ -57,8 +58,9 @@ function showRadarChart(all_data, indicators, year, countries){
         }],
         series: generate_series(countries)
     });
-
+    
     var win = Ext.create('Ext.window.Window', {
+        layout: 'border',
         width: 650,
         height: 500,
         minHeight: 400,
@@ -69,10 +71,38 @@ function showRadarChart(all_data, indicators, year, countries){
         style: 'overflow: hidden;',
         title: 'Radar Chart',
         renderTo: Ext.getBody(),
-        layout: 'fit',
-        items: chart
+        items: [{
+                region:'west',
+                margins: '5 0 0 0',
+                cmargins: '5 5 0 0',
+                width: 175,
+                minSize: 100,
+                maxSize: 250,
+                collapsible: true,
+                items:[{
+                    xtype: 'checkboxgroup',
+                    columns: 1,
+                    vertical: true,
+                    items: generateCheckboxes()
+                }]
+            },
+            chart
+        ]
     });
 }
+
+
+function generateCheckboxes() {
+    var checkboxes = new Array();
+    var checkbox_x;
+    
+    indComboBox.getStore().each(function(record){
+        checkboxes.push({ boxLabel: record.get("displayName"), name: 'rb', inputValue: '1'});
+    });
+    
+    return checkboxes;
+}
+
 
 /******************************************************************************
  * CHART SETUP
