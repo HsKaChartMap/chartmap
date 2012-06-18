@@ -88,7 +88,7 @@ function getThematicStyle(layername) {
     }
     
     // check if any data is available
-    if (items.length != 0) {
+    if (items.length != 0 && items.length >= numClasses) {
         console.log("getThematicStyle: Style für " + items.length + " Items wird berechnet");
         console.log("getThematicStyle: Parameter: " + indicator + "; " + year + "; " + classificationType + "; " + numClasses);
         // create geostats serie
