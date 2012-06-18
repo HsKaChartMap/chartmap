@@ -59,8 +59,8 @@ function showRadarChart(all_data, indicators, year, countries){
     });
 
     var win = Ext.create('Ext.window.Window', {
-        width: 600,
-        height: 450,
+        width: 650,
+        height: 500,
         minHeight: 400,
         minWidth: 550,
         hidden: false,
