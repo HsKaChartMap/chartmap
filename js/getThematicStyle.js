@@ -31,7 +31,8 @@ function getThematicStyle(layername) {
         return thematicStyle;
     }
     else {
-        var indicator = indComboBox.getValue();
+        var indicatorX = indComboBox.getValue();
+        var indicator = indicatorX[0];
         var year = yearComboBox.getValue();
         var classificationType = clTypeComboBox.getValue();
         var numClasses = parseFloat(clComboBox.getValue());

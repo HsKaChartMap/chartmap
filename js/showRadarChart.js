@@ -4,11 +4,8 @@ Ext.require([
 Ext.require('Ext.chart.*');
 Ext.require(['Ext.Window', 'Ext.fx.target.Sprite', 'Ext.layout.container.Fit', 'Ext.window.MessageBox']);
 
-NO_SCALING = function(v) { return v; }
-SCALE_TIMES_100 = function(v) {return v*100; }
-
 function showRadarChartDataFromURL(keys, indicators, year, countries) {
-    var urlBegin = "http://localhost:8888/chartmap/php/getJSON.php?keys=";
+    var urlBegin = "php/getJSON.php?keys=";
     var urlKeys = keys.join();
     var url = urlBegin + urlKeys;
 

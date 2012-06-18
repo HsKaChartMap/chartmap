@@ -6,8 +6,8 @@
         "category" : "",
         "subcategory" : "",
         "dataprovider" : "Various sources",
-        "dataprovider_link" : "http://spreadsheets.google.com/pub?key=tyadrylIpQ1K_iHP407374Q=1"
-        // would it be possible to insert some kind of scale factor for every indicator?
+        "dataprovider_link" : "http://spreadsheets.google.com/pub?key=tyadrylIpQ1K_iHP407374Q=1",
+        "scale_function" : "SCALE_TIMES_100"
     },
     {
         "key" : "pyj6tScZqmEe1GaiYJX2qGA",
@@ -16,7 +16,8 @@
         "category" : "Health",
         "subcategory" : "HIV",
         "dataprovider" : "Based on UNAIDS",
-        "dataprovider_link" : "http://spreadsheets.google.com/pub?key=pyj6tScZqmEe1GaiYJX2qGA&gid=1"
+        "dataprovider_link" : "http://spreadsheets.google.com/pub?key=pyj6tScZqmEe1GaiYJX2qGA&gid=1",
+        "scale_function" : "NO_SCALING"
     },
     {
         "key" : "phAwcNAVuyj2tPLxKvvnNPA",
@@ -25,7 +26,8 @@
         "category" : "",
         "subcategory" : "",
         "dataprovider" : "Various sources",
-        "dataprovider_link" : "http://spreadsheets.google.com/pub?key=phAwcNAVuyj2tPLxKvvnNPA&gid=1"
+        "dataprovider_link" : "http://spreadsheets.google.com/pub?key=phAwcNAVuyj2tPLxKvvnNPA&gid=1",
+        "scale_function" : "NO_SCALING"
     },
     {
         "key" : "pyj6tScZqmEcKuNdFCUo6TQ",
@@ -34,7 +36,8 @@
         "category" : "Infrastructure",
         "subcategory" : "Communication",
         "dataprovider" : "World Bank",
-        "dataprovider_link" : "http://data.worldbank.org/indicator/IT.CEL.SETS"
+        "dataprovider_link" : "http://data.worldbank.org/indicator/IT.CEL.SETS",
+        "scale_function" : "NO_SCALING"
     },
     {
         "key" : "0ArfEDsV3bBwCdHF3eXhHdmQ2cGZRRnJfUGdtdTJnWFE",
@@ -43,7 +46,8 @@
         "category" : "Infrastructure",
         "subcategory" : "Communication",
         "dataprovider" : "World Bank",
-        "dataprovider_link" : "http://data.worldbank.org/indicator/IT.NET.USER"
+        "dataprovider_link" : "http://data.worldbank.org/indicator/IT.NET.USER",
+        "scale_function" : "NO_SCALING"
     },
     {
         "key" : "pyj6tScZqmEdJwn1Wi__YEg",
@@ -52,7 +56,8 @@
 		"category" : "Economy",
 		"subcategory" : "Debt & trade",
 		"dataprovider" : "World Bank",
-		"dataprovider_link" : "http://data.worldbank.org/indicator/NE.EXP.GNFS.ZS"
+		"dataprovider_link" : "http://data.worldbank.org/indicator/NE.EXP.GNFS.ZS",
+        "scale_function" : "NO_SCALING"
 	},
     {
         "key": "pyj6tScZqmEfnbNaaWfq7VA",
@@ -61,7 +66,8 @@
 		"category" : "Economy",
 		"subcategory" : "Debt & trade",
 		"dataprovider" : "World Bank",
-		"dataprovider_link" : "http://data.worldbank.org/indicator/NE.IMP.GNFS.ZS"
+		"dataprovider_link" : "http://data.worldbank.org/indicator/NE.IMP.GNFS.ZS",
+        "scale_function" : "NO_SCALING"
 	},
     {
         "key" : "phAwcNAVuyj1NHPC9MyZ9SQ",
@@ -70,7 +76,8 @@
 		"category" : "Environment",
 		"subcategory" : "Emissions",
 		"dataprovider" : "CDIAC (Carbon Dioxide Information Analysis Center)",
-		"dataprovider_link" : "http://cdiac.ornl.gov/ftp/ndp030/CSV-FILES/"
+		"dataprovider_link" : "http://cdiac.ornl.gov/ftp/ndp030/CSV-FILES/",
+        "scale_function" : "NO_SCALING"
 	},
     {
         "key" : "pyj6tScZqmEcaHt8Y6cxXQg",
@@ -79,7 +86,8 @@
 		"category" : "Economy",
 		"subcategory" : "Economic situation",
 		"dataprovider" : "World Bank",
-		"dataprovider_link" : "http://data.worldbank.org/indicator/NY.GDP.DEFL.KD.ZG"
+		"dataprovider_link" : "http://data.worldbank.org/indicator/NY.GDP.DEFL.KD.ZG",
+        "scale_function" : "NO_SCALING"
 	},
     {
         "key" : "0ArfEDsV3bBwCdERNZmlfUGM5YVE3bmEwODdlRDFqSkE",
@@ -88,7 +96,8 @@
 		"category" : "Energy",
 		"subcategory" : "Oil",
 		"dataprovider" : "BP",
-		"dataprovider_link" : "http://www.bp.com/statisticalreview"
+		"dataprovider_link" : "http://www.bp.com/statisticalreview",
+        "scale_function" : "NO_SCALING"
 	},
     {
         "key" : "pyj6tScZqmEcl2xDWbuJ8fg",
@@ -97,7 +106,8 @@
 		"category" : "Population",
 		"subcategory" : "Population growth",
 		"dataprovider" : "World Bank",
-		"dataprovider_link" : "http://data.worldbank.org/indicator/SP.POP.GROW"
+		"dataprovider_link" : "http://data.worldbank.org/indicator/SP.POP.GROW",
+        "scale_function" : "NO_SCALING"
 	},
 
 ]

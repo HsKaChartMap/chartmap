@@ -102,7 +102,7 @@ Ext.application({
         // Set up a store for all indicator metadata
         Ext.define('indicatorModel', {
             extend: 'Ext.data.Model',
-            fields: ['key', 'displayName', 'indicatorName', 'category', 'subcategory', 'dataprovider', 'dataprovider_link']
+            fields: ['key', 'displayName', 'indicatorName', 'category', 'subcategory', 'dataprovider', 'dataprovider_link', 'scale_function']
         });
 
         var indicatorStore = Ext.create('Ext.data.Store', {
@@ -132,7 +132,7 @@ Ext.application({
             displayField: 'displayName',
             valueField: 'indicatorName',
             triggerAction: 'all',
-            multiSelect: false, // future: true
+            multiSelect: true,
             listeners: {
                 select: function(combobox, records, options) {
                     var keystring = ""
@@ -372,36 +372,32 @@ Ext.application({
             tooltip: "Zeige Radar-Diagramm",
             handler: function(){
                 /* INDICATOR */
-                var g_keys = ["tyadrylIpQ1K_iHP407374Q","phAwcNAVuyj2tPLxKvvnNPA","phAwcNAVuyj0NpF2PTov2Cw"];
-                //var g_indicators = {"HDI":SCALE_TIMES_100, "Life expectancy at birth":NO_SCALING, "Infant Mortality Rate":SCALE_TIMES_100};
+                var g_keys = [];
+                var g_indicators = {};
+
                 var indicats = indComboBox.getValue();
+
+                indicatorStore.queryBy(function(record, id) {
+                    console.log(record.get("indicatorName")+"   "+indicats.indexOf(record.get("indicatorName")));
+                    return indicats.indexOf(record.get("indicatorName")) != -1;
+                }).each(function(record) { 
+                    g_keys.push(record.get("key")); 
+                    g_indicators[record.get("indicatorName")]=scale_funs[record.get("scale_function")];
+                });
+
                 if (indicats === null) {
                     alert("Bitte zuerst Indikator wählen");
                     return;
                 }
-                var g_indicators = {};
-                g_indicators[indicats] = SCALE_TIMES_100;  // noch nicht ganz richtig
 
                 var g_year = yearComboBox.getValue();
 
                 var g_countries = [];
-
-                /* this should be defined somehow globally, shouldn't it? */
-                /*
-                matchingLayers = map.getLayersByName("Staaten thematisch");
-                if (matchingLayers.length == 1) {
-                    layer = matchingLayers[0];
-                } else {
-                    console.warn("Warning, layer not found!");
-                    return;
-                }
-                */
-
                 var selFeatures = staaten.selectedFeatures;
                 for (var i=0; i<selFeatures.length; i++) {
                     var country = selFeatures[i].attributes.SOVEREIGNT
                     if (country.indexOf(".") != -1) {
-                        alert("pending bug: ExtJS charts legends seem to have a bug when there's a comma in a legend item. Therefore we cannot use country '"+country+"'");
+                        alert("Die ExtJS Chart Legende scheint ein Problem zu haben, wenn ein Punkt im Namen auftaucht. Daher kann '"+country+"' nicht verwendet werden.");
                     } else {
                         g_countries.push(country);
                     }
@@ -409,7 +405,7 @@ Ext.application({
                 console.log("selected countries: " + g_countries);
 
                 if (g_countries.length < 1 || g_countries.length > 5) {
-                    confirm("Bitte wählen Sie mindestens 1, aber maximal 5 Länder aus!");
+                    alert("Bitte wählen Sie mindestens 1, aber maximal 5 Länder aus!");
                     return;
                 }
 
