@@ -87,6 +87,7 @@ Ext.application({
 
             // Update YearComboBox
             yearComboBox.bindStore(getYearsByIndicator("Staaten thematisch", indComboBox.getValue()));
+            yearComboBox.select(yearComboBox.getStore().data.items[0])
             
             // Update vectorLegend
             vectorLegend.setRules();
