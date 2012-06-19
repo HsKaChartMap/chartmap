@@ -1,4 +1,4 @@
-Ext.require([
+ï»¿Ext.require([
     'Ext.window.MessageBox',
     'Ext.container.Viewport',
     'Ext.state.Manager',
@@ -18,8 +18,8 @@ Ext.application({
             expires: new Date(new Date().getTime()+(1000*60*60*24*7)) //7 days from now
         }));
 
-        map = new OpenLayers.Map({});
-
+        map = new OpenLayers.Map({projection: new OpenLayers.Projection("EPSG:4326")});
+        
         var wms = new OpenLayers.Layer.WMS(
             "OpenLayers WMS",
             "http://vmap0.tiles.osgeo.org/wms/vmap0?",
@@ -39,7 +39,7 @@ Ext.application({
 
         // Thematic Layer
         var staaten = new OpenLayers.Layer.Vector("Staaten thematisch", {
-            strategies: [new OpenLayers.Strategy.Fixed()],    
+            strategies: [new OpenLayers.Strategy.BBOX()],       
             projection: new OpenLayers.Projection("EPSG:4326"),
             protocol: new OpenLayers.Protocol.HTTP({                
                 url: "php/getJSON.php",
@@ -51,7 +51,7 @@ Ext.application({
         });
 
         //Add Layers to map
-        map.addLayers([staatenAll,staaten]);
+        map.addLayers([staaten]);
 
         var scaleline = new OpenLayers.Control.ScaleLine();
         map.addControl(scaleline);
@@ -75,8 +75,10 @@ Ext.application({
 
         // Function as eventhandler of loadend-event
         function applyThematicStyle() {
-            console.log("applyThematicStyle: loadend wurde ausgelöst");
-
+            console.log("applyThematicStyle: loadend wurde ausgelÃ¶st");
+            
+            mapLoadMask.hide();
+            
             // Create StyleMap-Object for the thematic layer
             thematicStyleMap = new OpenLayers.StyleMap({
                 'default': getThematicStyle("Staaten thematisch")
@@ -95,6 +97,7 @@ Ext.application({
             }
             
             // Update vectorLegend
+            vectorLegend.legendTitle = getActiveLegendTitle();
             vectorLegend.setRules();
             vectorLegend.update();
             
@@ -131,14 +134,14 @@ Ext.application({
         indComboBox = Ext.create('Ext.form.ComboBox', {
             width: 200,
             editable: false,
-            emptyText: 'Indikator wählen',
+            emptyText: 'Indikator wÃ¤hlen',
             labelWidth: 65,
             store: indicatorStore,
             queryMode: 'local',
             displayField: 'displayName',
             valueField: 'indicatorName',
             triggerAction: 'all',
-            multiSelect: true,
+            multiSelect: false,
             listeners: {
                 select: function(combobox, records, options) {
                     var keystring = ""
@@ -168,7 +171,7 @@ Ext.application({
         
         // ComboBox to choose the year for the classification
         yearComboBox = Ext.create('Ext.form.ComboBox', {
-            emptyText: 'Jahr wählen',
+            emptyText: 'Jahr wÃ¤hlen',
             editable: false,
             width: 75,
             labelWidth: 35,
@@ -192,12 +195,12 @@ Ext.application({
             fields:['name', 'value'],
             data: [ ['Quantile', 'quantiles'],
             ['Gleiche Intervalle', 'eqinterval'],
-            ['Natürliche Unterbrechungen','jenks']
+            ['NatÃ¼rliche Unterbrechungen','jenks']
             ]
         });
 
         clTypeComboBox = Ext.create('Ext.form.ComboBox', { 
-            emptyText: 'Klassifizierung wählen',
+            emptyText: 'Klassifizierung wÃ¤hlen',
             width: 200,
             labelWidth: 75,
             store: clTypeStore,
@@ -243,7 +246,7 @@ Ext.application({
             editable: false,
             fieldLabel: 'Farbe',
             labelWidth: 45,
-            store: ['rot', 'grün', 'blau', 'lila','orange'],
+            store: ['rot', 'grÃ¼n', 'blau', 'lila','orange'],
             queryMode: 'local',
             value: 'rot',
             triggerAction: 'all',
@@ -291,7 +294,7 @@ Ext.application({
             // button options
             enableToggle: true,          
             //listeners: {"featurehighlighted": new function(){alert("test2")}},
-            tooltip: "Land auswählen"
+            tooltip: "Land auswÃ¤hlen"
         });
 
         /* featureSelected        
@@ -392,7 +395,7 @@ Ext.application({
                 });
 
                 if (indicats === null) {
-                    alert("Bitte zuerst Indikator wählen");
+                    alert("Bitte zuerst Indikator wÃ¤hlen");
                     return;
                 }
 
@@ -411,7 +414,7 @@ Ext.application({
                 console.log("selected countries: " + g_countries);
 
                 if (g_countries.length < 1 || g_countries.length > 5) {
-                    alert("Bitte wählen Sie mindestens 1, aber maximal 5 Länder aus!");
+                    alert("Bitte wÃ¤hlen Sie mindestens 1, aber maximal 5 LÃ¤nder aus!");
                     return;
                 }
 
@@ -447,8 +450,11 @@ Ext.application({
             }]
         });
         
+        mapLoadMask = new Ext.LoadMask(mappanel, {msg:"Bitte warten..."});
+        
         vectorLegend = Ext.create('GeoExt.container.VectorLegend', {
-            legendTitle: 'Thematische Karte',   
+            untitledPrefix: 'keine Daten',
+            legendTitle: 'Kein Thema',   
             layer: staaten
             //labelCls: 'vectorLegendItem' // todo: Create CSS class to show nice items
         });
@@ -457,14 +463,14 @@ Ext.application({
             title: 'Impressum',
             collapsible: true,
             collapsed: true,
-            html:'<br><h2>&nbsp;Hochschule Karlsruhe</h2><br><b>&nbsp;GIS-Projekt</b><br> &nbsp;Alice Rühl<br> &nbsp;Amr Bakri<br> &nbsp;Michael Kuch<br> &nbsp;Roman Wössner<br><br><img src="img/lmz.gif"><br><br>'
+            html:'<br><h2>&nbsp;Hochschule Karlsruhe</h2><br><b>&nbsp;GIS-Projekt</b><br> &nbsp;Alice RÃ¼hl<br> &nbsp;Amr Bakri<br> &nbsp;Michael Kuch<br> &nbsp;Roman WÃ¶ssner<br><br><img src="img/lmz.gif"><br><br>'
         });
         
         var hilfePanel = Ext.create('Ext.Panel', {
             title: 'Hilfe',
             collapsible: true,
             collapsed: true,
-            html:'<br>Wähle das Thema (Indikator) deiner Karte, die Jahreszahl sowie die Klassifizierungsart und Anzahl der Klassen in den obigen Auswahlmenüs aus. Sobald deine Wahl abgeschlossen is, wird automatisch die Karte angezeigt.<br><br><b>Bedeutung der Buttons</b><br><br><img src="img/mapbutton.png"> Kartenübersicht <br><br><img src="img/select.png">&nbsp;Länderwahl <br><br><img src="img/spider.png">&nbsp;Diagramm<br><br>'
+            html:'<br>WÃ¤hle das Thema (Indikator) deiner Karte, die Jahreszahl sowie die Klassifizierungsart und Anzahl der Klassen in den obigen AuswahlmenÃ¼s aus. Sobald deine Wahl abgeschlossen is, wird automatisch die Karte angezeigt.<br><br><b>Bedeutung der Buttons</b><br><br><img src="img/mapbutton.png"> KartenÃ¼bersicht <br><br><img src="img/select.png">&nbsp;LÃ¤nderwahl <br><br><img src="img/spider.png">&nbsp;Diagramm<br><br>'
         });
 
         // LegendPanel

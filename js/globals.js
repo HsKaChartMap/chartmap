@@ -2,6 +2,7 @@
 
 // OpenLayers.Map object
 var map;
+var mapLoadMask;
 
 // Dynamic country feature store
 var countryFS;

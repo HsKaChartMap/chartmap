@@ -30,7 +30,7 @@ function showRadarChartDataFromURL(keys, indicators, year, countries) {
 }
 
 function showRadarChart(all_data, indicators, year, countries){
-    var storedata = Ext.create('Ext.data.JsonStore', {
+    var radarStore = Ext.create('Ext.data.JsonStore', {
         fields: ['indicator'].concat(countries),                    // ['indicator', 'Germany', 'France', 'Portugal']
         data: generateData(all_data, indicators, year, countries)   // [{'indicator':'HDI','Germany':0.3,'France':7.9,'Portugal':2.9},{'indicator':'BIP', 'Germany':....}]
     });
@@ -45,7 +45,7 @@ function showRadarChart(all_data, indicators, year, countries){
         height: 400,
         insetPadding: 20,
         animate: true,
-        store: storedata,
+        store: radarStore,
         legend: {
             position: 'right'
         },
@@ -62,7 +62,7 @@ function showRadarChart(all_data, indicators, year, countries){
     var win = Ext.create('Ext.window.Window', {
         layout: 'border',
         width: 650,
-        height: 500,
+        height: 450,
         minHeight: 400,
         minWidth: 550,
         hidden: false,
@@ -122,6 +122,22 @@ function generateCheckboxes() {
     for (var indicator in indicators) {
         var scale_fun = indicators[indicator];          // gets value for key, which is scale function
         var dataPoint = { "indicator":indicator };      // creates map with key 'indicator' and e.g. value of 'hdi'
+        // create maximum for countries / indicators
+		var max = 0;
+		for (var j=0; j<countries.length; j++) {
+			var country = countries[j];
+            if (!(country in countryData)) {
+				console.warn("No data for country '"+country+"'");
+                continue;
+            }
+			else {	// Set if higher
+				if (max<countryData[country][indicator]) {
+					max = countryData[country][indicator];
+					}
+			}
+		}
+		
+		console.log("Indicator:" + indicator+ " Maximum:" + max);
         for (var j=0; j<countries.length; j++) {
             var country = countries[j];
             if (!(country in countryData)) {

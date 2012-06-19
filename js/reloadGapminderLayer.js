@@ -7,6 +7,8 @@ function reloadGapminderLayer(layername, keys) {
     
     console.log("reloadGapminderLayer: reload wird initiiert");
     
+    mapLoadMask.show();
+    
     // unbind and clear countryFeatureStore
     //countryFS.unbind();
     //countryFS.removeAll();

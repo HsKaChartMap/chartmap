@@ -31,8 +31,9 @@ function getThematicStyle(layername) {
         return thematicStyle;
     }
     else {
-        var indicatorX = indComboBox.getValue();
-        var indicator = indicatorX[0];
+        //var indicatorX = indComboBox.getValue();
+        //var indicator = indicatorX[0];
+        var indicator = indComboBox.getValue();
         var year = yearComboBox.getValue();
         var classificationType = clTypeComboBox.getValue();
         var numClasses = parseFloat(clComboBox.getValue());
@@ -120,7 +121,7 @@ function getThematicStyle(layername) {
                     }
                 })
             var rule_x = new OpenLayers.Rule({
-                name: Math.round(ranges[i],2) + " - " + Math.round(ranges[i+1],2),
+                name: (Math.floor(ranges[i]*100)/100) + " - " + (Math.floor(ranges[i+1]*100)/100),
                 filter: filter_x,
                 symbolizer: { fillColor: colors[i],
                             fillOpacity: 1, strokeColor: "white"}
