@@ -71,22 +71,28 @@ function showRadarChart(all_data, indicators, year, countries){
         style: 'overflow: hidden;',
         title: 'Radar Chart',
         renderTo: Ext.getBody(),
+        tbar: [{
+            text: 'Reload Data',
+            handler: function() {
+                storedata.loadData(generateData(all_data, indicators, year, countries /* catch from checkboxes data here */));
+            }
+        }],
         items: [{
-                region:'west',
-                margins: '5 0 0 0',
-                cmargins: '5 5 0 0',
-                width: 175,
-                minSize: 100,
-                maxSize: 250,
-                collapsible: true,
-                items:[{
-                    xtype: 'checkboxgroup',
-                    columns: 1,
-                    vertical: true,
-                    items: generateCheckboxes()
-                }]
-            },
-            chart
+            region:'west',
+            margins: '5 0 0 0',
+            cmargins: '5 5 0 0',
+            width: 175,
+            minSize: 100,
+            maxSize: 250,
+            collapsible: true,
+            items:[{
+                xtype: 'checkboxgroup',
+                columns: 1,
+                vertical: true,
+                items: generateCheckboxes()
+            }]
+        },
+        chart
         ]
     });
 }
