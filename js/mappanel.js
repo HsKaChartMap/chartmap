@@ -1,4 +1,4 @@
-﻿Ext.require([
+Ext.require([
     'Ext.window.MessageBox',
     'Ext.container.Viewport',
     'Ext.state.Manager',
@@ -18,13 +18,13 @@ Ext.application({
             expires: new Date(new Date().getTime()+(1000*60*60*24*7)) //7 days from now
         }));
 
-        map = new OpenLayers.Map({projection: new OpenLayers.Projection("EPSG:4326")});
-        
-        var wms = new OpenLayers.Layer.WMS(
-            "OpenLayers WMS",
-            "http://vmap0.tiles.osgeo.org/wms/vmap0?",
-            {layers: 'basic'}
-            );
+        map = new OpenLayers.Map({
+            projection: new OpenLayers.Projection("EPSG:4326"),
+            displayProjection: new OpenLayers.Projection("EPSG:4326"),
+            controls: [
+                new OpenLayers.Control.ScaleLine()
+            ]
+        });
 
         // BackgroundLayer
         var staatenAll = new OpenLayers.Layer.Vector("Staaten alle", {
@@ -52,9 +52,6 @@ Ext.application({
 
         //Add Layers to map
         map.addLayers([staaten]);
-
-        var scaleline = new OpenLayers.Control.ScaleLine();
-        map.addControl(scaleline);
         
         /* START STYLING */
         // create Style Object for the background layer
@@ -424,11 +421,6 @@ Ext.application({
 
         toolbarItems.push(chartButton);
 
-        // WAS TUT DAS?
-        var report = function(e) {
-            OpenLayers.Console.log(e.type, e.feature.id);
-        };
-
         // END toolbar items
         
         /* START panels */
@@ -476,15 +468,12 @@ Ext.application({
         // LegendPanel
         var legendPanel = Ext.create('Ext.Panel', {
             title: "Legende",
-            // region: 'west',
             defaults: {
                 labelCls: 'mylabel',
                 style: 'padding:5px; background-color: #EAEAEA;',
             },
             collapsible: true,
             collapsed: false,
-            //split: true,
-            //width: 200,
             autoScroll: true,
             items: [vectorLegend]
         });
