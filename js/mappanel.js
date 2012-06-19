@@ -1,9 +1,11 @@
+Ext.Loader.setPath('Ext.ux', 'externals/extjs-4.1.0/examples/ux');
 Ext.require([
     'Ext.window.MessageBox',
     'Ext.container.Viewport',
     'Ext.state.Manager',
     'Ext.state.CookieProvider',
     'Ext.data.ResultSet',
+    'Ext.ux.form.MultiSelect',
     'GeoExt.panel.Map',
     'GeoExt.panel.Legend',
     'GeoExt.container.VectorLegend',

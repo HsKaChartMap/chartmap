@@ -35,6 +35,19 @@ function showRadarChart(all_data, indicators, year, countries){
         data: generateData(all_data, indicators, year, countries)   // [{'indicator':'HDI','Germany':0.3,'France':7.9,'Portugal':2.9},{'indicator':'BIP', 'Germany':....}]
     });
 
+    var multiSelectPanel = Ext.create('Ext.Panel', {
+        title: 'Indikatoren',
+        width: 200,
+        region: 'west',
+        items: [{
+            xtype: 'multiselect',
+            store: indComboBox.getStore(),
+            displayField: 'displayName',
+            valueField: 'indicatorName',
+            ddReorder: true
+        }]
+    });
+    
     var chart = Ext.create('Ext.chart.Chart', {
         region: 'center',
         id: 'ChartMap',
@@ -77,22 +90,9 @@ function showRadarChart(all_data, indicators, year, countries){
                 storedata.loadData(generateData(all_data, indicators, year, countries /* catch from checkboxes data here */));
             }
         }],
-        items: [{
-            region:'west',
-            margins: '5 0 0 0',
-            cmargins: '5 5 0 0',
-            width: 175,
-            minSize: 100,
-            maxSize: 250,
-            collapsible: true,
-            items:[{
-                xtype: 'checkboxgroup',
-                columns: 1,
-                vertical: true,
-                items: generateCheckboxes()
-            }]
-        },
-        chart
+        items: [
+            multiSelectPanel,
+            chart
         ]
     });
 }
