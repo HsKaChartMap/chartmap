@@ -22,7 +22,10 @@ Ext.application({
             projection: new OpenLayers.Projection("EPSG:4326"),
             displayProjection: new OpenLayers.Projection("EPSG:4326"),
             controls: [
-                new OpenLayers.Control.ScaleLine()
+                new OpenLayers.Control.ScaleLine(),
+                new OpenLayers.Control.Attribution(),
+                new OpenLayers.Control.Navigation(),
+                new OpenLayers.Control.Zoom()
             ]
         });
 
