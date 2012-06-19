@@ -34,18 +34,20 @@ function showRadarChart(all_data, indicators, year, countries){
         fields: ['indicator'].concat(countries),                    // ['indicator', 'Germany', 'France', 'Portugal']
         data: generateData(all_data, indicators, year, countries)   // [{'indicator':'HDI','Germany':0.3,'France':7.9,'Portugal':2.9},{'indicator':'BIP', 'Germany':....}]
     });
-
+    
+    var multiSelectBox = Ext.create('Ext.ux.form.MultiSelect', {
+        xtype: 'multiselect',
+        store: indComboBox.getStore(),
+        displayField: 'displayName',
+        valueField: 'indicatorName',
+        ddReorder: true
+    });
+    
     var multiSelectPanel = Ext.create('Ext.Panel', {
         title: 'Indikatoren',
         width: 200,
         region: 'west',
-        items: [{
-            xtype: 'multiselect',
-            store: indComboBox.getStore(),
-            displayField: 'displayName',
-            valueField: 'indicatorName',
-            ddReorder: true
-        }]
+        items: [multiSelectBox]
     });
     
     var chart = Ext.create('Ext.chart.Chart', {
@@ -87,7 +89,40 @@ function showRadarChart(all_data, indicators, year, countries){
         tbar: [{
             text: 'Reload Data',
             handler: function() {
-                storedata.loadData(generateData(all_data, indicators, year, countries /* catch from checkboxes data here */));
+                var indicats = multiSelectBox.getValue();
+                var new_indicators = {};
+                var new_keys = new Array();
+                var httpRequest = new XMLHttpRequest();
+                var new_all_data;
+                
+                indComboBox.getStore().queryBy(function(record, id) {
+                    //console.log(record.get("indicatorName")+"   "+indicats.indexOf(record.get("indicatorName")));
+                    return indicats.indexOf(record.get("indicatorName")) != -1;
+                }).each(function(record) { 
+                    new_keys.push(record.get("key"));
+                    new_indicators[record.get("indicatorName")]=scale_funs[record.get("scale_function")];
+                });
+                
+                var urlBegin = "php/getJSON.php?keys=";
+                var urlKeys = new_keys.join();
+                var url = urlBegin + urlKeys;
+
+                console.log("Loading JSON at "+url);
+
+                function dataAvailable(httpRequest){
+                    if (httpRequest.readyState == 4){
+                        if ((httpRequest.status == 200) || (httpRequest.status == 0)){
+                            console.log("got JSON data :-)");
+                            new_all_data = JSON.parse(httpRequest.responseText);    // writes the content of getJSON.php in all_data
+                            radarStore.loadData(generateData(new_all_data, new_indicators, year, countries));
+                        }else{
+                            alert('There was a problem with the request. ' + httpRequest.status + httpRequest.responseText);
+                        }
+                    }
+                }
+                httpRequest.onreadystatechange = function() { dataAvailable(httpRequest); };  
+                httpRequest.open("GET", url, true);
+                httpRequest.send(null);
             }
         }],
         items: [
