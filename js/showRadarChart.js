@@ -114,7 +114,11 @@ function showRadarChart(all_data, indicators, year, countries){
                         if ((httpRequest.status == 200) || (httpRequest.status == 0)){
                             console.log("got JSON data :-)");
                             new_all_data = JSON.parse(httpRequest.responseText);    // writes the content of getJSON.php in all_data
+                            //chart.series.clear();
+                            //chart.surface.removeAll();
+                            //chart.series.addAll(generate_series(countries));
                             radarStore.loadData(generateData(new_all_data, new_indicators, year, countries));
+                            chart.redraw();
                         }else{
                             alert('There was a problem with the request. ' + httpRequest.status + httpRequest.responseText);
                         }
@@ -131,19 +135,6 @@ function showRadarChart(all_data, indicators, year, countries){
         ]
     });
 }
-
-
-function generateCheckboxes() {
-    var checkboxes = new Array();
-    var checkbox_x;
-    
-    indComboBox.getStore().each(function(record){
-        checkboxes.push({ boxLabel: record.get("displayName"), name: 'rb', inputValue: '1'});
-    });
-    
-    return checkboxes;
-}
-
 
 /******************************************************************************
  * CHART SETUP
