@@ -17,17 +17,12 @@ function getThematicStyle(layername) {
         fillColor: '#BDBDBD',
         fillOpacity: 1
     }); 
-    
-    
-    
-    
-     
-    
+
     var colors_pool = new Array('#FFC6A5', '#FF9473', '#FF6342', '#FF3118', '#FF0000', '#AD0000');
     
     if (typeof indComboBox == 'undefined' || typeof yearComboBox == 'undefined' || typeof clTypeComboBox == 'undefined' || typeof clComboBox == 'undefined') 
     {
-        console.log("getThematicStyle: ComboBoxen sind noch nicht verfügbar, return default Style");
+        //console.log("getThematicStyle: ComboBoxen sind noch nicht verfÃ¼gbar, return default Style");
         return thematicStyle;
     }
     else {
@@ -43,7 +38,7 @@ function getThematicStyle(layername) {
         case 'rot':
             colors_pool = new Array('#FFC6A5', '#FF9473', '#FF6342', '#FF3118', '#FF0000', '#AD0000');
         break;
-        case 'grün':
+        case 'grÃ¼n':
            colors_pool = new Array('#EDF8FB', '#CCECE6', '#99D8C9', '#66C2A4', '#2CA25F', '#006D2C');
         break;
         case 'blau':
@@ -65,7 +60,7 @@ function getThematicStyle(layername) {
     
     //check whether numClasses and colors fit together
     if (numClasses != colors.length) {
-        console.log("getThematicStyle: Warning, the numbers of classes and the number of colors do not fit");
+        //console.log("getThematicStyle: Warning, the numbers of classes and the number of colors do not fit");
         return;
     }
     
@@ -75,7 +70,7 @@ function getThematicStyle(layername) {
         vectorLayer = matchingLayers[0];
     }
     else {
-        console.log("getThematicStyleMap: Warning, " + matchingLayers.length + " layers found!");
+        //console.log("getThematicStyleMap: Warning, " + matchingLayers.length + " layers found!");
         return;
     }
     
@@ -90,8 +85,8 @@ function getThematicStyle(layername) {
     
     // check if any data is available
     if (items.length != 0 && items.length >= numClasses) {
-        console.log("getThematicStyle: Style für " + items.length + " Items wird berechnet");
-        console.log("getThematicStyle: Parameter: " + indicator + "; " + year + "; " + classificationType + "; " + numClasses);
+        //console.log("getThematicStyle: Style fÃ¼r " + items.length + " Items wird berechnet");
+        //console.log("getThematicStyle: Parameter: " + indicator + "; " + year + "; " + classificationType + "; " + numClasses);
         // create geostats serie
         serie = new geostats(items);
         // get ranges according to the given classification type
@@ -130,7 +125,7 @@ function getThematicStyle(layername) {
         })(i);
         thematicStyle.addRules(rules);
     }
-    console.log("getThematicStyle: Style wurde erstellt");
+    //console.log("getThematicStyle: Style wurde erstellt");
     return thematicStyle;
 }
 

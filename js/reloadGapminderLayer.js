@@ -5,7 +5,7 @@ function reloadGapminderLayer(layername, keys) {
     var newURL;
     var newOptions;
     
-    console.log("reloadGapminderLayer: reload wird initiiert");
+    //console.log("reloadGapminderLayer: reload wird initiiert");
     
     mapLoadMask.show();
     
@@ -21,12 +21,12 @@ function reloadGapminderLayer(layername, keys) {
         vectorLayer = matchingLayers[0];
     }
     else {
-        console.log("getThematicStyleMap: Warning, " + matchingLayers.length + " layers found!");
+        //console.log("getThematicStyleMap: Warning, " + matchingLayers.length + " layers found!");
         return;
     }
     
     newURL = "php/getJSON.php?keys=" + keys;
-    console.log("reloadGapminderLayer: " + keys);
+    //console.log("reloadGapminderLayer: " + keys);
     
     var newOptions = {
         protocol: new OpenLayers.Protocol.HTTP({                
@@ -45,6 +45,6 @@ function reloadGapminderLayer(layername, keys) {
     vectorLayer.protocol.url = newURL;
     vectorLayer.protocol.options.url = newURL;
     
-    console.log("reloadGapminderLayer: reload wurde durchgeführt");
+    //console.log("reloadGapminderLayer: reload wurde durchgefÃ¼hrt");
     
 }
