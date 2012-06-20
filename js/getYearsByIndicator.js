@@ -37,7 +37,11 @@ function getYearsByIndicator(layername, indicator) {
     //build store containing the extracted keys
     yearStore = new Ext.data.SimpleStore({
         fields:['year', 'yearVal'],
-        data: dates
+        data: dates,
+        sorters: [{
+            property: 'year',
+            direction: 'DESC'
+        }]
     });
     //return the store
     return yearStore;
