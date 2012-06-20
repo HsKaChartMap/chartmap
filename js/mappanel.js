@@ -51,7 +51,13 @@ Ext.application({
                 format: new OpenLayers.Format.GeoJSON()
             }),
             eventListeners: {
-                'loadend': applyThematicStyle
+                'loadend': function() {
+                    // Update YearComboBox
+                    yearComboBox.bindStore(getYearsByIndicator("Staaten thematisch", indComboBox.getValue()));
+                    yearComboBox.select(yearComboBox.getStore().data.items[0])     
+                    // Apply thematic style
+                    applyThematicStyle();
+                }
             }
         });
 
@@ -77,7 +83,7 @@ Ext.application({
 
         // Function as eventhandler of loadend-event
         function applyThematicStyle() {
-            console.log("applyThematicStyle: loadend wurde ausgelöst");
+            //console.log("applyThematicStyle: initiated");
             
             mapLoadMask.hide();
             
@@ -90,14 +96,8 @@ Ext.application({
             });
             // Redraw staaten layer
             staaten.redraw();
-            console.log("applyThematicStyle: Layer wurde neu gezeichnet");
+            //console.log("applyThematicStyle: Layer wurde neu gezeichnet");
 
-            // Update YearComboBox
-            yearComboBox.bindStore(getYearsByIndicator("Staaten thematisch", indComboBox.getValue()));
-            if (yearComboBox.getValue() == null) {
-                yearComboBox.select(yearComboBox.getStore().data.items[0])
-            }
-            
             // Update vectorLegend
             vectorLegend.legendTitle = getActiveLegendTitle();
             vectorLegend.setRules();
