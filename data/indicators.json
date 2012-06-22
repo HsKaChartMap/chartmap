@@ -17,7 +17,7 @@
         "subcategory" : "HIV",
         "dataprovider" : "Based on UNAIDS",
         "dataprovider_link" : "http://spreadsheets.google.com/pub?key=pyj6tScZqmEe1GaiYJX2qGA&gid=1",
-        "scale_function" : "NO_SCALING"
+        "scale_function" : "SCALE_DIVIDE_1000"
     },
     {
         "key" : "phAwcNAVuyj2tPLxKvvnNPA",
@@ -47,67 +47,67 @@
         "subcategory" : "Communication",
         "dataprovider" : "World Bank",
         "dataprovider_link" : "http://data.worldbank.org/indicator/IT.NET.USER",
-        "scale_function" : "NO_SCALING"
+        "scale_function" : "SCALE_DIVIDE_10000"
     },
     {
         "key" : "pyj6tScZqmEdJwn1Wi__YEg",
         "displayName" : "Exporte (% des BIP)",
-		"indicatorName" : "Exports of goods and services (% of GDP)",
-		"category" : "Economy",
-		"subcategory" : "Debt & trade",
-		"dataprovider" : "World Bank",
-		"dataprovider_link" : "http://data.worldbank.org/indicator/NE.EXP.GNFS.ZS",
-        "scale_function" : "NO_SCALING"
-	},
+        "indicatorName" : "Exports of goods and services (% of GDP)",
+        "category" : "Economy",
+        "subcategory" : "Debt & trade",
+        "dataprovider" : "World Bank",
+        "dataprovider_link" : "http://data.worldbank.org/indicator/NE.EXP.GNFS.ZS",
+        "scale_function" : "NO_SCALING" 
+    },
     {
         "key": "pyj6tScZqmEfnbNaaWfq7VA",
         "displayName" : "Importe (% des BIP)",
-		"indicatorName" : "Imports of goods and services (% of GDP)",
-		"category" : "Economy",
-		"subcategory" : "Debt & trade",
-		"dataprovider" : "World Bank",
-		"dataprovider_link" : "http://data.worldbank.org/indicator/NE.IMP.GNFS.ZS",
+        "indicatorName" : "Imports of goods and services (% of GDP)",
+        "category" : "Economy",
+        "subcategory" : "Debt & trade",
+        "dataprovider" : "World Bank",
+        "dataprovider_link" : "http://data.worldbank.org/indicator/NE.IMP.GNFS.ZS",
         "scale_function" : "NO_SCALING"
-	},
+    },
     {
         "key" : "phAwcNAVuyj1NHPC9MyZ9SQ",
         "displayName" : "CO2 Emissionen (t pro Jahr)",
-		"indicatorName" : "CO2 emission total",
-		"category" : "Environment",
-		"subcategory" : "Emissions",
-		"dataprovider" : "CDIAC (Carbon Dioxide Information Analysis Center)",
-		"dataprovider_link" : "http://cdiac.ornl.gov/ftp/ndp030/CSV-FILES/",
-        "scale_function" : "NO_SCALING"
-	},
+        "indicatorName" : "CO2 emission total",
+        "category" : "Environment",
+        "subcategory" : "Emissions",
+        "dataprovider" : "CDIAC (Carbon Dioxide Information Analysis Center)",
+        "dataprovider_link" : "http://cdiac.ornl.gov/ftp/ndp030/CSV-FILES/",
+        "scale_function" : "SCALE_DIVIDE_1000"
+    },
     {
         "key" : "pyj6tScZqmEcaHt8Y6cxXQg",
         "displayName" : "Inflation (%/Jahr)",
-		"indicatorName" : "Inflation, GDP deflator (annual %)",
-		"category" : "Economy",
-		"subcategory" : "Economic situation",
-		"dataprovider" : "World Bank",
-		"dataprovider_link" : "http://data.worldbank.org/indicator/NY.GDP.DEFL.KD.ZG",
+        "indicatorName" : "Inflation, GDP deflator (annual %)",
+        "category" : "Economy",
+        "subcategory" : "Economic situation",
+        "dataprovider" : "World Bank",
+        "dataprovider_link" : "http://data.worldbank.org/indicator/NY.GDP.DEFL.KD.ZG",
         "scale_function" : "NO_SCALING"
-	},
+    },
     {
         "key" : "0ArfEDsV3bBwCdERNZmlfUGM5YVE3bmEwODdlRDFqSkE",
         "displayName" : "&Ouml;lverbrauch (pro Kopf und Jahr)",
-		"indicatorName" : "Oil Consumption per capita (tonnes per year)",
-		"category" : "Energy",
-		"subcategory" : "Oil",
-		"dataprovider" : "BP",
-		"dataprovider_link" : "http://www.bp.com/statisticalreview",
-        "scale_function" : "NO_SCALING"
-	},
+        "indicatorName" : "Oil Consumption per capita (tonnes per year)",
+        "category" : "Energy",
+        "subcategory" : "Oil",
+        "dataprovider" : "BP",
+        "dataprovider_link" : "http://www.bp.com/statisticalreview",
+        "scale_function" : "SCALE_DIVIDE_10000"
+    },
     {
         "key" : "pyj6tScZqmEcl2xDWbuJ8fg",
         "displayName" : "Bev&ouml;lkerungswachstum (% pro Jahr)",
-		"indicatorName" : "Population growth (annual %)",
-		"category" : "Population",
-		"subcategory" : "Population growth",
-		"dataprovider" : "World Bank",
-		"dataprovider_link" : "http://data.worldbank.org/indicator/SP.POP.GROW",
+        "indicatorName" : "Population growth (annual %)",
+        "category" : "Population",
+        "subcategory" : "Population growth",
+        "dataprovider" : "World Bank",
+        "dataprovider_link" : "http://data.worldbank.org/indicator/SP.POP.GROW",
         "scale_function" : "NO_SCALING"
-	},
+    },
 
 ]
