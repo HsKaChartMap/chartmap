@@ -15,10 +15,16 @@
     bottom: 2px !important;
     right: 2px !important;
 }
-    
+
 .spider{
-    background: url(img/spider.png) no-repeat top left; 
+    background: url(../img/spider.png) no-repeat top left; 
 }
-.olMap{
-    background-color: red
+.mapbutton{
+    background: url(../img/mapbutton.png) no-repeat top left; 
+}
+.select{
+    background: url(../img/select.png) no-repeat top left; 
+}
+.lmzlogo{
+    background: url(../img/select.png) no-repeat top left; 
 }
